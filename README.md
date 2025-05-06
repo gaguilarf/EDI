@@ -1,4 +1,4 @@
-*Ecosistema Digital Integrado - EDI*
+**Ecosistema Digital Integrado - EDI**
 Este proyecto consiste en el desarrollo de un Ecosistema Digital Inteligente diseñado para centralizar, optimizar y potenciar la interacción de la comunidad de la Universidad Nacional de San Agustín (UNSA) con la información institucional y entre sus propios miembros.
 
 Esta será una aplicación móvil nativa e intuitiva, este ecosistema cumple una doble función:
