@@ -53,11 +53,10 @@ fun InfoCard(
             contentColor = Color.White  //Card content color,e.g.text
         ),
         modifier = Modifier
-            .padding(16.dp)
+            .padding(25.dp)
             .fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            // Header
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -75,7 +74,7 @@ fun InfoCard(
                 Text(date, color = Color.Gray)
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(15.dp))
             Text(title, fontWeight = FontWeight.Bold, color = Color.White)
 
             Spacer(modifier = Modifier.height(8.dp))
