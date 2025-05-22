@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.moly.edi.pages.ConfiguracionScreen
 import com.moly.edi.pages.LoginScreen
-import com.moly.edi.pages.NoticiasScreen
 import com.moly.edi.pages.PerfilScreen
 import com.moly.edi.pages.SplashScreen
 
@@ -28,16 +27,11 @@ fun SetupNavGraph(navController: NavHostController) {
         
         composable(Screen.Login.route) {
             LoginScreen(
-                onNavigateToHome = {
-                    navController.navigate(Screen.Noticias.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
-                    }
-                }
             )
         }
         
         composable(Screen.Noticias.route) {
-            NoticiasScreen()
+
         }
         
         composable(Screen.Configuracion.route) {
