@@ -1,4 +1,4 @@
-package com.moly.edi.ui.theme
+package com.moly.edi.CORE.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

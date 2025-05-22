@@ -1,14 +1,14 @@
-package com.moly.edi.navigation
+package com.moly.edi.presentacion.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.moly.edi.pages.ConfiguracionScreen
-import com.moly.edi.pages.LoginScreen
-import com.moly.edi.pages.NoticiasScreen
-import com.moly.edi.pages.PerfilScreen
-import com.moly.edi.pages.SplashScreen
+import com.moly.edi.presentacion.configuracion.configuracionActivity
+import com.moly.edi.presentacion.login.loginActivity
+import com.moly.edi.presentacion.noticias.NoticiasActivity
+import com.moly.edi.presentacion.perfil.perfilActivity
+import com.moly.edi.presentacion.splash.splashActivity
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
@@ -17,7 +17,7 @@ fun SetupNavGraph(navController: NavHostController) {
         startDestination = Screen.Splash.route
     ) {
         composable(Screen.Splash.route) {
-            SplashScreen(
+            splashActivity(
                 onNavigateToLogin = {
                     navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.Splash.route) { inclusive = true }
@@ -27,7 +27,7 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         
         composable(Screen.Login.route) {
-            LoginScreen(
+            loginActivity(
                 onNavigateToHome = {
                     navController.navigate(Screen.Noticias.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
@@ -37,15 +37,15 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         
         composable(Screen.Noticias.route) {
-            NoticiasScreen()
+            NoticiasActivity()
         }
         
         composable(Screen.Configuracion.route) {
-            ConfiguracionScreen()
+            configuracionActivity()
         }
         
         composable(Screen.Perfil.route) {
-            PerfilScreen()
+            perfilActivity()
         }
     }
 }

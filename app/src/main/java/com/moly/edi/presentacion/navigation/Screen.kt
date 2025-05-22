@@ -1,4 +1,4 @@
-package com.moly.edi.navigation
+package com.moly.edi.presentacion.navigation
 
 sealed class Screen(val route: String) {
     object Splash : Screen("splash")
