@@ -8,8 +8,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.moly.edi.CORE.ui.theme.EDITheme
-import com.moly.edi.presentacion.splash.splashActivity
+import com.moly.edi.core.ui.theme.EDITheme
+import com.moly.edi.presentation.splash.splashActivity
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

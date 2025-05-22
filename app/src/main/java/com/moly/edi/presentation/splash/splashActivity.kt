@@ -1,5 +1,5 @@
 // splashActivity.kt
-package com.moly.edi.presentacion.splash
+package com.moly.edi.presentation.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
