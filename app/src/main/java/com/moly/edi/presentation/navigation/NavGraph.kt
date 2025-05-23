@@ -7,7 +7,6 @@ import androidx.navigation.compose.composable
 import com.moly.edi.presentation.configuracion.configuracionActivity
 import com.moly.edi.presentation.login.loginActivity
 import com.moly.edi.presentation.noticias.NoticiasActivity
-import com.moly.edi.presentation.perfil.perfilActivity
 import com.moly.edi.presentation.splash.splashActivity
 
 @Composable
@@ -27,13 +26,7 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         
         composable(Screen.Login.route) {
-            loginActivity(
-                onNavigateToHome = {
-                    navController.navigate(Screen.Noticias.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
-                    }
-                }
-            )
+
         }
         
         composable(Screen.Noticias.route) {
@@ -45,7 +38,6 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         
         composable(Screen.Perfil.route) {
-            perfilActivity()
         }
     }
 }
