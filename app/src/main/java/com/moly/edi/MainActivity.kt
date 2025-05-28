@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.moly.edi.core.ui.theme.EDITheme
-import com.moly.edi.presentation.splash.splashActivity
+import com.moly.edi.presentation.splash.SplashActivity
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,10 +20,8 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    // Solo mostrar el SplashScreen
-                    splashActivity(
+                    SplashActivity(
                         onNavigateToLogin = {
-                            // Simplemente mostrar un Toast cuando termine el splash
                             Toast.makeText(
                                 this@MainActivity,
                                 "Navegando a login...",
