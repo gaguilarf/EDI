@@ -20,24 +20,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moly.edi.R
 import kotlinx.coroutines.delay
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 
 @Composable
-fun splashActivity(onNavigateToLogin: () -> Unit) {
-    // Efecto para navegar automáticamente después de un tiempo
-    LaunchedEffect(key1 = true) {
-        delay(3000) // 3 segundos de retraso
-        onNavigateToLogin()
+fun SplashActivity(
+    onNavigateToLogin: () -> Unit,
+    viewModel: SplashViewModel = viewModel()
+) {
+    val welcomeText by viewModel.welcomeText.collectAsState()
+    val navigate by viewModel.navigateToLogin.collectAsState()
+
+    LaunchedEffect(navigate) {
+        if (navigate) {
+            onNavigateToLogin()
+        }
     }
 
-    // Box principal con imagen de fondo
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Imagen de fondo que ocupa toda la pantalla
+        // Fondo
         Image(
             painter = painterResource(id = R.drawable.fondo_splash),
             contentDescription = null,
@@ -45,7 +54,7 @@ fun splashActivity(onNavigateToLogin: () -> Unit) {
             contentScale = ContentScale.Crop
         )
 
-        // Texto "UNSA" como marca de agua
+        // Marca de agua UNSA
         Text(
             text = "UNSA",
             color = Color.White,
@@ -57,40 +66,36 @@ fun splashActivity(onNavigateToLogin: () -> Unit) {
                 .alpha(0.2f)
         )
 
-        // Contenido principal en columna centrada
+        // Contenido principal
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Texto de Bienvenida
             Text(
-                text = "BIENVENIDO",
+                text = welcomeText,
                 color = Color.White,
-                fontSize = 30.sp,
+                fontSize = 40.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
-            // Imagen del logo EDI
             Image(
                 painter = painterResource(id = R.drawable.logo_edi),
                 contentDescription = "Logo EDI",
                 modifier = Modifier
-                    .padding(horizontal = 40.dp)
-                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .size(width = 300.dp, height = 200.dp)
                     .background(Color.White, shape = RoundedCornerShape(4.dp))
                     .padding(16.dp)
             )
 
-            // Espacio antes del botón
             Spacer(modifier = Modifier.height(40.dp))
 
-            // Botón circular turquesa con flecha
             FloatingActionButton(
                 onClick = { onNavigateToLogin() },
-                containerColor = Color(0xFF009688), // Color turquesa
+                containerColor = Color(0xFF009688),
                 shape = CircleShape,
                 modifier = Modifier.size(56.dp)
             ) {
