@@ -5,15 +5,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.moly.edi.presentation.configuracion.configuracionActivity
-import com.moly.edi.presentation.login.loginActivity
-import com.moly.edi.presentation.noticias.NoticiasActivity
+import com.moly.edi.presentation.noticias.NoticiasScreen
 import com.moly.edi.presentation.splash.splashActivity
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Splash.route
+        startDestination = Screen.Noticias.route
     ) {
         composable(Screen.Splash.route) {
             splashActivity(
@@ -30,7 +29,7 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         
         composable(Screen.Noticias.route) {
-            NoticiasActivity()
+            NoticiasScreen()
         }
         
         composable(Screen.Configuracion.route) {
