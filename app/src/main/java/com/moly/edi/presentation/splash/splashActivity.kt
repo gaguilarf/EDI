@@ -1,10 +1,11 @@
-// SplashScreen.kt
-package com.moly.edi.pages
+// splashActivity.kt
+package com.moly.edi.presentation.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.FloatingActionButton
@@ -25,7 +26,7 @@ import com.moly.edi.R
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(onNavigateToLogin: () -> Unit) {
+fun splashActivity(onNavigateToLogin: () -> Unit) {
     // Efecto para navegar automáticamente después de un tiempo
     LaunchedEffect(key1 = true) {
         delay(3000) // 3 segundos de retraso
@@ -79,7 +80,7 @@ fun SplashScreen(onNavigateToLogin: () -> Unit) {
                 modifier = Modifier
                     .padding(horizontal = 40.dp)
                     .fillMaxWidth()
-                    .background(Color.White, shape = androidx.compose.foundation.shape.RoundedCornerShape(4.dp))
+                    .background(Color.White, shape = RoundedCornerShape(4.dp))
                     .padding(16.dp)
             )
 

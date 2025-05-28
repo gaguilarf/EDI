@@ -1,4 +1,4 @@
-package com.moly.edi.ui.theme
+package com.moly.edi.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
