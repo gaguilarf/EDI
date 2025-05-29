@@ -11,7 +11,7 @@ import com.moly.edi.presentacion.perfil.perfilActivity
 import com.moly.edi.presentacion.splash.splashActivity
 
 @Composable
-fun SetupNavGraph(navController: NavHostController) {
+fun NavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = Screen.Splash.route
@@ -27,13 +27,7 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         
         composable(Screen.Login.route) {
-            loginActivity(
-                onNavigateToHome = {
-                    navController.navigate(Screen.Noticias.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
-                    }
-                }
-            )
+            loginActivity()
         }
         
         composable(Screen.Noticias.route) {
