@@ -20,6 +20,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moly.edi.domain.model.Noticia
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 class NoticiasScreen {
 
@@ -143,12 +145,13 @@ class NoticiasScreen {
 
     @Composable
     fun Noticias() {
-        val viewModel = remember { NoticiasViewModel() }
+        val viewModel: NoticiasViewModel = viewModel()
+
+        val noticias = viewModel.noticias.collectAsState()
 
         Column {
-            viewModel.noticias.forEach { noticia: Noticia ->
-                InfoCard(noticia = noticia)
-            }
+            noticias.value.forEach { noticia ->
+                InfoCard(noticia = noticia) }
         }
     }
 }
