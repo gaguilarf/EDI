@@ -1,4 +1,4 @@
-// splashActivity.kt
+// SplashActivity.kt
 package com.moly.edi.presentation.splash
 
 import androidx.compose.foundation.Image
@@ -12,7 +12,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -22,16 +21,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.moly.edi.R
-import kotlinx.coroutines.delay
+import com.moly.edi.presentation.navigation.Screen
 
 @Composable
-fun splashActivity(onNavigateToLogin: () -> Unit) {
+fun splashActivity(navController: NavController) {
     // Efecto para navegar automáticamente después de un tiempo
-    LaunchedEffect(key1 = true) {
+    /*LaunchedEffect(key1 = true) {
         delay(3000) // 3 segundos de retraso
         onNavigateToLogin()
-    }
+    }*/
 
     // Box principal con imagen de fondo
     Box(
@@ -89,7 +89,7 @@ fun splashActivity(onNavigateToLogin: () -> Unit) {
 
             // Botón circular turquesa con flecha
             FloatingActionButton(
-                onClick = { onNavigateToLogin() },
+                onClick = { navController.navigate(Screen.Noticias.route) },
                 containerColor = Color(0xFF009688), // Color turquesa
                 shape = CircleShape,
                 modifier = Modifier.size(56.dp)

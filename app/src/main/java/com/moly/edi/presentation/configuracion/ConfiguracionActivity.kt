@@ -1,4 +1,4 @@
 package com.moly.edi.presentation.configuracion
 
-class configuracionViewModel {
+class ConfiguracionActivity {
 }

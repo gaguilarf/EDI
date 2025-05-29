@@ -1,4 +1,4 @@
 package com.moly.edi.presentation.login
 
-class loginViewModel {
+class LoginViewModel {
 }

@@ -1,4 +1,4 @@
 package com.moly.edi.presentation.splash
 
-class splashViewModel {
+class SplashViewModel {
 }
