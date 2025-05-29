@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.moly.edi.core.ui.theme.EDITheme
 import com.moly.edi.presentation.navigation.SetupNavGraph
-import com.moly.edi.presentation.splash.splashActivity
+import com.moly.edi.presentation.splash.SplashActivity
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
