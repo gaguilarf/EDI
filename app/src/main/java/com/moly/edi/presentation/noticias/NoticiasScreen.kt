@@ -7,18 +7,24 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,6 +43,8 @@ import androidx.compose.ui.unit.sp
 import com.moly.edi.domain.model.Noticia
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 
 class NoticiasScreen {
 
@@ -135,11 +143,66 @@ class NoticiasScreen {
     @Composable
     fun Noticias(navController: NavController) {
         val viewModel: NoticiasViewModel = viewModel()
-        val noticias = viewModel.noticias.collectAsState()
+        val noticias by viewModel.noticias.collectAsState()
+        var searchQuery by remember { mutableStateOf("") }
 
-        Column {
-            noticias.value.forEach { noticia ->
-                InfoCard(noticia = noticia) }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black)
+                .padding(16.dp)
+        ) {
+            // Titulo
+            Text(
+                text = "NOTICIAS",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Barra de busqueda
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                placeholder = { Text("Busca algo", color = Color.Gray) },
+                leadingIcon = {
+                    Icon(imageVector = Icons.Default.Search, contentDescription = "Buscar")
+                },
+                trailingIcon = {
+                    Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "Filtrar")
+                },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    cursorColor = Color.White,
+                    focusedBorderColor = Color.White,
+                    unfocusedBorderColor = Color.Gray
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Lista de noticias
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                val filteredNoticias = noticias.filter {
+                    it.title.contains(searchQuery, ignoreCase = true) ||
+                            it.body.contains(searchQuery, ignoreCase = true)
+                }
+                items(filteredNoticias) { noticia ->
+                    InfoCard(noticia = noticia)
+                }
+            }
         }
     }
 }
