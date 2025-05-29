@@ -33,18 +33,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.moly.edi.domain.model.Noticia
 
 class NoticiasScreen {
 
     @Composable
-    fun InfoCard(
-        author: String = "Autor",
-        date: String = "11/05/25",
-        title: String = "Lorem ipsum",
-        body: String,
-        tags: List<String> = listOf("evento", "trabajo", "beca"),
-        likes: Int = 10
-    ) {
+    fun InfoCard(noticia: Noticia) {
         var expanded by remember { mutableStateOf(false) }
         var isTextOverflowing by remember { mutableStateOf(false) }
 
@@ -71,13 +65,13 @@ class NoticiasScreen {
                             tint = Color(0xFFFFA5D2)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(author, color = Color.White)
+                        Text(noticia.author, color = Color.White)
                     }
-                    Text(date, color = Color.Gray)
+                    Text(noticia.date, color = Color.Gray)
                 }
 
                 Spacer(modifier = Modifier.height(15.dp))
-                Text(title, fontWeight = FontWeight.Bold, color = Color.White)
+                Text(noticia.title, fontWeight = FontWeight.Bold, color = Color.White)
 
                 Spacer(modifier = Modifier.height(8.dp))
                 // Body text con "Leer más"
@@ -85,7 +79,7 @@ class NoticiasScreen {
                     val textLayoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
 
                     Text(
-                        text = body,
+                        text = noticia.body,
                         color = Color.White,
                         maxLines = if (expanded) Int.MAX_VALUE else 4,
                         overflow = TextOverflow.Ellipsis,
@@ -109,7 +103,7 @@ class NoticiasScreen {
                 Spacer(modifier = Modifier.height(8.dp))
                 // Tags
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    tags.forEach { tag ->
+                    noticia.tags.forEach { tag ->
                         Box(
                             modifier = Modifier
                                 .background(Color(0xFF333333), shape = RoundedCornerShape(8.dp))
@@ -129,13 +123,13 @@ class NoticiasScreen {
                         tint = Color.White
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("$likes", color = Color.White)
+                    Text("${noticia.likes}", color = Color.White)
                 }
             }
         }
     }
 
-    @Preview(showBackground = true)
+    /*@Preview(showBackground = true)
     @Composable
     fun PreviewCard() {
         val longText =
@@ -145,10 +139,16 @@ class NoticiasScreen {
                     "It has survived not only five centuries, but also the leap into electronic typesetting..."
 
         InfoCard(body = longText)
-    }
+    }*/
 
     @Composable
     fun Noticias() {
+        val viewModel = remember { NoticiasViewModel() }
 
+        Column {
+            viewModel.noticias.forEach { noticia: Noticia ->
+                InfoCard(noticia = noticia)
+            }
+        }
     }
 }

@@ -23,7 +23,6 @@ class MainActivity : ComponentActivity() {
                     // Solo mostrar el SplashScreen
                     splashActivity(
                         onNavigateToLogin = {
-                            // Simplemente mostrar un Toast cuando termine el splash
                             Toast.makeText(
                                 this@MainActivity,
                                 "Navegando a login...",
