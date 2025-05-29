@@ -1,4 +1,4 @@
 package com.moly.edi.presentation.perfil
 
-class perfilViewModel {
+class PerfilViewModel {
 }

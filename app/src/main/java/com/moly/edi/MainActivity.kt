@@ -8,7 +8,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
 import com.moly.edi.core.ui.theme.EDITheme
+import com.moly.edi.presentation.navigation.SetupNavGraph
 import com.moly.edi.presentation.splash.splashActivity
 
 class MainActivity : ComponentActivity() {
@@ -20,17 +22,10 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    // Solo mostrar el SplashScreen
-                    splashActivity(
-                        onNavigateToLogin = {
-                            // Simplemente mostrar un Toast cuando termine el splash
-                            Toast.makeText(
-                                this@MainActivity,
-                                "Navegando a login...",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    )
+                    val navController = rememberNavController()
+
+                    // Toda la app ahora maneja navegación
+                    SetupNavGraph(navController = navController)
                 }
             }
         }

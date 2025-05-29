@@ -1,12 +1,11 @@
 package com.moly.edi.presentation.navigation
 
+import android.window.SplashScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.moly.edi.presentation.configuracion.configuracionActivity
-import com.moly.edi.presentation.login.loginActivity
-import com.moly.edi.presentation.noticias.NoticiasActivity
+import com.moly.edi.presentation.noticias.NoticiasScreen
 import com.moly.edi.presentation.splash.splashActivity
 
 @Composable
@@ -16,28 +15,23 @@ fun SetupNavGraph(navController: NavHostController) {
         startDestination = Screen.Splash.route
     ) {
         composable(Screen.Splash.route) {
-            splashActivity(
-                onNavigateToLogin = {
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(Screen.Splash.route) { inclusive = true }
-                    }
-                }
-            )
+            splashActivity(navController)
         }
         
         composable(Screen.Login.route) {
-
+            //LoginScreen(navController)
         }
         
         composable(Screen.Noticias.route) {
-            NoticiasActivity()
+            NoticiasScreen().Noticias(navController)
         }
         
         composable(Screen.Configuracion.route) {
-            configuracionActivity()
+            //ConfiguracionScreen(navController)
         }
         
         composable(Screen.Perfil.route) {
+            //PerfilScreen(navController)
         }
     }
 }
