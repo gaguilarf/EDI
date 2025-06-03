@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.moly.edi.CORE.ui.theme.turquesa
+import com.moly.edi.core.ui.theme.turquesa
 import com.moly.edi.R
 
 @Composable

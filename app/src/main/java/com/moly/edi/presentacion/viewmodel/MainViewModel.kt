@@ -16,23 +16,19 @@ class MainViewModel @Inject constructor(
     private val _noticias = mutableStateOf<List<NoticiaUnsa>>(emptyList())
     val noticias: State<List<NoticiaUnsa>> = _noticias
 
-    private val _noticiasImportantes = mutableStateOf<List<NoticiaUnsa>>(emptyList())
-    val noticiasImportantes: State<List<NoticiaUnsa>> = _noticiasImportantes
-
     init {
         cargarNoticias()
     }
 
     fun cargarNoticias() {
         _noticias.value = noticiasRepository.obtenerNoticiasUnsa()
-        _noticiasImportantes.value = _noticias.value.filter { it.esImportante }
     }
 
     fun obtenerNoticiasPorCategoria(categoria: String) {
-        _noticias.value = noticiasRepository.obtenerNoticiasPorCategoria(categoria)
+        if (categoria == "")
+            _noticias.value = noticiasRepository.obtenerNoticiasUnsa()
+        else
+            _noticias.value = noticiasRepository.obtenerNoticiasPorCategoria(categoria)
     }
 
-    fun obtenerTodasLasNoticias() {
-        cargarNoticias()
-    }
 }
