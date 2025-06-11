@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.moly.edi.presentation.noticias.NoticiasActivity
+import com.moly.edi.presentation.noticias.NoticiasScreen
 import com.moly.edi.presentation.perfil.PerfilActivity
 import com.moly.edi.presentation.splash.SplashActivity
 import com.moly.edi.presentation.configuracion.ConfiguracionActivity
@@ -38,7 +38,7 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         
         composable(Screen.Noticias.route) {
-            NoticiasActivity()
+            NoticiasScreen()
         }
         
         composable(Screen.Configuracion.route) {

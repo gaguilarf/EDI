@@ -77,9 +77,11 @@ fun LoginScreen(
         Spacer(Modifier.height(30.dp))
         Button(
             onClick = { 
+                println("LoginScreen: Botón de inicio de sesión presionado")
                 // Aquí iría la lógica de autenticación
                 // Por ahora, simplemente llamamos a onLoginSuccess
                 onLoginSuccess()
+                println("LoginScreen: onLoginSuccess llamado")
             },
             modifier = Modifier
                 .fillMaxWidth()
