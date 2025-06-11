@@ -1,8 +1,5 @@
 package com.moly.edi.presentation.login
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,9 +7,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults as M3ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.ButtonDefaults as M3ButtonDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,17 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moly.edi.R
 
-class LoginActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            LoginScreen()
-        }
-    }
-}
-
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    onLoginSuccess: () -> Unit = {}
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -86,7 +76,11 @@ fun LoginScreen() {
         Text("¿Olvidaste tu contraseña?", color = Color(0xFF0F8B8D))
         Spacer(Modifier.height(30.dp))
         Button(
-            onClick = { println("Login pressed") },
+            onClick = { 
+                // Aquí iría la lógica de autenticación
+                // Por ahora, simplemente llamamos a onLoginSuccess
+                onLoginSuccess()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
