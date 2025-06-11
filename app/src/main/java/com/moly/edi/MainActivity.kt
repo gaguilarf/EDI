@@ -1,33 +1,40 @@
 package com.moly.edi
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
-import com.moly.edi.core.ui.theme.EDITheme
-import com.moly.edi.presentation.navigation.SetupNavGraph
-import com.moly.edi.presentation.splash.SplashActivity
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.moly.edi.data.dataSource.api.entity.dto.ConfiguracionApiService
+import com.moly.edi.data.dataSource.api.entity.dto.ConfiguracionRepository
+import com.moly.edi.domain.useCase.GetConfiguracionUseCase
+import com.moly.edi.presentation.configuracion.ConfiguracionScreen
+import com.moly.edi.presentation.configuracion.ConfiguracionViewModel
+import com.moly.edi.presentation.configuracion.ConfiguracionViewModelFactory
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
-            EDITheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    val navController = rememberNavController()
 
-                    // Toda la app ahora maneja navegación
-                    SetupNavGraph(navController = navController)
-                }
-            }
+        // Crear dependencias manualmente
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://edi-backend-vgou.onrender.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ConfiguracionApiService::class.java)
+        val repository = ConfiguracionRepository(apiService)
+        val useCase = GetConfiguracionUseCase(repository)
+        val factory = ConfiguracionViewModelFactory(useCase)
+
+        setContent {
+            ConfiguracionScreen(
+                viewModelFactory = factory,
+                correoElectronico = "bhanccoco@unsa.edu.pe"
+            )
         }
     }
 }
