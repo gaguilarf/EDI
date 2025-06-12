@@ -5,6 +5,11 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import android.util.Log
+import com.google.gson.JsonSyntaxException
+import kotlinx.coroutines.delay
+import java.io.IOException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 interface ConfiguracionApiService {
     @GET("usuario/{correo_electronico}/configuracion")
@@ -15,31 +20,48 @@ interface ConfiguracionApiService {
 class ConfiguracionRepository(
     private val apiService: ConfiguracionApiService
 ) {
-    suspend fun getConfiguracionByUser(correoElectronico: String): Result<ConfiguracionDTO> {
+    suspend fun wakeUpServer(): Boolean {
         return try {
-            Log.d("ConfigRepo", " Cargando configuración para: $correoElectronico")
-
-            val response = apiService.getConfiguracionByUser(correoElectronico)
-
-            Log.d("ConfigRepo", " Response code: ${response.code()}")
-            Log.d("ConfigRepo", " Response message: ${response.message()}")
-            Log.d("ConfigRepo", " Response body: ${response.body()}")
-
-            if (response.isSuccessful) {
-                response.body()?.let { configuracion ->
-                    Log.d("ConfigRepo", " Configuración cargada exitosamente: $configuracion")
-                    Result.success(configuracion)
-                } ?: run {
-                    Log.e("ConfigRepo", "Response body es null")
-                    Result.failure(Exception("Configuración no encontrada"))
-                }
-            } else {
-                Log.e("ConfigRepo", " Error HTTP: ${response.code()} - ${response.message()}")
-                Result.failure(Exception("Error: ${response.code()} - ${response.message()}"))
-            }
+            apiService.getConfiguracionByUser("test") // Llamada de prueba
+            true
         } catch (e: Exception) {
-            Log.e("ConfigRepo", " Excepción: ${e.message}", e)
-            Result.failure(e)
+            false
         }
     }
+    suspend fun getConfiguracionByUser(correoElectronico: String): Result<ConfiguracionDTO> {
+        // REINTENTOS (3 intentos)
+        repeat(3) { attempt ->
+            try {
+                val response = apiService.getConfiguracionByUser(correoElectronico)
+
+                // MANEJO DE CÓDIGOS HTTP
+                return when (response.code()) {
+                    200 -> {
+                        response.body()?.let {
+                            Result.success(it)
+                        } ?: Result.failure(ApiException("JSON inválido"))
+                    }
+                    404 -> Result.failure(ApiException("Usuario no encontrado"))
+                    500 -> Result.failure(ApiException("Error del servidor"))
+                    else -> Result.failure(ApiException("Error HTTP: ${response.code()}"))
+                }
+
+            } catch (e: Exception) {
+                // FALLOS COMUNES
+                val errorMessage = when (e) {
+                    is SocketTimeoutException, is UnknownHostException -> "Sin internet"
+                    is JsonSyntaxException -> "JSON inválido"
+                    else -> "Error de conexión"
+                }
+
+                if (attempt == 2) { // Último intento
+                    return Result.failure(ApiException(errorMessage))
+                }
+                delay(2000) // Esperar antes de reintentar
+            }
+        }
+        return Result.failure(ApiException("Error después de 3 intentos"))
+    }
 }
+
+class ApiException(message: String) : Exception(message)

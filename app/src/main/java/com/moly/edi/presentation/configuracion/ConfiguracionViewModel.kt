@@ -7,12 +7,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.io.IOException
+import java.net.SocketTimeoutException
 
 data class ConfiguracionUiState(
-    val notificacionesEnabled: Boolean = true,
+    val notificacionesEnabled: Boolean = false,
     val categoriesIntereses: List<String> = listOf("Tecnología", "Becas", "Prácticas"),
-    val visibilidadEnabled: Boolean = true,
-    val disponibilidadProyEnabled: Boolean = true,
+    val visibilidadEnabled: Boolean = false,
+    val disponibilidadProyEnabled: Boolean = false,
     val isLoading: Boolean = false,
     val errorMessage: String? = null
 )
@@ -26,21 +28,37 @@ class ConfiguracionViewModel(
 
     fun loadConfiguracion(correoElectronico: String) {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
+            _uiState.value = _uiState.value.copy(isLoading = true)
 
             getConfiguracionUseCase(correoElectronico)
-                .onSuccess { configuracion ->
-                    _uiState.value = _uiState.value.copy(
-                        notificacionesEnabled = configuracion.notificacionesEnabled,
-                        visibilidadEnabled = configuracion.visibilidadEnabled,
-                        disponibilidadProyEnabled = configuracion.disponibilidadEnabled,
-                        isLoading = false
-                    )
-                }
-                .onFailure { error ->
+                .onSuccess { config ->
+                    android.util.Log.d("ConfigViewModel", " Datos recibidos: $config")
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
-                        errorMessage = error.message
+
+                        notificacionesEnabled = config.notificacionesEnabled,
+                        visibilidadEnabled = config.visibilidadEnabled,
+                        disponibilidadProyEnabled = config.disponibilidadEnabled
+                    )
+                    android.util.Log.d("ConfigViewModel", " Estado actualizado: ${_uiState.value}")
+                }
+                .onFailure { error ->
+                    // MENSAJES DE ERROR CLAROS
+                    val userMessage = when {
+                        error.message?.contains("Sin internet") == true ->
+                            " Sin conexión a internet"
+                        error.message?.contains("Usuario no encontrado") == true ->
+                            " Usuario no encontrado"
+                        error.message?.contains("Error del servidor") == true ->
+                            " Servidor en mantenimiento"
+                        error.message?.contains("JSON inválido") == true ->
+                            " Datos corruptos del servidor"
+                        else -> " Error inesperado"
+                    }
+
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = userMessage
                     )
                 }
         }

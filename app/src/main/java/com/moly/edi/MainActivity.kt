@@ -11,8 +11,10 @@ import com.moly.edi.domain.useCase.GetConfiguracionUseCase
 import com.moly.edi.presentation.configuracion.ConfiguracionScreen
 import com.moly.edi.presentation.configuracion.ConfiguracionViewModel
 import com.moly.edi.presentation.configuracion.ConfiguracionViewModelFactory
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +23,13 @@ class MainActivity : ComponentActivity() {
 
         // Crear dependencias manualmente
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://edi-backend-vgou.onrender.com/")
+            .baseUrl("https://edi-backend-ww44.onrender.com/")
+            .client(
+                OkHttpClient.Builder()
+                    .connectTimeout(120, TimeUnit.SECONDS)
+                    .readTimeout(120, TimeUnit.SECONDS)
+                    .build()
+            )
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
