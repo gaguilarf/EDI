@@ -6,7 +6,6 @@ import com.moly.edi.data.model.NoticiaUnsa
 import com.moly.edi.data.repository.NoticiasRepository
 import javax.inject.Inject
 
-
 class NoticiasRepositoryImpl @Inject constructor(
     private val api: NoticiasService
 ) : NoticiasRepository {
