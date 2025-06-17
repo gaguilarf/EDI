@@ -20,7 +20,7 @@ fun SetupNavGraph(navController: NavHostController) {
         composable(Screen.Splash.route) {
             SplashActivity(
                 onNavigateToLogin = {
-                    navController.navigate(Screen.Login.route) {
+                    navController.navigate(Screen.Noticias.route) {
                         popUpTo(Screen.Splash.route) { inclusive = true }
                     }
                 }
