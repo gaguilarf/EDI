@@ -7,9 +7,10 @@ import androidx.navigation.compose.composable
 import com.moly.edi.presentation.noticias.NoticiasScreen
 import com.moly.edi.presentation.perfil.PerfilActivity
 import com.moly.edi.presentation.splash.SplashActivity
-import com.moly.edi.presentation.configuracion.ConfiguracionActivity
+import com.moly.edi.presentation.configuracion.ConfiguracionScreen
 import com.moly.edi.presentation.login.LoginScreen
 import com.moly.edi.presentation.navigation.Screen
+import com.moly.edi.presentation.conecta.UserConnectScreen
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
@@ -42,11 +43,14 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         
         composable(Screen.Configuracion.route) {
-            ConfiguracionActivity()
+            //ConfiguracionScreen()
         }
         
         composable(Screen.Perfil.route) {
             PerfilActivity()
+        }
+        composable(Screen.UserConnect.route) {
+            UserConnectScreen(navController, "bhanccoco@unsa.edu.pe")
         }
     }
 }
