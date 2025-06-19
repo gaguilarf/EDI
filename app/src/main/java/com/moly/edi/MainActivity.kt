@@ -9,7 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.moly.edi.core.ui.theme.EDITheme
-import com.moly.edi.presentacion.navigation.SetupNavGraph
+import com.moly.edi.presentation.navigation.SetupNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
