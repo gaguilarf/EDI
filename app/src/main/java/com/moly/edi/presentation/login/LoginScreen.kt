@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults as M3ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -21,17 +20,26 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moly.edi.R
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.moly.edi.presentation.login.LoginViewModel
 
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit = {}
 ) {
+    val viewModel: LoginViewModel = viewModel()
+    val loginSuccess by viewModel.loginSuccess.collectAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    LaunchedEffect(loginSuccess) {
+        if (loginSuccess) onLoginSuccess()
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(horizontal = 50.dp)
             .clickable(onClick = { /* unfocus inputs */ }),
         verticalArrangement = Arrangement.Top,
@@ -76,17 +84,12 @@ fun LoginScreen(
         Text("¿Olvidaste tu contraseña?", color = Color(0xFF0F8B8D))
         Spacer(Modifier.height(30.dp))
         Button(
-            onClick = { 
-                println("LoginScreen: Botón de inicio de sesión presionado")
-                // Aquí iría la lógica de autenticación
-                // Por ahora, simplemente llamamos a onLoginSuccess
-                onLoginSuccess()
-                println("LoginScreen: onLoginSuccess llamado")
+            onClick = {
+                viewModel.login(email, password)
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            colors = M3ButtonDefaults.buttonColors(containerColor = Color(0xFF0F8B8D)),
             shape = RoundedCornerShape(12.dp)
         ) {
             Text("Iniciar Sesión", color = Color.White, fontSize = 30.sp)

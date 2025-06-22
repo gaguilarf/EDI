@@ -174,7 +174,6 @@ fun UserConnectCard(estudiante: EstudianteDTO, onSettingsClick: () -> Unit) {
         ) {
             Button(
                 onClick = { println("Conectando con ${estudiante.carrera}") },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0F8B8D)),
                 shape = RoundedCornerShape(10.dp),
                 elevation = null
             ) {

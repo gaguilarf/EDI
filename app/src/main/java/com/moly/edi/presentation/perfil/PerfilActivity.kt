@@ -161,11 +161,7 @@ fun ProfileScreen(
                     onClick = { /* Handle edit action */ },
                     modifier = Modifier
                         .weight(1f)
-                        .height(48.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = Color.White
-                    )
+                        .height(48.dp)
                 ) {
                     Text("Editar")
                 }
