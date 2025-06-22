@@ -1,10 +1,13 @@
 package com.moly.edi.presentation.perfil
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +26,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import com.moly.edi.domain.model.Project
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -39,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.moly.edi.R
 import com.moly.edi.core.ui.theme.EDITheme
@@ -113,6 +118,8 @@ fun ProfileScreen(
             .verticalScroll(rememberScrollState())
             .padding(bottom = 16.dp)
     ) {
+        // Título de sección
+        com.moly.edi.core.componentes.SectionHeader(title = "PERFIL", topSpacing = false)
         // Profile Header
         user?.let { user ->
             ProfileHeader(
@@ -176,6 +183,7 @@ fun ProfileHeader(
     github: String,
     instagram: String
 ) {
+    val context = LocalContext.current
     Surface(
         color = Color(0xFF1E1E1E),
         shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
@@ -242,36 +250,79 @@ fun ProfileHeader(
                     .padding(top = 16.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                if (phone.isNotBlank()) {
-                    SocialIcon(iconRes = R.drawable.ic_phone, "Phone")
-                }
-                if (linkedin.isNotBlank()) {
-                    SocialIcon(iconRes = R.drawable.ic_linkedin, "LinkedIn")
-                }
-                if (github.isNotBlank()) {
-                    SocialIcon(iconRes = R.drawable.ic_github, "GitHub")
-                }
-                if (instagram.isNotBlank()) {
-                    SocialIcon(iconRes = R.drawable.ic_instagram, "Instagram")
-                }
+                SocialIcon(
+                    iconRes = R.drawable.ic_phone,
+                    contentDescription = "Phone",
+                    enabled = phone.isNotBlank(),
+                    onClick = {
+                        if (phone.isNotBlank()) {
+                            val intent = Intent(Intent.ACTION_DIAL).apply {
+                                data = Uri.parse("tel:$phone")
+                            }
+                            context.startActivity(intent)
+                        }
+                    }
+                )
+                SocialIcon(
+                    iconRes = R.drawable.ic_linkedin,
+                    contentDescription = "LinkedIn",
+                    enabled = linkedin.isNotBlank(),
+                    onClick = {
+                        if (linkedin.isNotBlank()) {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(linkedin))
+                            context.startActivity(intent)
+                        }
+                    }
+                )
+                SocialIcon(
+                    iconRes = R.drawable.ic_github,
+                    contentDescription = "GitHub",
+                    enabled = github.isNotBlank(),
+                    onClick = {
+                        if (github.isNotBlank()) {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(github))
+                            context.startActivity(intent)
+                        }
+                    }
+                )
+                SocialIcon(
+                    iconRes = R.drawable.ic_instagram,
+                    contentDescription = "Instagram",
+                    enabled = instagram.isNotBlank(),
+                    onClick = {
+                        if (instagram.isNotBlank()) {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(instagram))
+                            context.startActivity(intent)
+                        }
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-fun SocialIcon(iconRes: Int, contentDescription: String) {
+fun SocialIcon(
+    iconRes: Int,
+    contentDescription: String,
+    enabled: Boolean = true,
+    onClick: () -> Unit = {}
+) {
+    val iconColor = if (enabled) Color(0xFF03DAC5) else Color.Gray
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(40.dp)
             .clip(CircleShape)
-            .background(Color(0xFF03DAC5))
+            .background(iconColor.copy(alpha = 0.2f))
+            .let {
+                if (enabled) it.clickable { onClick() } else it
+            }
     ) {
         Icon(
             painter = painterResource(id = iconRes),
             contentDescription = contentDescription,
-            tint = Color.White,
+            tint = if (enabled) Color(0xFF03DAC5) else Color.Gray,
             modifier = Modifier.size(24.dp)
         )
     }
@@ -385,6 +436,137 @@ fun ProjectCard(project: Project, modifier: Modifier = Modifier) {
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
+        }
+    }
+}
+
+// Preview Functions
+@Preview(showBackground = true)
+@Composable
+fun ProfileScreenLoadingPreview() {
+    EDITheme {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProfileScreenErrorPreview() {
+    EDITheme {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black)
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Error al cargar el perfil",
+                color = Color.Red,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProfileHeaderPreview() {
+    EDITheme {
+        ProfileHeader(
+            name = "Gustavo Fernando",
+            email = "gaguilarf@unsa.edu.pe",
+            phone = "914101182",
+            linkedin = "linkedin.com/in/gustavo",
+            github = "github.com/gustavo",
+            instagram = "@gustavo"
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TechnologiesSectionPreview() {
+    EDITheme {
+        TechnologiesSection(
+            technologies = listOf("Kotlin", "Android", "Compose", "MVVM", "Retrofit", "Hilt")
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProjectsSectionPreview() {
+    EDITheme {
+        val sampleProjects = listOf(
+            Project(1, "App EDI", "Aplicación móvil para estudiantes de EDI"),
+            Project(2, "Sistema Web", "Sistema web para gestión de proyectos"),
+            Project(3, "API REST", "API para manejo de datos de usuarios")
+        )
+        ProjectsSection(projects = sampleProjects)
+    }
+}
+
+@Preview(showBackground = true, heightDp = 800)
+@Composable
+fun ProfileScreenContentPreview() {
+    EDITheme {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 16.dp)
+        ) {
+            ProfileHeader(
+                name = "Gustavo Fernando",
+                email = "gaguilarf@unsa.edu.pe",
+                phone = "914101182",
+                linkedin = "linkedin.com/in/gustavo",
+                github = "github.com/gustavo",
+                instagram = "@gustavo"
+            )
+
+            TechnologiesSection(
+                technologies = listOf("Kotlin", "Android", "Compose", "MVVM", "Retrofit", "Hilt")
+            )
+
+            val sampleProjects = listOf(
+                Project(1, "App EDI", "Aplicación móvil para estudiantes de EDI"),
+                Project(2, "Sistema Web", "Sistema web para gestión de proyectos")
+            )
+            ProjectsSection(projects = sampleProjects)
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Button(
+                    onClick = { },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(48.dp)
+                ) {
+                    Text("Añadir")
+                }
+
+                OutlinedButton(
+                    onClick = { },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(48.dp)
+                ) {
+                    Text("Editar")
+                }
+            }
         }
     }
 }

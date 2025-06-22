@@ -1,5 +1,6 @@
 package com.moly.edi.presentation.perfil
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moly.edi.domain.model.Project
@@ -32,6 +33,7 @@ class PerfilViewModel @Inject constructor(
     val projects: StateFlow<List<Project>> = _projects.asStateFlow()
 
     fun loadUserData(email: String) {
+        Log.d("PerfilViewModel", "Loading user data for email: $email")
         viewModelScope.launch {
             _isLoading.value = true
             _error.value = null
@@ -39,13 +41,16 @@ class PerfilViewModel @Inject constructor(
             try {
                 val result = userRepository.getUserByEmail(email)
                 result.onSuccess { user ->
+                    Log.d("PerfilViewModel", "User loaded successfully: $user")
                     _user.value = user
                     _technologies.value = user.tecnologias
                     _projects.value = user.proyectos
                 }.onFailure { exception ->
+                    Log.e("PerfilViewModel", "Failed to load user: ${exception.message}", exception)
                     _error.value = exception.message ?: "Error al cargar el perfil"
                 }
             } catch (e: Exception) {
+                Log.e("PerfilViewModel", "Exception loading user: ${e.message}", e)
                 _error.value = e.message ?: "Error desconocido: ${e.javaClass.simpleName}"
             } finally {
                 _isLoading.value = false

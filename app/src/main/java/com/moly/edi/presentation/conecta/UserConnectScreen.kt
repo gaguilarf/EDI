@@ -43,6 +43,7 @@ import com.moly.edi.R
 import com.moly.edi.data.dataSource.api.entity.dto.EstudianteDTO
 import com.moly.edi.presentation.navigation.Screen
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.foundation.lazy.LazyColumn
 
 
 @Composable
@@ -57,29 +58,34 @@ fun UserConnectScreen(
 
     Scaffold(
         topBar = { /* tu top bar */ },
-        containerColor = Color(0xFF303030)
+        containerColor = Color.Black // Igual que en Noticias
     ) { padding ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp)
         ) {
-            when {
-                viewModel.isLoading -> {
-                    CircularProgressIndicator(color = Color.White)
-                }
-                viewModel.errorMessage != null -> {
-                    Text(
-                        text = viewModel.errorMessage ?: "Error",
-                        color = Color.Red
-                    )
-                }
-                viewModel.estudiante != null -> {
-                    UserConnectCard(
-                        estudiante = viewModel.estudiante!!,
-                        onSettingsClick = { navController.navigate(Screen.Configuracion.route) }
-                    )
+            item {
+                com.moly.edi.core.componentes.SectionHeader(title = "CONECTA", topSpacing = false)
+            }
+            item {
+                when {
+                    viewModel.isLoading -> {
+                        CircularProgressIndicator(color = Color.White)
+                    }
+                    viewModel.errorMessage != null -> {
+                        Text(
+                            text = viewModel.errorMessage ?: "Error",
+                            color = Color.Red
+                        )
+                    }
+                    viewModel.estudiante != null -> {
+                        UserConnectCard(
+                            estudiante = viewModel.estudiante!!,
+                            onSettingsClick = { navController.navigate(Screen.Configuracion.route) }
+                        )
+                    }
                 }
             }
         }
