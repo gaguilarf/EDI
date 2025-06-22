@@ -50,22 +50,22 @@ Este proyecto está construido 100% en **Kotlin** y aprovecha el ecosistema mode
 
 * **Lenguaje Principal:** Kotlin
 * **Interfaz de Usuario (UI):**
-    * `Jetpack Compose`: Framework declarativo para construir la UI nativa.
-    * `Material 3`: Para implementar los componentes de diseño de Material Design.
-    * `Navigation Compose`: Para gestionar la navegación entre pantallas.
+  * `Jetpack Compose`: Framework declarativo para construir la UI nativa.
+  * `Material 3`: Para implementar los componentes de diseño de Material Design.
+  * `Navigation Compose`: Para gestionar la navegación entre pantallas.
 * **Manejo de Red (Networking):**
-    * `Retrofit`: Cliente HTTP para consumir APIs RESTful de manera segura.
-    * `Gson`: Para la serialización y deserialización de objetos JSON.
+  * `Retrofit`: Cliente HTTP para consumir APIs RESTful de manera segura.
+  * `Gson`: Para la serialización y deserialización de objetos JSON.
 * **Asincronía:**
-    * `Kotlin Coroutines`: Para manejar operaciones en segundo plano de forma eficiente y no bloquear la UI.
+  * `Kotlin Coroutines`: Para manejar operaciones en segundo plano de forma eficiente y no bloquear la UI.
 * **Inyección de Dependencias:**
-    * `Hilt`: Para simplificar la inyección de dependencias en toda la aplicación, integrado con Jetpack.
+  * `Hilt`: Para simplificar la inyección de dependencias en toda la aplicación, integrado con Jetpack.
 * **Arquitectura y Ciclo de Vida:**
-    * `ViewModel`: Para almacenar y gestionar datos relacionados con la UI de forma consciente del ciclo de vida.
-    * `Lifecycle KTX`: Extensiones para manejar el ciclo de vida de los componentes.
+  * `ViewModel`: Para almacenar y gestionar datos relacionados con la UI de forma consciente del ciclo de vida.
+  * `Lifecycle KTX`: Extensiones para manejar el ciclo de vida de los componentes.
 * **Testing:**
-    * `JUnit`: Para pruebas unitarias.
-    * `Espresso`: Para pruebas de interfaz de usuario (UI tests).
+  * `JUnit`: Para pruebas unitarias.
+  * `Espresso`: Para pruebas de interfaz de usuario (UI tests).
 
 ## 📱 Vistazo a la App
 
@@ -73,12 +73,9 @@ Un vistazo a las pantallas clave que componen la experiencia del usuario en EDI.
 
 | Splash & Login | Conexión & Noticias |
 | :---: | :---: |
-| ![Pantalla de Splash](https://raw.githubusercontent.com/tu_usuario/edi-unsa/main/assets/splash.jpg) | ![Pantalla de Conexión de Talentos](https://raw.githubusercontent.com/tu_usuario/edi-unsa/main/assets/conecta.jpg) |
+| ![Pantalla de Splash](https://raw.githubusercontent.com/gaguilarf/EDI/master/assets/splash.jpg) | ![Pantalla de Conexión de Talentos](https://raw.githubusercontent.com/gaguilarf/EDI/master/assets/conecta.jpg) |
 | **Splash e Inicio de Sesión** | **Conexión de Talentos y Noticias** |
-| ![Pantalla de Login](https://raw.githubusercontent.com/tu_usuario/edi-unsa/main/assets/login.jpg) | ![Pantalla de Noticias](https://raw.githubusercontent.com/tu_usuario/edi-unsa/main/assets/noticias.jpg) |
-
-
-**Recuerda:** Debes reemplazar `tu_usuario` en las URLs de las imágenes por tu nombre de usuario real de GitHub. Asumí que las imágenes son `.png`, si tienen otra extensión (como `.jpg`), asegúrate de cambiarla también en el enlace.
+| ![Pantalla de Login](https://raw.githubusercontent.com/gaguilarf/EDI/master/assets/login.jpg) | ![Pantalla de Noticias](https://raw.githubusercontent.com/gaguilarf/EDI/master/assets/noticias.jpg) |
 
 ## 🚀 Puesta en Marcha (Instalación)
 
@@ -86,4 +83,4 @@ Para obtener una copia del proyecto, simplemente clona este repositorio en tu m�
 
 ```bash
 # Clona el repositorio
-git clone [https://github.com/tu_usuario/edi-unsa.git](https://github.com/tu_usuario/edi-unsa.git)
+git clone [https://github.com/gaguilarf/EDI.git](https://github.com/gaguilarf/EDI.git)
