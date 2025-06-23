@@ -31,7 +31,7 @@ class UserConnectViewModel : ViewModel() {
             isLoading = true
             errorMessage = null
             try {
-                val urlString = "https://edi-backend-ww44.onrender.com/usuario/${URLEncoder.encode(correo, "UTF-8")}/acerca"
+                val urlString = "https://edi-backend-vgou.onrender.com/usuario/${URLEncoder.encode(correo, "UTF-8")}/acerca"
                 val url = URL(urlString)
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "GET"
