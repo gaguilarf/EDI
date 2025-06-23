@@ -1,6 +1,7 @@
 package com.moly.edi.core.di
 
 import com.moly.edi.data.dataSource.api.entity.NoticiasService
+import com.moly.edi.data.model.AuthApiService
 import com.moly.edi.data.model.UserApiService
 import com.moly.edi.data.repository.NoticiasRepository
 import com.moly.edi.data.repositoryImpl.NoticiasRepositoryImpl
@@ -17,10 +18,12 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("https://edi-backend-ww44.onrender.com/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    fun provideRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://edi-backend-vgou.onrender.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
 
     @Provides
     @Singleton
@@ -36,4 +39,9 @@ object NetworkModule {
     @Singleton
     fun provideRepositoryNoticias(api: NoticiasService): NoticiasRepository =
         NoticiasRepositoryImpl(api)
+
+    @Provides
+    @Singleton
+    fun provideAuthApiService(retrofit: Retrofit): AuthApiService =
+        retrofit.create(AuthApiService::class.java)
 }

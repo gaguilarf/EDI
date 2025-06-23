@@ -44,7 +44,7 @@ import com.moly.edi.data.dataSource.api.entity.dto.EstudianteDTO
 import com.moly.edi.presentation.navigation.Screen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.lazy.LazyColumn
-
+import com.moly.edi.core.componentes.SectionHeader
 
 @Composable
 fun UserConnectScreen(
@@ -64,11 +64,14 @@ fun UserConnectScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp)
         ) {
             item {
-                com.moly.edi.core.componentes.SectionHeader(title = "CONECTA", topSpacing = false)
+                SectionHeader(
+                    title = "CONECTA",
+                    modifier = Modifier.padding(bottom = 24.dp)
+                )
             }
+
             item {
                 when {
                     viewModel.isLoading -> {

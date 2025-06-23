@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -46,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.moly.edi.R
+import com.moly.edi.core.componentes.SectionHeader
 import com.moly.edi.core.ui.theme.EDITheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -71,7 +73,8 @@ class PerfilActivity : ComponentActivity() {
 @Composable
 fun ProfileScreen(
     userEmail: String,
-    viewModel: PerfilViewModel = hiltViewModel()
+    viewModel: PerfilViewModel = hiltViewModel(),
+    onSettingsClick: (() -> Unit)? = null
 ) {
     val user by viewModel.user.collectAsState()
     val technologies by viewModel.technologies.collectAsState()
@@ -112,41 +115,50 @@ fun ProfileScreen(
         return
     }
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(bottom = 16.dp)
+            .padding(bottom = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Título de sección
-        com.moly.edi.core.componentes.SectionHeader(title = "PERFIL", topSpacing = false)
-        // Profile Header
-        user?.let { user ->
-            ProfileHeader(
-                name = user.nombre,
-                email = user.correo,
-                phone = user.telefono ?: "",
-                linkedin = user.linkedin ?: "",
-                github = user.github ?: "",
-                instagram = user.instagram ?: ""
+        item {
+            SectionHeader(
+                title = "PERFIL",
+                modifier = Modifier.padding(top = 24.dp,
+                    bottom = 12.dp)
             )
+        }
 
-            // Technologies Section
-            if (technologies.isNotEmpty()) {
+        item {
+
+            user?.let { user ->
+                ProfileHeader(
+                    name = user.nombre,
+                    email = user.correo ?: "",
+                    phone = user.telefono ?: "",
+                    linkedin = user.linkedin ?: "",
+                    github = user.github ?: "",
+                    instagram = user.instagram ?: "",
+                    onSettingsClick = onSettingsClick
+                )
+            }
+        }
+        if (technologies.isNotEmpty()) {
+            item {
                 TechnologiesSection(technologies = technologies)
             }
-
-            // Projects Section
-            if (projects.isNotEmpty()) {
+        }
+        if (projects.isNotEmpty()) {
+            item {
                 ProjectsSection(projects = projects)
             }
-
-            // Action Buttons
+        }
+        item {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    .padding(horizontal = 8.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Button(
                     onClick = { /* Handle add action */ },
@@ -177,12 +189,17 @@ fun ProfileHeader(
     phone: String,
     linkedin: String,
     github: String,
-    instagram: String
+    instagram: String,
+    onSettingsClick: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
     Surface(
         color = Color(0xFF1E1E1E),
-        shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
+        shape = RoundedCornerShape(
+            topStart = 16.dp,
+            topEnd = 16.dp,
+            bottomStart = 16.dp,
+            bottomEnd = 16.dp),
         modifier = Modifier.padding(bottom = 16.dp)
     ) {
         Column(
@@ -235,7 +252,11 @@ fun ProfileHeader(
                     imageVector = Icons.Default.Settings,
                     contentDescription = "Settings",
                     tint = Color.White,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            onSettingsClick?.invoke()
+                        }
                 )
             }
 
@@ -326,38 +347,46 @@ fun SocialIcon(
 
 @Composable
 fun TechnologiesSection(technologies: List<String>) {
-    Column(
+    Surface(
+        color = Color(0xFF1E1E1E),
+        shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Text(
-            text = "Tecnologías",
-            color = Color.White,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-            style = MaterialTheme.typography.titleMedium
-        )
-
-        FlowRow(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(16.dp)
         ) {
-            technologies.forEach { tech ->
-                Surface(
-                    color = Color(0xFF2A2A2A),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Text(
-                        text = tech,
-                        color = Color.White,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
-                    )
+            Text(
+                text = "Tecnologías",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            FlowRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                technologies.forEach { tech ->
+                    Surface(
+                        color = Color(0xFF2A2A2A),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text(
+                            text = tech,
+                            color = Color.White,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                        )
+                    }
                 }
             }
         }
@@ -366,35 +395,38 @@ fun TechnologiesSection(technologies: List<String>) {
 
 @Composable
 fun ProjectsSection(projects: List<Project>) {
-    Column(
+    Surface(
+        color = Color(0xFF1E1E1E),
+        shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Text(
-            text = "Proyectos",
-            color = Color.White,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-            style = MaterialTheme.typography.titleMedium
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Proyectos",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                style = MaterialTheme.typography.titleMedium
+            )
 
-        if (projects.isNotEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp)
-            ) {
-                projects.forEachIndexed { index, project ->
-                    ProjectCard(
-                        project = project,
-                        modifier = Modifier.offset(
-                            x = (index * 8).dp,
-                            y = (index * 8).dp
-                        )
-                    )
+            if (projects.isNotEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    projects.forEach { project ->
+                        ProjectCard(project = project)
+                    }
                 }
             }
         }
@@ -474,21 +506,6 @@ fun ProfileScreenErrorPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun ProfileHeaderPreview() {
-    EDITheme {
-        ProfileHeader(
-            name = "Gustavo Fernando",
-            email = "gaguilarf@unsa.edu.pe",
-            phone = "914101182",
-            linkedin = "linkedin.com/in/gustavo",
-            github = "github.com/gustavo",
-            instagram = "@gustavo"
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
 fun TechnologiesSectionPreview() {
     EDITheme {
         TechnologiesSection(
@@ -507,62 +524,5 @@ fun ProjectsSectionPreview() {
             Project(3, "API REST", "API para manejo de datos de usuarios")
         )
         ProjectsSection(projects = sampleProjects)
-    }
-}
-
-@Preview(showBackground = true, heightDp = 800)
-@Composable
-fun ProfileScreenContentPreview() {
-    EDITheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(bottom = 16.dp)
-        ) {
-            ProfileHeader(
-                name = "Gustavo Fernando",
-                email = "gaguilarf@unsa.edu.pe",
-                phone = "914101182",
-                linkedin = "linkedin.com/in/gustavo",
-                github = "github.com/gustavo",
-                instagram = "@gustavo"
-            )
-
-            TechnologiesSection(
-                technologies = listOf("Kotlin", "Android", "Compose", "MVVM", "Retrofit", "Hilt")
-            )
-
-            val sampleProjects = listOf(
-                Project(1, "App EDI", "Aplicación móvil para estudiantes de EDI"),
-                Project(2, "Sistema Web", "Sistema web para gestión de proyectos")
-            )
-            ProjectsSection(projects = sampleProjects)
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Button(
-                    onClick = { },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp)
-                ) {
-                    Text("Añadir")
-                }
-
-                OutlinedButton(
-                    onClick = { },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp)
-                ) {
-                    Text("Editar")
-                }
-            }
-        }
     }
 }

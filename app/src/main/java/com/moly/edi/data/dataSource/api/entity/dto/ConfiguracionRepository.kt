@@ -29,6 +29,8 @@ class ConfiguracionRepository(
         }
     }
     suspend fun getConfiguracionByUser(correoElectronico: String): Result<ConfiguracionDTO> {
+        val url = "https://edi-backend-ww44.onrender.com/usuario/$correoElectronico/configuracion"
+        android.util.Log.d("ConfigRepository", "Intentando obtener configuración en: $url")
         // REINTENTOS (3 intentos)
         repeat(3) { attempt ->
             try {

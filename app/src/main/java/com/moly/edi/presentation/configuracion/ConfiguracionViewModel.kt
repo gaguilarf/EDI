@@ -12,7 +12,7 @@ import java.net.SocketTimeoutException
 
 data class ConfiguracionUiState(
     val notificacionesEnabled: Boolean = false,
-    val categoriesIntereses: List<String> = listOf("Tecnología", "Becas", "Prácticas"),
+    val categoriesIntereses: List<String> = listOf("Comunicados", "Becas", "Prácticas"),
     val visibilidadEnabled: Boolean = false,
     val disponibilidadProyEnabled: Boolean = false,
     val isLoading: Boolean = false,
@@ -27,6 +27,7 @@ class ConfiguracionViewModel(
     val uiState: StateFlow<ConfiguracionUiState> = _uiState.asStateFlow()
 
     fun loadConfiguracion(correoElectronico: String) {
+        android.util.Log.d("ConfigViewModel", "Enviando correo a la API: '$correoElectronico'")
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
 
@@ -44,6 +45,7 @@ class ConfiguracionViewModel(
                 }
                 .onFailure { error ->
                     // MENSAJES DE ERROR CLAROS
+                    android.util.Log.e("ConfigViewModel", "Error al obtener configuración", error)
                     val userMessage = when {
                         error.message?.contains("Sin internet") == true ->
                             " Sin conexión a internet"
@@ -53,7 +55,7 @@ class ConfiguracionViewModel(
                             " Servidor en mantenimiento"
                         error.message?.contains("JSON inválido") == true ->
                             " Datos corruptos del servidor"
-                        else -> " Error inesperado"
+                        else -> " Error inesperado: ${error.message}"
                     }
 
                     _uiState.value = _uiState.value.copy(

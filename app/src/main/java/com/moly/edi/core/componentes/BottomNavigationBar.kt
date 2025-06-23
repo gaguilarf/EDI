@@ -20,7 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.moly.edi.presentation.navigation.Screen
 
 @Composable
-fun BottomNavigationBar(navController: NavHostController, items: List<Screen>) {
+fun BottomNavigationBar(navController: NavHostController, items: List<Screen>, userEmail: String?) {
     val darkGray = Color(0xFF232323)
     val selectedColor = Color(0xFFFFFFFF)
     val unselectedColor = Color(0xFFB0B0B0)
@@ -33,7 +33,9 @@ fun BottomNavigationBar(navController: NavHostController, items: List<Screen>) {
         val currentRoute = navBackStackEntry?.destination?.route
 
         items.forEach { screen ->
-            val selected = currentRoute == screen.route
+            val selected = currentRoute == screen.route ||
+                (screen is Screen.Perfil && currentRoute?.startsWith("perfil/") == true) ||
+                (screen is Screen.UserConnect && currentRoute?.startsWith("conecta/") == true)
             val iconColor by animateColorAsState(
                 targetValue = if (selected) selectedColor else unselectedColor,
                 animationSpec = tween(durationMillis = 350)
@@ -55,7 +57,12 @@ fun BottomNavigationBar(navController: NavHostController, items: List<Screen>) {
                 selected = selected,
                 onClick = {
                     if (!selected) {
-                        navController.navigate(screen.route) {
+                        val route = when (screen) {
+                            is Screen.Perfil -> if (!userEmail.isNullOrEmpty()) "perfil/$userEmail" else screen.route
+                            is Screen.UserConnect -> if (!userEmail.isNullOrEmpty()) "conecta/$userEmail" else screen.route
+                            else -> screen.route
+                        }
+                        navController.navigate(route) {
                             popUpTo(Screen.Noticias.route)
                             launchSingleTop = true
                         }

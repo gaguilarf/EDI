@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
 
                     // Toda la app ahora maneja navegación
-                    SetupNavGraph(navController = navController)
+                    SetupNavGraph(navController = navController, context = this)
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.moly.edi.data.model
 
 import com.google.gson.annotations.SerializedName
+import com.moly.edi.domain.model.Project
 import com.moly.edi.domain.model.User
 
 data class RolesDTO(
@@ -10,6 +11,13 @@ data class RolesDTO(
     val instagram: String? = null,
     @SerializedName("linkedin")
     val linkedin: String? = null
+)
+
+data class ProjectDTO(
+    @SerializedName("titulo")
+    val titulo: String,
+    @SerializedName("descripcion")
+    val descripcion: String
 )
 
 data class UserDTO(
@@ -28,19 +36,31 @@ data class UserDTO(
     @SerializedName("contrasena")
     val contrasena: String? = null,
     @SerializedName("roles")
-    val roles: RolesDTO? = null
+    val roles: RolesDTO? = null,
+    @SerializedName("tecnologias")
+    val tecnologias: List<String>? = null,
+    @SerializedName("proyectos")
+    val proyectos: List<ProjectDTO>? = null
 )
+
+fun ProjectDTO.toDomain(): Project {
+    return Project(
+        id = titulo.hashCode(), // O usa otro identificador único si lo tienes
+        titulo = titulo,
+        descripcion = descripcion
+    )
+}
 
 fun UserDTO.toDomain(): User {
     return User(
-        id = idUsuario.hashCode(), // Generamos un ID numérico
+        id = idUsuario.hashCode(),
         nombre = nombres,
         correo = correo,
         telefono = celular,
         linkedin = roles?.linkedin,
         github = roles?.github,
         instagram = roles?.instagram,
-        tecnologias = emptyList(), // Por ahora vacío, se puede llenar más tarde
-        proyectos = emptyList() // Por ahora vacío, se puede llenar más tarde
+        tecnologias = tecnologias ?: emptyList(),
+        proyectos = proyectos?.map { it.toDomain() } ?: emptyList()
     )
 }

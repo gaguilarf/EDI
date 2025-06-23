@@ -83,4 +83,4 @@ Para obtener una copia del proyecto, simplemente clona este repositorio en tu m√
 
 ```bash
 # Clona el repositorio
-git clone [https://github.com/gaguilarf/EDI.git](https://github.com/gaguilarf/EDI.git)
+git clone https://github.com/gaguilarf/EDI.git
