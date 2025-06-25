@@ -19,17 +19,23 @@ class NoticiasRepositoryImpl @Inject constructor(
             emptyList()
         }
 
-        noticiasUnsa = respuestas.map { response ->
-            Log.d("MAP", "response autor: ${response.autor}")
-            NoticiaUnsa(
-                id = response.id,
-                titulo = response.titulo,
-                contenido = response.descripcion,
-                fecha = response.fecha_publicacion,
-                categoria = response.categorias,
-                esImportante = true
-            )
+        noticiasUnsa = try {
+            respuestas.map { response ->
+                Log.d("MAP", "response autor: ${response.autor}")
+                NoticiaUnsa(
+                    id = response.id,
+                    titulo = response.titulo,
+                    contenido = response.descripcion,
+                    fecha = response.fecha_publicacion?:"Fecha desconocida",
+                    categoria = response.categorias ?:emptyList(),
+                    esImportante = true
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("ERROR MAP", "Falló el mapeo: ${e.message}", e)
+            emptyList()
         }
+        Log.d("BBBBBBBBBBBB", "${noticiasUnsa}\ntamaño: ${noticiasUnsa.size}")
         return noticiasUnsa
     }
 
