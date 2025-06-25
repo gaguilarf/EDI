@@ -32,7 +32,9 @@ class NoticiasViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-                val listaNoticias = noticiasRepository.obtenerNoticiasUnsa()
+                noticiasRepository.sincronizarNoticias()
+                //val listaNoticias = noticiasRepository.obtenerNoticiasUnsa()
+                val listaNoticias = noticiasRepository.obtenerNoticiasLocal()
                 _noticias.value = listaNoticias
 
             } catch (e: Exception) {

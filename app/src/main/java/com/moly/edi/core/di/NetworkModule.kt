@@ -1,6 +1,7 @@
 package com.moly.edi.core.di
 
 import com.moly.edi.data.dataSource.api.entity.NoticiasService
+import com.moly.edi.data.dataSource.local.dao.NoticiaDao
 import com.moly.edi.data.model.AuthApiService
 import com.moly.edi.data.model.UserApiService
 import com.moly.edi.data.repository.NoticiasRepository
@@ -37,8 +38,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRepositoryNoticias(api: NoticiasService): NoticiasRepository =
-        NoticiasRepositoryImpl(api)
+    fun provideRepositoryNoticias(
+        api: NoticiasService,
+        dao: NoticiaDao
+    ): NoticiasRepository = NoticiasRepositoryImpl(api, dao)
 
     @Provides
     @Singleton
