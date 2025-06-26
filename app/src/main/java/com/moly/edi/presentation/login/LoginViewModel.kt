@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.moly.edi.core.auth.AuthPreferences
-import com.moly.edi.data.model.AuthApiService
-import com.moly.edi.data.model.LoginRequest
+import com.moly.edi.data.dataSource.remote.api.AuthApiService
+import com.moly.edi.data.dataSource.remote.api.LoginRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

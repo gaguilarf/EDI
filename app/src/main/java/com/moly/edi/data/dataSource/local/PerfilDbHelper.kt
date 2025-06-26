@@ -1,4 +1,4 @@
-package com.moly.edi.data.local
+package com.moly.edi.data.dataSource.local
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -65,4 +65,3 @@ class PerfilDbHelper(context: Context) : SQLiteOpenHelper(
         """
     }
 }
-

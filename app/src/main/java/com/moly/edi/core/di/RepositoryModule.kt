@@ -1,7 +1,7 @@
 package com.moly.edi.core.di
 
 import android.content.Context
-import com.moly.edi.data.repository.UserRepository
+import com.moly.edi.domain.repository.UserRepository
 import com.moly.edi.data.repositoryImpl.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module

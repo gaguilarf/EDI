@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moly.edi.data.model.NoticiaUnsa
-import com.moly.edi.data.repository.NoticiasRepository
+import com.moly.edi.domain.repository.NoticiasRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.moly.edi.data.dataSource.api.entity.dto
+package com.moly.edi.data.model
 
 import com.google.gson.annotations.SerializedName
 data class ConfiguracionDTO(

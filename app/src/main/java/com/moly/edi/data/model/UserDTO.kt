@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.moly.edi.domain.model.Project
 import com.moly.edi.domain.model.User
 
-data class RolesDTO(
+data class RedesDTO(
     @SerializedName("github")
     val github: String? = null,
     @SerializedName("instagram")
@@ -36,7 +36,7 @@ data class UserDTO(
     @SerializedName("contrasena")
     val contrasena: String? = null,
     @SerializedName("roles")
-    val roles: RolesDTO? = null,
+    val roles: RedesDTO? = null,
     @SerializedName("tecnologias")
     val tecnologias: List<String>? = null,
     @SerializedName("proyectos")

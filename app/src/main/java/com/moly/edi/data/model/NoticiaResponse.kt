@@ -1,4 +1,4 @@
-package com.moly.edi.data.dataSource.api.entity
+package com.moly.edi.data.model
 
 data class NoticiaResponse(
     val autor: String,

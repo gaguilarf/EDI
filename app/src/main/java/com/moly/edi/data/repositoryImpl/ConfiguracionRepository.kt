@@ -1,13 +1,10 @@
-package com.moly.edi.data.dataSource.api.entity.dto
-import com.moly.edi.data.dataSource.api.entity.dto.ConfiguracionDTO
-import com.moly.edi.data.dataSource.api.entity.dto.ConfiguracionResponse
+package com.moly.edi.data.repositoryImpl
+import com.moly.edi.data.model.ConfiguracionDTO
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
-import android.util.Log
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.delay
-import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 

@@ -1,18 +1,14 @@
 package com.moly.edi.presentation.navigation
 
 import android.content.Context
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.moly.edi.core.auth.AuthPreferences
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,11 +20,10 @@ import com.moly.edi.presentation.login.LoginScreen
 import com.moly.edi.presentation.conecta.UserConnectScreen
 import com.moly.edi.core.componentes.BottomNavigationBar
 import com.moly.edi.presentation.configuracion.ConfiguracionScreen
-import com.moly.edi.data.dataSource.api.entity.dto.ConfiguracionApiService
-import com.moly.edi.data.dataSource.api.entity.dto.ConfiguracionRepository
+import com.moly.edi.data.repositoryImpl.ConfiguracionApiService
+import com.moly.edi.data.repositoryImpl.ConfiguracionRepository
 import com.moly.edi.domain.useCase.GetConfiguracionUseCase
 import com.moly.edi.presentation.configuracion.ConfiguracionViewModelFactory
-import com.moly.edi.presentation.navigation.Screen
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

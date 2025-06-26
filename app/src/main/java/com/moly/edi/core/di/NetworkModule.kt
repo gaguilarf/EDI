@@ -1,9 +1,9 @@
 package com.moly.edi.core.di
 
-import com.moly.edi.data.dataSource.api.entity.NoticiasService
-import com.moly.edi.data.model.AuthApiService
-import com.moly.edi.data.model.UserApiService
-import com.moly.edi.data.repository.NoticiasRepository
+import com.moly.edi.data.dataSource.remote.api.NoticiasService
+import com.moly.edi.data.dataSource.remote.api.AuthApiService
+import com.moly.edi.data.dataSource.remote.api.UserApiService
+import com.moly.edi.domain.repository.NoticiasRepository
 import com.moly.edi.data.repositoryImpl.NoticiasRepositoryImpl
 import dagger.Module
 import dagger.Provides

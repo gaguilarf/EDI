@@ -1,8 +1,8 @@
 package com.moly.edi.domain.useCase
 
 
-import com.moly.edi.data.dataSource.api.entity.dto.ConfiguracionDTO
-import com.moly.edi.data.dataSource.api.entity.dto.ConfiguracionRepository
+import com.moly.edi.data.model.ConfiguracionDTO
+import com.moly.edi.data.repositoryImpl.ConfiguracionRepository
 import com.moly.edi.domain.model.ConfiguracionModel
 
 

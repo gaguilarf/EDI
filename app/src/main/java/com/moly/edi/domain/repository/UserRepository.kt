@@ -1,4 +1,4 @@
-package com.moly.edi.data.repository
+package com.moly.edi.domain.repository
 
 import com.moly.edi.domain.model.User
 

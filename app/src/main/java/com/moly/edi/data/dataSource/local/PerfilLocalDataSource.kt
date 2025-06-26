@@ -1,4 +1,4 @@
-package com.moly.edi.data.local
+package com.moly.edi.data.dataSource.local
 
 import android.content.ContentValues
 import android.content.Context
@@ -148,4 +148,3 @@ class PerfilLocalDataSource(context: Context) {
         )
     }
 }
-

@@ -1,9 +1,9 @@
 package com.moly.edi.data.repositoryImpl
 
 import android.util.Log
-import com.moly.edi.data.dataSource.api.entity.NoticiasService
+import com.moly.edi.data.dataSource.remote.api.NoticiasService
 import com.moly.edi.data.model.NoticiaUnsa
-import com.moly.edi.data.repository.NoticiasRepository
+import com.moly.edi.domain.repository.NoticiasRepository
 import javax.inject.Inject
 
 class NoticiasRepositoryImpl @Inject constructor(
