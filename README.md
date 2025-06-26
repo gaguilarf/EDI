@@ -1,3 +1,23 @@
+# Actividad 26/06 Sincronización de datos
+Actividades de cada integrantes:
+**Anthony**
+- Implementacion de los endpoints para crear proyecto dado un usuario, listar proyectos dado un usuario, actualizar el proyecto y eliminar el proyecto
+- Coordinacion para relfejar las respuestas de los endpoins en los objetos dto para traer los datos
+
+**Bryan**
+- Implementación de Room y de los DAOs en el proyecto
+- Correcciones estructurales a nivel de proyecto y en carpetas
+- Implementación de la Inyección de Dependencias de los DAOs
+- Implementación del SyncWorker
+
+**Gustavo**
+- Implementación del viewmodel y de las vistas para el CRUD de Proyectos
+- Integración con la vista de Perfil
+
+**Heidi**
+- Investigación sobre WorkManager y su integración en el proyecto (Offline First)
+- Implementación parcial del workmanager con la lógica señalada
+
 # Ecosistema Digital Integrado (EDI) - UNSA 🎓✨
 
 ![Estado](https://img.shields.io/badge/estado-en%20desarrollo-green)
