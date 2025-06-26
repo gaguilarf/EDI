@@ -20,8 +20,8 @@ import com.moly.edi.presentation.login.LoginScreen
 import com.moly.edi.presentation.conecta.UserConnectScreen
 import com.moly.edi.core.componentes.BottomNavigationBar
 import com.moly.edi.presentation.configuracion.ConfiguracionScreen
-import com.moly.edi.data.repositoryImpl.ConfiguracionApiService
-import com.moly.edi.data.repositoryImpl.ConfiguracionRepository
+import com.moly.edi.data.repository.ConfiguracionApiService
+import com.moly.edi.data.repository.ConfiguracionRepository
 import com.moly.edi.domain.useCase.GetConfiguracionUseCase
 import com.moly.edi.presentation.configuracion.ConfiguracionViewModelFactory
 import retrofit2.Retrofit

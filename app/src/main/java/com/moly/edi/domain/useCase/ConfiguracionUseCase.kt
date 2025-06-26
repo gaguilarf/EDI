@@ -2,7 +2,7 @@ package com.moly.edi.domain.useCase
 
 
 import com.moly.edi.data.model.ConfiguracionDTO
-import com.moly.edi.data.repositoryImpl.ConfiguracionRepository
+import com.moly.edi.data.repository.ConfiguracionRepository
 import com.moly.edi.domain.model.ConfiguracionModel
 
 

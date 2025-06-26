@@ -76,6 +76,7 @@ fun ProfileScreen(
     viewModel: PerfilViewModel = hiltViewModel(),
     onSettingsClick: (() -> Unit)? = null
 ) {
+    var mostrarDialogo by remember { mutableStateOf(false)}
     val user by viewModel.user.collectAsState()
     val technologies by viewModel.technologies.collectAsState()
     val projects by viewModel.projects.collectAsState()
@@ -161,12 +162,22 @@ fun ProfileScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Button(
-                    onClick = { /* Handle add action */ },
+                    onClick = { mostrarDialogo = true },
                     modifier = Modifier
                         .weight(1f)
                         .height(48.dp)
                 ) {
                     Text("Añadir")
+                }
+
+                if (mostrarDialogo) {
+                    ProyectoDialog(
+                        onDismiss = { mostrarDialogo = false },
+                        onConfirm = { nuevoProyecto ->
+                            // Manejo del nuevo proyecto
+                            mostrarDialogo = false
+                        }
+                    )
                 }
 
                 Button(
@@ -465,64 +476,5 @@ fun ProjectCard(project: Project, modifier: Modifier = Modifier) {
                 overflow = TextOverflow.Ellipsis
             )
         }
-    }
-}
-
-// Preview Functions
-@Preview(showBackground = true)
-@Composable
-fun ProfileScreenLoadingPreview() {
-    EDITheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileScreenErrorPreview() {
-    EDITheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black)
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Error al cargar el perfil",
-                color = Color.Red,
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TechnologiesSectionPreview() {
-    EDITheme {
-        TechnologiesSection(
-            technologies = listOf("Kotlin", "Android", "Compose", "MVVM", "Retrofit", "Hilt")
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProjectsSectionPreview() {
-    EDITheme {
-        val sampleProjects = listOf(
-            Project(1, "App EDI", "Aplicación móvil para estudiantes de EDI"),
-            Project(2, "Sistema Web", "Sistema web para gestión de proyectos"),
-            Project(3, "API REST", "API para manejo de datos de usuarios")
-        )
-        ProjectsSection(projects = sampleProjects)
     }
 }

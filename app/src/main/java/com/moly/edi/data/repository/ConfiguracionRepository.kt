@@ -1,4 +1,4 @@
-package com.moly.edi.data.repositoryImpl
+package com.moly.edi.data.repository
 import com.moly.edi.data.model.ConfiguracionDTO
 import retrofit2.Response
 import retrofit2.http.GET

@@ -1,6 +1,6 @@
 package com.moly.edi.domain.model
 
-data class ConfiguracionModel(
+data class Configuracion(
     val idUsuario: String?, // <- NULLABLE
     val notificacionesEnabled: Boolean,
     val visibilidadEnabled: Boolean,

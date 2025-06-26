@@ -1,4 +1,4 @@
-package com.moly.edi.data.repositoryImpl
+package com.moly.edi.data.repository
 
 import android.util.Log
 import com.moly.edi.data.dataSource.remote.api.UserApiService

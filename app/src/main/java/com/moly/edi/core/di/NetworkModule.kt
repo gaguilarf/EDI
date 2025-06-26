@@ -2,9 +2,10 @@ package com.moly.edi.core.di
 
 import com.moly.edi.data.dataSource.remote.api.NoticiasService
 import com.moly.edi.data.dataSource.remote.api.AuthApiService
+import com.moly.edi.data.dataSource.remote.api.ProjectApiService
 import com.moly.edi.data.dataSource.remote.api.UserApiService
 import com.moly.edi.domain.repository.NoticiasRepository
-import com.moly.edi.data.repositoryImpl.NoticiasRepositoryImpl
+import com.moly.edi.data.repository.NoticiasRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,6 +35,11 @@ object NetworkModule {
     @Singleton
     fun provideUserApiService(retrofit: Retrofit): UserApiService =
         retrofit.create(UserApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideProjectApiService(retrofit: Retrofit): ProjectApiService =
+        retrofit.create(ProjectApiService::class.java)
 
     @Provides
     @Singleton
