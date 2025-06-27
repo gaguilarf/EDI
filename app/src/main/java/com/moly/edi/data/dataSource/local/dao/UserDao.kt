@@ -9,17 +9,14 @@ import com.moly.edi.domain.model.User
 @Dao
 interface UserDao {
 
-    @Query("SELECT * FROM UserEntity WHERE correo = :email AND password = :password")
-    fun findByEmailAndPassword(email: String, password: String): User
+    @Query("SELECT * FROM UserEntity WHERE correo = :email")
+    fun findByEmailAndPassword(email: String): User
 
     @Query("SELECT * FROM UserEntity WHERE correo = :email")
     fun findByEmail(email: String): User
 
     @Query("SELECT COUNT(*) FROM UserEntity")
-    fun countUsers(): Observable<Int>
-
-    @Insert
-    fun insertUser(user: User): Int
+    fun countUsers(): Int
 
     @Query("SELECT COUNT(*) FROM UserEntity WHERE correo = :emailId")
     fun isDataExist(emailId: String): Int

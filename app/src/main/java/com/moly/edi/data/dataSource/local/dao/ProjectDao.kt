@@ -32,5 +32,5 @@ interface ProjectDao {
     fun updateProject(project: Project): Int
 
     @Delete
-    fun deleteProject(project: Project): Boolean
+    fun deleteProject(project: Project): Int
 }

@@ -25,7 +25,7 @@ class ProjectRepositoryImpl @Inject constructor(
     }
 
     override fun deleteProject(project: Project): Int {
-        return if (projectDao.deleteProject(project)) 1 else 0
+        return projectDao.deleteProject(project)
     }
 
     override suspend fun syncProjects(userId: String) {

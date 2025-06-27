@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey
     indices = [Index(value = ["userId"])]
 )
 data class Project(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     val id: String = "0",
     val userId: String,
     val titulo: String,
