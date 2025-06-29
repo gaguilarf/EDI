@@ -1,11 +1,7 @@
 package com.moly.edi.core.di
 
-import com.moly.edi.data.dataSource.remote.api.NoticiasService
-import com.moly.edi.data.dataSource.remote.api.AuthApiService
-import com.moly.edi.data.dataSource.remote.api.ProjectApiService
-import com.moly.edi.data.dataSource.remote.api.UserApiService
-import com.moly.edi.domain.repository.NoticiasRepository
-import com.moly.edi.data.repository.NoticiasRepositoryImpl
+
+import com.moly.edi.data.dataSource.remote.api.ConfiguracionApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,37 +13,41 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://edi-backend-vgou.onrender.com/")
+            .baseUrl("https://edi-backend-ww44.onrender.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
+    // SOLO CONFIGURACIÓN
     @Provides
     @Singleton
-    fun provideApi(retrofit: Retrofit): NoticiasService =
-        retrofit.create(NoticiasService::class.java)
+    fun provideConfiguracionApiService(retrofit: Retrofit): ConfiguracionApiService {
+        return retrofit.create(ConfiguracionApiService::class.java)
+    }
+
+    // TODO LO DEMÁS COMENTADO:
+    /*
+    @Provides
+    @Singleton
+    fun provideAuthApiService(retrofit: Retrofit): AuthApiService {
+        return retrofit.create(AuthApiService::class.java)
+    }
 
     @Provides
     @Singleton
-    fun provideUserApiService(retrofit: Retrofit): UserApiService =
-        retrofit.create(UserApiService::class.java)
+    fun provideNoticiasService(retrofit: Retrofit): NoticiasService {
+        return retrofit.create(NoticiasService::class.java)
+    }
 
     @Provides
     @Singleton
-    fun provideProjectApiService(retrofit: Retrofit): ProjectApiService =
-        retrofit.create(ProjectApiService::class.java)
-
-    @Provides
-    @Singleton
-    fun provideRepositoryNoticias(api: NoticiasService): NoticiasRepository =
-        NoticiasRepositoryImpl(api)
-
-    @Provides
-    @Singleton
-    fun provideAuthApiService(retrofit: Retrofit): AuthApiService =
-        retrofit.create(AuthApiService::class.java)
+    fun provideProjectApiService(retrofit: Retrofit): ProjectApiService {
+        return retrofit.create(ProjectApiService::class.java)
+    }
+    */
 }

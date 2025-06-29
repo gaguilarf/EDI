@@ -1,6 +1,8 @@
+
 package com.moly.edi.data.model
 
 import com.google.gson.annotations.SerializedName
+
 data class ConfiguracionDTO(
     @SerializedName("id_usuario")
     val idUsuario: String?, // <- NULLABLE para manejar null de la API
