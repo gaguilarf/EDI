@@ -1,11 +1,16 @@
 
 package com.moly.edi.presentation.configuracion
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -13,6 +18,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.clickable
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.moly.edi.presentation.configuracion.ConfiguracionViewModel
 
@@ -29,6 +36,8 @@ import com.moly.edi.presentation.configuracion.ConfiguracionViewModel
 @Composable
 fun ConfiguracionScreen(
     correoElectronico: String,
+    onNavigateToSoporte: () -> Unit = {},
+    onNavigateToAcercaDe: () -> Unit = {},
     viewModel: ConfiguracionViewModel = hiltViewModel()
 ) {
     // Estados del ViewModel
@@ -268,8 +277,7 @@ fun ConfiguracionScreen(
             }
         }
 
-        // Contenido principal - solo si hay configuración
-        configuracion?.let { config ->
+         configuracion?.let { config ->
 
             // Notificaciones
             SwitchRow(
@@ -407,26 +415,7 @@ fun ConfiguracionScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Opciones con flecha
-            ArrowOption(
-                label = "Soporte y ayuda",
-                onClick = { /* TODO: Navegar a soporte */ }
-            )
 
-            ArrowOption(
-                label = "Acerca de",
-                onClick = { /* TODO: Navegar a acerca de */ }
-            )
-
-            ArrowOption(
-                label = "Cambiar contraseña",
-                onClick = { /* TODO: Navegar a cambiar contraseña */ }
-            )
-
-            ArrowOption(
-                label = "Cerrar sesión",
-                onClick = { /* TODO: Cerrar sesión */ }
-            )
 
         } ?: run {
             // Si no hay configuración después de cargar, mostrar mensaje
@@ -455,9 +444,88 @@ fun ConfiguracionScreen(
                 }
             }
         }
+
+        ArrowOption(
+            label = "Soporte y ayuda",
+            onClick = onNavigateToSoporte
+        )
+
+        ArrowOption(
+            label = "Acerca de",
+            onClick = onNavigateToAcercaDe
+        )
+
+        ArrowOption(
+            label = "Cambiar contraseña",
+            onClick = { /* TODO: Implementar más tarde */ }
+        )
+
+        ArrowOption(
+            label = "Cerrar sesión",
+            onClick = { /* TODO: Implementar más tarde */ }
+        )
+
+
     }
 }
+@Composable
+fun ArrowOption(
+    label: String,
+    onClick: () -> Unit
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
 
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isPressed) {
+            Color.Cyan.copy(alpha = 0.1f)
+        } else {
+            Color.Transparent
+        },
+        animationSpec = tween(durationMillis = 150),
+        label = "backgroundColor"
+    )
+
+    val textColor by animateColorAsState(
+        targetValue = if (isPressed) Color.Cyan else Color.White,
+        animationSpec = tween(durationMillis = 150),
+        label = "textColor"
+    )
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = backgroundColor,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick
+            ),
+        color = Color.Transparent
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp, horizontal = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = label,
+                color = textColor,
+                fontSize = 16.sp
+            )
+            Icon(
+                Icons.Default.KeyboardArrowRight,
+                contentDescription = "Ir a $label",
+                tint = Color.Cyan
+            )
+        }
+    }
+}
 @Composable
 fun SwitchRow(
     label: String,
@@ -491,31 +559,5 @@ fun SwitchRow(
             )
         )
     }
-}
 
-@Composable
-fun ArrowOption(
-    label: String,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = label,
-            color = Color.White,
-            fontSize = 16.sp
-        )
-        IconButton(onClick = onClick) {
-            Icon(
-                Icons.Default.KeyboardArrowRight,
-                contentDescription = "Ir a $label",
-                tint = Color.Cyan
-            )
-        }
-    }
 }

@@ -118,10 +118,10 @@ class ConfiguracionViewModel @Inject constructor(
                     _configuracion.value = nuevaConfiguracion
                     _hasPendingChanges.value = false
                     _isOffline.value = false
-                    Log.d("ConfigViewModel", "✅ Configuración actualizada exitosamente")
+                    Log.d("ConfigViewModel", " Configuración actualizada exitosamente")
                 } else {
                     _errorMessage.value = "No se pudo actualizar la configuración"
-                    Log.e("ConfigViewModel", "❌ Falló la actualización")
+                    Log.e("ConfigViewModel", " Falló la actualización")
                 }
 
             } catch (e: Exception) {
@@ -150,7 +150,7 @@ class ConfiguracionViewModel @Inject constructor(
                 _hasPendingChanges.value = false
                 _isOffline.value = false
 
-                Log.d("ConfigViewModel", "✅ Sincronización completada")
+                Log.d("ConfigViewModel", " Sincronización completada")
 
             } catch (e: Exception) {
                 Log.e("ConfigViewModel", "Error en sincronización: ${e.message}")

@@ -34,12 +34,12 @@ class ConfiguracionRepositoryImpl @Inject constructor(
             // 1. SUBIR cambios locales pendientes PRIMERO
             val configuracionLocal = dao.getModifiedConfiguracion(correoElectronico)
             if (configuracionLocal != null) {
-                Log.d("ConfigSync", "📤 Subiendo cambios locales al servidor...")
+                Log.d("ConfigSync", "Subiendo cambios locales al servidor...")
                 val success = actualizarEnServidor(configuracionLocal)
                 if (success) {
                     dao.markConfiguracionAsNotModified(correoElectronico)
                     dao.markConfiguracionAsSynced(correoElectronico)
-                    Log.d("ConfigSync", "✅ Cambios locales subidos exitosamente")
+                    Log.d("ConfigSync", " Cambios locales subidos exitosamente")
                 }
             }
 
@@ -57,22 +57,22 @@ class ConfiguracionRepositoryImpl @Inject constructor(
                     )
 
                     dao.insertOrUpdateConfiguracion(configuracionFinal)
-                    Log.d("ConfigSync", "✅ Configuración del servidor guardada localmente")
+                    Log.d("ConfigSync", " Configuración del servidor guardada localmente")
                 },
                 onFailure = { error ->
-                    Log.e("ConfigSync", "❌ Error bajando del servidor: ${error.message}")
+                    Log.e("ConfigSync", " Error bajando del servidor: ${error.message}")
 
                     // Si no existe configuración local, crear una por defecto
                     val existeLocal = dao.configurationExists(correoElectronico) > 0
                     if (!existeLocal) {
                         val configPorDefecto = createDefaultConfiguracion(correoElectronico)
                         dao.insertOrUpdateConfiguracion(configPorDefecto)
-                        Log.d("ConfigSync", "📝 Configuración por defecto creada")
+                        Log.d("ConfigSync", " Configuración por defecto creada")
                     }
                 }
             )
         } catch (e: Exception) {
-            Log.e("ConfigSync", "❌ Error en sincronización: ${e.message}")
+            Log.e("ConfigSync", "Error en sincronización: ${e.message}")
             throw when (e) {
                 is SocketTimeoutException, is UnknownHostException -> NetworkException()
                 is JsonSyntaxException -> ApiException("Respuesta inválida del servidor")
@@ -200,9 +200,9 @@ class ConfiguracionRepositoryImpl @Inject constructor(
                 dao.markConfiguracionAsNotModified(configuracion.idUsuario)
                 dao.markConfiguracionAsSynced(configuracion.idUsuario)
                 dao.markConfiguracionAsExistsInServer(configuracion.idUsuario)
-                Log.d("ConfigRepository", "✅ Configuración actualizada en servidor")
+                Log.d("ConfigRepository", " Configuración actualizada en servidor")
             } else {
-                Log.w("ConfigRepository", "⚠️ Configuración guardada localmente, pendiente de sincronizar")
+                Log.w("ConfigRepository", "Configuración guardada localmente, pendiente de sincronizar")
             }
 
             true // Siempre retorna true porque al menos se guardó localmente

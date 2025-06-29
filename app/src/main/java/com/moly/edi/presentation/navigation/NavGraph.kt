@@ -21,6 +21,8 @@ import androidx.navigation.compose.composable
 // import com.moly.edi.presentation.conecta.UserConnectScreen
 // import com.moly.edi.core.componentes.BottomNavigationBar
 import com.moly.edi.presentation.configuracion.ConfiguracionScreen
+import com.moly.edi.presentation.configuracion.SoporteScreen
+import com.moly.edi.presentation.configuracion.AcercaDeScreen
 // import com.moly.edi.data.dataSource.remote.api.ConfiguracionApiService
 // import com.moly.edi.domain.repository.ConfiguracionRepository
 // import com.moly.edi.data.repository.ConfiguracionRepositoryImpl
@@ -70,10 +72,33 @@ fun SetupNavGraph(navController: NavHostController, context: Context) {
             */
 
             // configuracion
+
             composable(Screen.Configuracion.route) {
                 ConfiguracionScreen(
-                    correoElectronico = "gaguilarf@unsa.edu.pe"
-                    // viewModel se inyecta automáticamente con @hiltViewModel
+                    correoElectronico = "gaguilarf@unsa.edu.pe",
+                    onNavigateToSoporte = {
+                        navController.navigate(Screen.Soporte.route)
+                    },
+                    onNavigateToAcercaDe = {
+                        navController.navigate(Screen.AcercaDe.route)
+                    }
+                )
+            }
+            // Pantalla de Soporte
+            composable(Screen.Soporte.route) {
+                SoporteScreen(
+                    onBackClick = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+            // Pantalla de Acerca de
+            composable(Screen.AcercaDe.route) {
+                AcercaDeScreen(
+                    onBackClick = {
+                        navController.popBackStack()
+                    }
                 )
             }
         }
