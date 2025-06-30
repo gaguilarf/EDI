@@ -1,6 +1,7 @@
 package com.moly.edi.data.model
 
 import com.google.gson.annotations.SerializedName
+import com.moly.edi.domain.model.User
 
 data class RedesDTO(
     @SerializedName("github")
@@ -33,3 +34,17 @@ data class UserDTO(
     @SerializedName("proyectos")
     val proyectos: List<ProjectDTO>? = null
 )
+
+fun UserDTO.toDomain(): User {
+    return User(
+        id = this.idUsuario,
+        nombre = this.nombres,
+        correo = this.correo,
+        telefono = this.celular,
+        linkedin = this.redes?.linkedin,
+        github = this.redes?.github,
+        instagram = this.redes?.instagram,
+        tecnologias = this.tecnologias ?: emptyList(),
+        proyectos = this.proyectos?.map { it.toDomain() } ?: emptyList()
+    )
+}

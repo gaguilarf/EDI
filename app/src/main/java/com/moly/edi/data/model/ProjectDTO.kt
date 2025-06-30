@@ -1,14 +1,24 @@
 package com.moly.edi.data.model
 
 import com.google.gson.annotations.SerializedName
+import com.moly.edi.domain.model.Project
 
 data class ProjectDTO(
     @SerializedName("id")
-    val id: String,
+    val id: String?,
     @SerializedName("id_usuario")
-    val id_usuario: String,
+    val id_usuario: String?,
     @SerializedName("titulo")
-    val titulo: String,
+    val titulo: String?,
     @SerializedName("descripcion")
-    val descripcion: String
+    val descripcion: String?
 )
+
+fun ProjectDTO.toDomain(): Project {
+    return Project(
+        id = this.id ?: "0",
+        userId = this.id_usuario ?: "",
+        titulo = this.titulo ?: "",
+        descripcion = this.descripcion ?: ""
+    )
+}

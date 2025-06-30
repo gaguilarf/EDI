@@ -20,4 +20,7 @@ interface UserDao {
 
     @Query("SELECT COUNT(*) FROM UserEntity WHERE correo = :emailId")
     fun isDataExist(emailId: String): Int
+
+    @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
+    fun insertOrUpdateUser(user: User)
 }

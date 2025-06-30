@@ -13,6 +13,6 @@ data class User(
     val linkedin: String? = null,
     val github: String? = null,
     val instagram: String? = null,
-    //val tecnologias: List<String> = emptyList(),
-    //val proyectos: List<Project> = emptyList()
+    val tecnologias: List<String> = emptyList(),
+    val proyectos: List<Project> = emptyList()
 )

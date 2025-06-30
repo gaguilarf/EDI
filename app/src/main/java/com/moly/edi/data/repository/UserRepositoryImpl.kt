@@ -3,7 +3,7 @@ package com.moly.edi.data.repository
 import android.util.Log
 import com.moly.edi.data.dataSource.remote.api.UserApiService
 import com.moly.edi.data.dataSource.local.PerfilLocalDataSource
-import com.moly.edi.data.mapper.toDomain
+import com.moly.edi.data.model.toDomain
 import com.moly.edi.domain.model.User
 import com.moly.edi.domain.repository.UserRepository
 import javax.inject.Inject

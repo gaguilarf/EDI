@@ -22,7 +22,7 @@ class PerfilLocalDataSource(context: Context) {
             put("linkedin", user.linkedin)
             put("github", user.github)
             put("instagram", user.instagram)
-            //put("tecnologias", user.tecnologias.joinToString(","))
+            put("tecnologias", user.tecnologias.joinToString(","))
             put("last_modified_at", now)
             put("is_deleted", 0)
         }
@@ -34,7 +34,7 @@ class PerfilLocalDataSource(context: Context) {
             insertChangeLog("user", uuid, "UPDATE", now)
         }
         // Proyectos
-        //user.proyectos.forEach { insertOrUpdateProject(it, uuid, now) }
+        user.proyectos.forEach { insertOrUpdateProject(it, uuid, now) }
     }
 
     fun insertOrUpdateProject(project: Project, userUuid: String, now: Long = System.currentTimeMillis()) {
@@ -90,25 +90,24 @@ class PerfilLocalDataSource(context: Context) {
             val linkedin = cursor.getString(cursor.getColumnIndexOrThrow("linkedin"))
             val github = cursor.getString(cursor.getColumnIndexOrThrow("github"))
             val instagram = cursor.getString(cursor.getColumnIndexOrThrow("instagram"))
-            val tecnologias = cursor.getString(cursor.getColumnIndexOrThrow("tecnologias")).split(",")
-            //val proyectos = getProjectsByUserUuid(uuid)
+            val tecnologias = cursor.getString(cursor.getColumnIndexOrThrow("tecnologias")).split(",").filter { it.isNotBlank() }
+            val proyectos = getProjectsByUserUuid(correo)
             User(
-                id = uuid,
+                id = correo, // Usar el correo como id para mantener la relación con los proyectos
                 nombre = nombre,
                 correo = correo,
                 telefono = telefono,
                 linkedin = linkedin,
                 github = github,
                 instagram = instagram,
-                //tecnologias = tecnologias,
-                //proyectos = proyectos
+                tecnologias = tecnologias,
+                proyectos = proyectos
             )
         } else null
         cursor.close()
         return user
     }
 
-    /*
     fun getProjectsByUserUuid(userUuid: String): List<Project> {
         val db = dbHelper.readableDatabase
         val cursor = db.query(
@@ -122,6 +121,7 @@ class PerfilLocalDataSource(context: Context) {
             projects.add(
                 Project(
                     id = uuid,
+                    userId = userUuid,
                     titulo = titulo,
                     descripcion = descripcion
                 )
@@ -130,7 +130,7 @@ class PerfilLocalDataSource(context: Context) {
         cursor.close()
         return projects
     }
-    */
+
     fun insertChangeLog(table: String, recordUuid: String, op: String, timestamp: Long) {
         val db = dbHelper.writableDatabase
         val values = ContentValues().apply {

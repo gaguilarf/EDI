@@ -2,8 +2,8 @@ package com.moly.edi.data.repository
 
 import com.moly.edi.data.dataSource.local.dao.ProjectDao
 import com.moly.edi.data.dataSource.remote.api.ProjectApiService
-import com.moly.edi.data.mapper.toDTO
 import com.moly.edi.domain.model.Project
+import com.moly.edi.domain.model.toDTO
 import com.moly.edi.domain.repository.ProjectRepository
 import javax.inject.Inject
 

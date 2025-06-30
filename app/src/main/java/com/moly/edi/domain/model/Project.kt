@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.moly.edi.data.model.ProjectDTO
 
 @Entity(
     tableName = "ProjectEntity",
@@ -29,3 +30,12 @@ data class Project(
     val createdAt: Long = System.currentTimeMillis(),
     val lastModified: Long = System.currentTimeMillis(),
 )
+
+fun Project.toDTO(): ProjectDTO {
+    return ProjectDTO(
+        id = this.id,
+        id_usuario = this.userId,
+        titulo = this.titulo,
+        descripcion = this.descripcion
+    )
+}

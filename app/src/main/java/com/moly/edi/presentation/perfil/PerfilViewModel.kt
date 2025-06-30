@@ -43,8 +43,8 @@ class PerfilViewModel @Inject constructor(
                 result.onSuccess { user ->
                     Log.d("PerfilViewModel", "User loaded successfully: $user")
                     _user.value = user
-                    //_technologies.value = user.tecnologias
-                    //_projects.value = user.proyectos
+                    _technologies.value = user.tecnologias
+                    _projects.value = user.proyectos
                 }.onFailure { exception ->
                     Log.e("PerfilViewModel", "Failed to load user: ${exception.message}", exception)
                     _error.value = exception.message ?: "Error al cargar el perfil"
