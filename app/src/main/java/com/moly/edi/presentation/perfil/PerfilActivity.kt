@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -174,8 +175,9 @@ fun ProfileScreen(
                     ProyectoDialog(
                         onDismiss = { mostrarDialogo = false },
                         onConfirm = { nuevoProyecto ->
-                            // Manejo del nuevo proyecto
-                            mostrarDialogo = false
+                            viewModel.addProject(userEmail, nuevoProyecto) { exito ->
+                                mostrarDialogo = false
+                            }
                         }
                     )
                 }
@@ -429,14 +431,17 @@ fun ProjectsSection(projects: List<Project>) {
             )
 
             if (projects.isNotEmpty()) {
-                Column(
+                LazyRow(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    projects.forEach { project ->
-                        ProjectCard(project = project)
+                    items(projects.size) { index ->
+                        ProjectCard(
+                            project = projects[index],
+                            modifier = Modifier.width(280.dp)
+                        )
                     }
                 }
             }

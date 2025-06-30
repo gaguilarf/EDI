@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,6 +53,36 @@ class PerfilViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e("PerfilViewModel", "Exception loading user: ${e.message}", e)
                 _error.value = e.message ?: "Error desconocido: ${e.javaClass.simpleName}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun addProject(email: String, project: Project, onResult: (Boolean) -> Unit) {
+        Log.d("PerfilViewModel", "[addProject] email: $email, project: $project")
+        val projectWithId = if (project.id == "0" || project.id.isBlank()) {
+            project.copy(id = UUID.randomUUID().toString())
+        } else project
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                Log.d("PerfilViewModel", "[addProject] Llamando a userRepository.addProjectToUser...")
+                val result = userRepository.addProjectToUser(email, projectWithId)
+                Log.d("PerfilViewModel", "[addProject] Resultado de addProjectToUser: $result")
+                if (result.isSuccess) {
+                    Log.d("PerfilViewModel", "[addProject] Proyecto agregado remotamente. Recargando usuario...")
+                    loadUserData(email)
+                    onResult(true)
+                } else {
+                    Log.e("PerfilViewModel", "[addProject] Error al guardar el proyecto: ${result.exceptionOrNull()?.message}")
+                    _error.value = result.exceptionOrNull()?.message ?: "Error al guardar el proyecto"
+                    onResult(false)
+                }
+            } catch (e: Exception) {
+                Log.e("PerfilViewModel", "[addProject] Excepción: ${e.message}", e)
+                _error.value = e.message ?: "Error desconocido al guardar proyecto"
+                onResult(false)
             } finally {
                 _isLoading.value = false
             }

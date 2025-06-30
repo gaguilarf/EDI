@@ -33,8 +33,7 @@ data class Project(
 
 fun Project.toDTO(): ProjectDTO {
     return ProjectDTO(
-        id = this.id,
-        id_usuario = this.userId,
+        id = null, // No enviar id, el backend lo genera como id_documento
         titulo = this.titulo,
         descripcion = this.descripcion
     )

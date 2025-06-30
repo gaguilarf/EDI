@@ -4,10 +4,8 @@ import com.google.gson.annotations.SerializedName
 import com.moly.edi.domain.model.Project
 
 data class ProjectDTO(
-    @SerializedName("id")
+    @SerializedName("id_documento")
     val id: String?,
-    @SerializedName("id_usuario")
-    val id_usuario: String?,
     @SerializedName("titulo")
     val titulo: String?,
     @SerializedName("descripcion")
@@ -17,7 +15,7 @@ data class ProjectDTO(
 fun ProjectDTO.toDomain(): Project {
     return Project(
         id = this.id ?: "0",
-        userId = this.id_usuario ?: "",
+        userId = "", // No se usa en Firestore
         titulo = this.titulo ?: "",
         descripcion = this.descripcion ?: ""
     )
