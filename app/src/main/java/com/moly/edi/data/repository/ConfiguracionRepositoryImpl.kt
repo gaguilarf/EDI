@@ -297,6 +297,7 @@ class ConfiguracionRepositoryImpl @Inject constructor(
             notificacionesEnabled = dto.isNotificacion,
             visibilidadEnabled = dto.isVisibilidad,
             disponibilidadEnabled = dto.isDisponibilidad,
+            categoriasInteres = dto.categoriasInteres.takeIf { it.isNotEmpty() },
             isSynced = false,
             modifiedLocally = false,
             existsInServer = false
@@ -308,7 +309,8 @@ class ConfiguracionRepositoryImpl @Inject constructor(
             idUsuario = configuracion.idUsuario,
             isNotificacion = configuracion.notificacionesEnabled,
             isVisibilidad = configuracion.visibilidadEnabled,
-            isDisponibilidad = configuracion.disponibilidadEnabled
+            isDisponibilidad = configuracion.disponibilidadEnabled,
+            categoriasInteres = configuracion.categoriasInteres ?: emptyList()
         )
     }
 
@@ -318,6 +320,7 @@ class ConfiguracionRepositoryImpl @Inject constructor(
             notificacionesEnabled = true,
             visibilidadEnabled = true,
             disponibilidadEnabled = true,
+            categoriasInteres = emptyList(),
             isSynced = false,
             modifiedLocally = false,
             existsInServer = false

@@ -14,5 +14,8 @@ data class ConfiguracionDTO(
     val isNotificacion: Boolean,
 
     @SerializedName("is_visibilidad")
-    val isVisibilidad: Boolean
+    val isVisibilidad: Boolean,
+
+    @SerializedName("categorias_interes")
+    val categoriasInteres: List<String> = emptyList()
 )

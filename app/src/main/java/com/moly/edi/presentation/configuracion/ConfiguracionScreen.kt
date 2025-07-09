@@ -47,11 +47,17 @@ fun ConfiguracionScreen(
     val isSyncing by viewModel.isSyncing.collectAsState()
     val isOffline by viewModel.isOffline.collectAsState()
     val hasPendingChanges by viewModel.hasPendingChanges.collectAsState()
+    var categoriasSeleccionadas by remember { mutableStateOf(setOf<String>()) }
 
-    val categoriasIntereses = listOf("Investigación", "Deportes", "Académico", "Cultural")
+    val categoriasDisponibles = listOf(
+        "Trabajo", "Proyectos", "Apoyos", "Avisos", "Emprende"
+    )
+   // val categoriasIntereses = listOf("Investigación", "Deportes", "Académico", "Cultural")
 
-    LaunchedEffect(correoElectronico) {
-        viewModel.inicializar(correoElectronico)
+    LaunchedEffect(configuracion) {
+        configuracion?.let { config ->
+            categoriasSeleccionadas = config.categoriasInteres.toSet()
+        }
     }
 
     Column(
@@ -301,48 +307,59 @@ fun ConfiguracionScreen(
             )
 
             // Categorías de interés
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Categorías de interés",
-                    color = Color.Gray,
-                    fontSize = 14.sp
-                )
-                IconButton(
-                    onClick = { /* TODO: Implementar agregar categoría */ }
-                ) {
-                    Icon(
-                        Icons.Default.Add,
-                        contentDescription = "Agregar categoría",
-                        tint = Color.Cyan
-                    )
-                }
-            }
+             Row(
+                 modifier = Modifier.fillMaxWidth(),
+                 horizontalArrangement = Arrangement.SpaceBetween,
+                 verticalAlignment = Alignment.CenterVertically
+             ) {
+                 Text(
+                     text = "Categorías de interés",
+                     color = Color.Gray,
+                     fontSize = 14.sp,
+                     modifier = Modifier.padding(bottom = 8.dp)
+                 )
+             }
 
             // Chips de categorías
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(vertical = 8.dp)
-            ) {
-                items(categoriasIntereses) { categoria ->
-                    AssistChip(
-                        onClick = { /* TODO: Manejar click en categoría */ },
-                        label = {
-                            Text(
-                                text = categoria,
-                                color = Color.White,
-                                fontSize = 12.sp
-                            )
-                        },
-                        colors = AssistChipDefaults.assistChipColors(
-                            containerColor = Color.Gray.copy(alpha = 0.3f)
-                        )
-                    )
-                }
-            }
+             LazyRow(
+                 horizontalArrangement = Arrangement.spacedBy(8.dp),
+                 modifier = Modifier.padding(vertical = 8.dp)
+             ) {
+                 items(categoriasDisponibles) { categoria ->
+                     val isSelected = categoriasSeleccionadas.contains(categoria)
+
+                     AssistChip(
+                         onClick = {
+                             val nuevasSelecciones = if (isSelected) {
+                                 categoriasSeleccionadas - categoria
+                             } else {
+                                 categoriasSeleccionadas + categoria
+                             }
+
+                             // Actualizar estado local
+                             categoriasSeleccionadas = nuevasSelecciones
+
+                             // Guardar en Room/Firebase
+                             viewModel.actualizarCategorias(correoElectronico, nuevasSelecciones)
+                         },
+                         label = {
+                             Text(
+                                 text = categoria,
+                                 color = if (isSelected) Color.Black else Color.White,
+                                 fontSize = 12.sp,
+                                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                             )
+                         },
+                         colors = AssistChipDefaults.assistChipColors(
+                             containerColor = if (isSelected) {
+                                 Color.Cyan
+                             } else {
+                                 Color.Gray.copy(alpha = 0.3f)
+                             }
+                         )
+                     )
+                 }
+             }
 
             Spacer(modifier = Modifier.height(32.dp))
 

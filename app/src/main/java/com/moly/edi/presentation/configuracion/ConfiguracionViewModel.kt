@@ -43,7 +43,16 @@ class ConfiguracionViewModel @Inject constructor(
     // ===== ESTADO DE CAMBIOS PENDIENTES =====
     private val _hasPendingChanges = MutableStateFlow(false)
     val hasPendingChanges: StateFlow<Boolean> = _hasPendingChanges.asStateFlow()
+    fun actualizarCategorias(correoElectronico: String, categorias: Set<String>) {
+        _configuracion.value?.let { config ->
+            val nuevaConfig = config.copy(
+                categoriasInteres = categorias.toList()
+            )
+            actualizarConfiguracionLocal(nuevaConfig)
 
+            Log.d("ConfigViewModel", "Categorías actualizadas: $categorias")
+        }
+    }
     // ===== INICIALIZACIÓN (ÚNICO MÉTODO) =====
     fun inicializar(correoElectronico: String) {
         Log.d("ConfigViewModel", "Inicializando ViewModel para: $correoElectronico")
@@ -344,4 +353,6 @@ class ConfiguracionViewModel @Inject constructor(
         _errorMessage.value = mensaje
         Log.e("ConfigViewModel", "Error en $operacion: ${exception.message}")
     }
+
+
 }
