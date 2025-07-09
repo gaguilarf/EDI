@@ -17,7 +17,9 @@ import com.moly.edi.data.model.StringListConverter
 @Database(entities = [
    // User::class,
   //  Project::class,
-    Configuracion::class], version = 1)
+    Configuracion::class],
+    version=2,
+     exportSchema= false)
 
 @TypeConverters(StringListConverter::class)
 abstract class MyDatabase : RoomDatabase() {

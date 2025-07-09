@@ -1,6 +1,8 @@
 package com.moly.edi.core.di
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.moly.edi.data.dataSource.local.dao.ConfiguracionDao
 import com.moly.edi.data.dataSource.local.dao.ProjectDao
 import com.moly.edi.data.dataSource.local.MyDatabase
@@ -21,7 +23,14 @@ object LocalModule {
             context,
             MyDatabase::class.java,
             "my_database"
-        ).build()
+        )
+            .addMigrations(MIGRATION_1_2)  // AGREGAR MIGRACIÓN
+            .build()
+    }
+    val MIGRATION_1_2 = object : Migration(1, 2) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("ALTER TABLE ConfiguracionEntity ADD COLUMN categorias_interes TEXT DEFAULT '[]'")
+        }
     }
 /*
     @Provides
