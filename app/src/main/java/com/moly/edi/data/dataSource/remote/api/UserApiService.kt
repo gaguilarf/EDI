@@ -1,6 +1,5 @@
-package com.moly.edi.data.dataSource.remote.api
+package com.moly.edi.data.model
 
-import com.moly.edi.data.model.UserDTO
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

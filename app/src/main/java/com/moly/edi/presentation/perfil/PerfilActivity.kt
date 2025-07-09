@@ -1,5 +1,5 @@
 package com.moly.edi.presentation.perfil
-
+/*
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -477,4 +477,4 @@ fun ProjectCard(project: Project, modifier: Modifier = Modifier) {
             )
         }
     }
-}
+}*/

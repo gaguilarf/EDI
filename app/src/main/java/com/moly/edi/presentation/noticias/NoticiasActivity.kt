@@ -1,5 +1,5 @@
 package com.moly.edi.presentation.noticias
-
+/*
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -128,3 +128,4 @@ fun NoticiasScreen(
 fun NoticiasScreenPreview() {
     NoticiasScreen()
 }
+*/

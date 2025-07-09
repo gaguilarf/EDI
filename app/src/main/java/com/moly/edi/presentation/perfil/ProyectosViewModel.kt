@@ -10,7 +10,7 @@ import com.moly.edi.domain.repository.ProjectRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+/*
 @HiltViewModel
 class ProyectosViewModel @Inject constructor(
     private val repository: ProjectRepository
@@ -72,3 +72,4 @@ class ProyectosViewModel @Inject constructor(
         }
     }
 }
+*/

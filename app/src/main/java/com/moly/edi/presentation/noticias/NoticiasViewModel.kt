@@ -9,7 +9,7 @@ import com.moly.edi.domain.repository.NoticiasRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+/*
 @HiltViewModel
 class NoticiasViewModel @Inject constructor(
     private val noticiasRepository: NoticiasRepository
@@ -61,4 +61,4 @@ class NoticiasViewModel @Inject constructor(
         }
     }
 
-}
+}*/

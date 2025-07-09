@@ -1,5 +1,5 @@
 package com.moly.edi.presentation.login
-
+/*
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -109,4 +109,4 @@ fun LoginScreen(
             }
         }
     }
-}
+}*/

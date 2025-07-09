@@ -56,7 +56,7 @@ fun ConfiguracionScreen(
 
     LaunchedEffect(configuracion) {
         configuracion?.let { config ->
-            categoriasSeleccionadas = config.categoriasInteres.toSet()
+            categoriasSeleccionadas = config.categoriasInteres!!.toSet()
         }
     }
 
