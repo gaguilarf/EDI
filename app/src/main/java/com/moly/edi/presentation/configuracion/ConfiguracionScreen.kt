@@ -52,7 +52,6 @@ fun ConfiguracionScreen(
     val categoriasDisponibles = listOf(
         "Trabajo", "Proyectos", "Apoyos", "Avisos", "Emprende"
     )
-   // val categoriasIntereses = listOf("Investigación", "Deportes", "Académico", "Cultural")
 
     LaunchedEffect(configuracion) {
         configuracion?.let { config ->

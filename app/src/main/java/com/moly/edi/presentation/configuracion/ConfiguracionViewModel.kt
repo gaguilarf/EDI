@@ -53,7 +53,6 @@ class ConfiguracionViewModel @Inject constructor(
             Log.d("ConfigViewModel", "Categorías actualizadas: $categorias")
         }
     }
-    // ===== INICIALIZACIÓN (ÚNICO MÉTODO) =====
     fun inicializar(correoElectronico: String) {
         Log.d("ConfigViewModel", "Inicializando ViewModel para: $correoElectronico")
 
