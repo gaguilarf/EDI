@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,6 +29,18 @@ import kotlinx.coroutines.delay
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.moly.edi.core.ui.theme.EDITheme
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun SplashPreview() {
+    // Puedes aplicar tu tema si usas uno
+    EDITheme {
+        SplashActivity(
+            onNavigateToLogin = {}
+        )
+    }
+}
 
 @Composable
 fun SplashActivity(
@@ -95,7 +108,7 @@ fun SplashActivity(
 
             FloatingActionButton(
                 onClick = { onNavigateToLogin() },
-                containerColor = Color(0xFF009688),
+                containerColor = MaterialTheme.colorScheme.primary,
                 shape = CircleShape,
                 modifier = Modifier.size(56.dp)
             ) {
