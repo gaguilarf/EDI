@@ -18,7 +18,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://edi-backend-ww44.onrender.com/")
+            .baseUrl("https://edi-backend-vgou.onrender.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
