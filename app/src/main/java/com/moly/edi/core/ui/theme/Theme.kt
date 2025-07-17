@@ -17,14 +17,16 @@ private val DarkColorScheme = darkColorScheme(
     primary = turquesa,
     secondary = PurpleGrey80,
     tertiary = Pink80,
-    background = Color.Black
+    background = Color.Black,
+    primaryContainer = turquesa
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = turquesa,
     secondary = PurpleGrey40,
     tertiary = Pink40,
-    background = Color.Black
+    background = Color.Black,
+    primaryContainer = turquesa
 
     /* Other default colors to override
     surface = Color(0xFFFFFBFE),

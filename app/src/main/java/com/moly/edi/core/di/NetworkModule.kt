@@ -1,5 +1,11 @@
 package com.moly.edi.core.di
 
+import com.moly.edi.data.dataSource.remote.api.NoticiasService
+import com.moly.edi.data.dataSource.remote.api.AuthApiService
+import com.moly.edi.data.dataSource.remote.api.ProjectApiService
+import com.moly.edi.data.dataSource.remote.api.UserApiService
+import com.moly.edi.domain.repository.NoticiasRepository
+import com.moly.edi.data.repository.NoticiasRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,18 +19,35 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit = Retrofit.Builder()
-            .baseUrl("https://edi-backend-ww44.onrender.com/")
+    fun provideRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://edi-backend-vgou.onrender.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
 
-        /*@Provides
-        @Singleton
-        fun providePlantApi(retrofit: Retrofit): PlantApi =
-            retrofit.create(PlantApi::class.java)
+    @Provides
+    @Singleton
+    fun provideApi(retrofit: Retrofit): NoticiasService =
+        retrofit.create(NoticiasService::class.java)
 
-        @Provides
-        @Singleton
-        fun providePlantRepository(api: PlantApi): PlantRepository =
-            PlantRepository(api)*/
+    @Provides
+    @Singleton
+    fun provideUserApiService(retrofit: Retrofit): UserApiService =
+        retrofit.create(UserApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideProjectApiService(retrofit: Retrofit): ProjectApiService =
+        retrofit.create(ProjectApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideRepositoryNoticias(api: NoticiasService): NoticiasRepository =
+        NoticiasRepositoryImpl(api)
+
+    @Provides
+    @Singleton
+    fun provideAuthApiService(retrofit: Retrofit): AuthApiService =
+        retrofit.create(AuthApiService::class.java)
 }

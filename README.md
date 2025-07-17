@@ -1,9 +1,106 @@
-**Ecosistema Digital Integrado - EDI**
+# Actividad 26/06 Sincronización de datos
+Actividades de cada integrantes:
+**Anthony**
+- Implementacion de los endpoints para crear proyecto dado un usuario, listar proyectos dado un usuario, actualizar el proyecto y eliminar el proyecto
+- Coordinacion para relfejar las respuestas de los endpoins en los objetos dto para traer los datos
 
-Este proyecto consiste en el desarrollo de un Ecosistema Digital Inteligente diseñado para centralizar, optimizar y potenciar la interacción de la comunidad de la Universidad Nacional de San Agustín (UNSA) con la información institucional y entre sus propios miembros.
+**Bryan**
+- Implementación de Room y de los DAOs en el proyecto
+- Correcciones estructurales a nivel de proyecto y en carpetas
+- Implementación de la Inyección de Dependencias de los DAOs
+- Implementación del SyncWorker
 
-Esta será una aplicación móvil nativa e intuitiva, este ecosistema cumple una doble función:
+**Gustavo**
+- Implementación del viewmodel y de las vistas para el CRUD de Proyectos
+- Integración con la vista de Perfil
 
-Fomenta la Colaboración y el Talento: Incorpora un Motor de Conexión de Talentos. A través de un algoritmo de matching avanzado, permite a los usuarios identificar y formar equipos multidisciplinarios para proyectos y emprendimientos, sugiriendo perfiles complementarios basados en habilidades, intereses e historial académico, facilitando así la sinergia y la innovación dentro de la universidad.
+**Heidi**
+- Investigación sobre WorkManager y su integración en el proyecto (Offline First)
+- Implementación parcial del workmanager con la lógica señalada
 
-Centraliza y Procesa Información: Actúa como un Hub de Información Institucional Inteligente. Utilizando técnicas de web scraping, recopila automáticamente noticias, comunicados y eventos oficiales. Complementando esto, aplica técnicas de Procesamiento de Lenguaje Natural (NLP) para resumir, clasificar y etiquetar automáticamente el contenido, haciendo que la información sea más relevante, fácil de consumir y buscar para el usuario.
+# Ecosistema Digital Integrado (EDI) - UNSA 🎓✨
+
+![Estado](https://img.shields.io/badge/estado-en%20desarrollo-green)
+![Licencia](https://img.shields.io/badge/licencia-MIT-blue)
+![Kotlin](https://img.shields.io/badge/Kotlin-1.9.23-blueviolet)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-UI-0073CF)
+
+> 🚀 Un Ecosistema Digital Inteligente diseñado para centralizar, optimizar y potenciar a la comunidad de la Universidad Nacional de San Agustín (UNSA).
+
+EDI es una aplicación móvil nativa para Android, construida con tecnologías modernas para ser intuitiva y actuar como el sistema nervioso central de la vida universitaria, conectando talento y simplificando el acceso a la información.
+
+## 📋 Tabla de Contenidos
+
+1.  [Visión del Proyecto](#-visión-del-proyecto)
+2.  [🌟 Características Principales](#-características-principales)
+3.  [🛠️ Stack Tecnológico](#️-stack-tecnológico)
+4.  [📱 Vistazo a la App](#-vistazo-a-la-app)
+5.  [🚀 Puesta en Marcha (Instalación)](#-puesta-en-marcha-instalación)
+6.  [🤝 Contribución](#-contribución)
+7.  [📄 Licencia](#-licencia)
+8.  [📧 Contacto](#-contacto)
+
+## 🎯 Visión del Proyecto
+
+El Ecosistema Digital Integrado (EDI) nace con el objetivo de transformar la interacción dentro de la UNSA. Buscamos romper los silos de información y las barreras para la colaboración, creando un entorno digital unificado donde cada miembro de la comunidad pueda encontrar oportunidades, información relevante y equipos para innovar.
+
+## 🌟 Características Principales
+
+EDI cumple una doble función esencial para dinamizar la vida universitaria:
+
+### 🧠 **1. Hub de Información Institucional Inteligente**
+
+Centraliza y procesa toda la comunicación oficial de la universidad para que nunca te pierdas de nada importante.
+
+* **Scraping Automatizado:** Recopila noticias, comunicados y eventos de las fuentes oficiales de la UNSA en tiempo real.
+* **Procesamiento de Lenguaje Natural (NLP):** Aplica algoritmos para **resumir** textos largos, **clasificar** el contenido por categorías (académico, cultural, deportivo) y **etiquetar** temas clave.
+* **Búsqueda Semántica:** Encuentra lo que necesitas no solo por palabras clave, sino por el significado detrás de tu consulta.
+
+### 🤝 **2. Motor de Conexión de Talentos**
+
+Fomenta la colaboración y la creación de proyectos multidisciplinarios, convirtiendo ideas en realidad.
+
+* **Perfiles de Usuario Enriquecidos:** Cada usuario puede detallar sus habilidades, intereses, proyectos pasados y áreas de conocimiento.
+* **Algoritmo de Matching Avanzado:** Sugiere perfiles complementarios para formar equipos de proyectos, startups o grupos de estudio.
+* **Espacios de Proyecto:** Permite crear y gestionar equipos, asignar tareas y comunicarse dentro de la plataforma.
+
+## 🛠️ Stack Tecnológico
+
+Este proyecto está construido 100% en **Kotlin** y aprovecha el ecosistema moderno de desarrollo de Android. El backend para el scraping y NLP se gestiona por separado.
+
+* **Lenguaje Principal:** Kotlin
+* **Interfaz de Usuario (UI):**
+  * `Jetpack Compose`: Framework declarativo para construir la UI nativa.
+  * `Material 3`: Para implementar los componentes de diseño de Material Design.
+  * `Navigation Compose`: Para gestionar la navegación entre pantallas.
+* **Manejo de Red (Networking):**
+  * `Retrofit`: Cliente HTTP para consumir APIs RESTful de manera segura.
+  * `Gson`: Para la serialización y deserialización de objetos JSON.
+* **Asincronía:**
+  * `Kotlin Coroutines`: Para manejar operaciones en segundo plano de forma eficiente y no bloquear la UI.
+* **Inyección de Dependencias:**
+  * `Hilt`: Para simplificar la inyección de dependencias en toda la aplicación, integrado con Jetpack.
+* **Arquitectura y Ciclo de Vida:**
+  * `ViewModel`: Para almacenar y gestionar datos relacionados con la UI de forma consciente del ciclo de vida.
+  * `Lifecycle KTX`: Extensiones para manejar el ciclo de vida de los componentes.
+* **Testing:**
+  * `JUnit`: Para pruebas unitarias.
+  * `Espresso`: Para pruebas de interfaz de usuario (UI tests).
+
+## 📱 Vistazo a la App
+
+Un vistazo a las pantallas clave que componen la experiencia del usuario en EDI.
+
+| Splash & Login | Conexión & Noticias |
+| :---: | :---: |
+| ![Pantalla de Splash](https://raw.githubusercontent.com/gaguilarf/EDI/master/assets/splash.jpg) | ![Pantalla de Conexión de Talentos](https://raw.githubusercontent.com/gaguilarf/EDI/master/assets/conecta.jpg) |
+| **Splash e Inicio de Sesión** | **Conexión de Talentos y Noticias** |
+| ![Pantalla de Login](https://raw.githubusercontent.com/gaguilarf/EDI/master/assets/login.jpg) | ![Pantalla de Noticias](https://raw.githubusercontent.com/gaguilarf/EDI/master/assets/noticias.jpg) |
+
+## 🚀 Puesta en Marcha (Instalación)
+
+Para obtener una copia del proyecto, simplemente clona este repositorio en tu máquina local usando Git.
+
+```bash
+# Clona el repositorio
+git clone https://github.com/gaguilarf/EDI.git

@@ -1,6 +1,6 @@
 package com.moly.edi.domain.model
 
-data class Noticia(
+data class Notice(
     val author: String,
     val date: String,
     val title: String,

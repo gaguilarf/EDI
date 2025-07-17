@@ -1,54 +1,46 @@
 package com.moly.edi.data.repository
 
+import android.util.Log
+import com.moly.edi.data.dataSource.remote.api.NoticiasService
 import com.moly.edi.data.model.NoticiaUnsa
+import com.moly.edi.domain.repository.NoticiasRepository
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class NoticiasRepositoryImpl @Inject constructor() : NoticiasRepository {
+class NoticiasRepositoryImpl @Inject constructor(
+    private val api: NoticiasService
+) : NoticiasRepository {
 
-    // Simulamos datos de noticias de la UNSA
-    private val noticiasUnsa = listOf(
-        NoticiaUnsa(
-            id = 1,
-            titulo = "Convocatoria de Becas 2025 - UNSA",
-            contenido = "La Universidad Nacional de San Agustín convoca a estudiantes de pregrado para postular a becas de excelencia académica...",
-            fecha = "29 Mayo 2025",
-            categoria = "Becas",
-            esImportante = true
-        ),
-        NoticiaUnsa(
-            id = 2,
-            titulo = "Inicio de Matriculas - Semestre 2025-I",
-            contenido = "Se informa a toda la comunidad universitaria que el proceso de matrículas para el semestre académico 2025-I...",
-            fecha = "28 Mayo 2025",
-            categoria = "Académico",
-            esImportante = true
-        ),
-        NoticiaUnsa(
-            id = 3,
-            titulo = "Evento Cultural: Semana de Ingeniería de Sistemas",
-            contenido = "La Escuela Profesional de Ingeniería de Sistemas invita a participar en la Semana Cultural...",
-            fecha = "27 Mayo 2025",
-            categoria = "Eventos",
-            esImportante = false
-        ),
-        NoticiaUnsa(
-            id = 4,
-            titulo = "Comunicado: Suspensión de Clases",
-            contenido = "Por motivos de mantenimiento de la infraestructura universitaria, se suspenden las clases presenciales...",
-            fecha = "26 Mayo 2025",
-            categoria = "Comunicados",
-            esImportante = true
-        )
-    )
+    private var noticiasUnsa: List<NoticiaUnsa> = emptyList()
 
-    override fun obtenerNoticiasUnsa(): List<NoticiaUnsa> {
+    override suspend fun obtenerNoticiasUnsa(): List<NoticiaUnsa> {
+        val respuestas = try {
+            api.getNoticias()
+        } catch (e: Exception) {
+            emptyList()
+        }
+
+        noticiasUnsa = try {
+            respuestas.map { response ->
+                Log.d("MAP", "response autor: ${response.autor}")
+                NoticiaUnsa(
+                    id = response.id,
+                    titulo = response.titulo,
+                    contenido = response.descripcion,
+                    fecha = response.fecha_publicacion?:"Fecha desconocida",
+                    categoria = response.categorias ?:emptyList(),
+                    esImportante = true
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("ERROR MAP", "Falló el mapeo: ${e.message}", e)
+            emptyList()
+        }
+        Log.d("BBBBBBBBBBBB", "${noticiasUnsa}\ntamaño: ${noticiasUnsa.size}")
         return noticiasUnsa
     }
 
-    override fun obtenerNoticiasPorCategoria(categoria: String): List<NoticiaUnsa> {
-        return noticiasUnsa.filter { it.categoria == categoria }
+    override suspend fun obtenerNoticiasPorCategoria(categoria: String): List<NoticiaUnsa> {
+        return noticiasUnsa.filter { it.categoria.contains(categoria) }
     }
 }
 

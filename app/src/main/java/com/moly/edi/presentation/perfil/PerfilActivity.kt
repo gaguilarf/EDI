@@ -1,10 +1,13 @@
 package com.moly.edi.presentation.perfil
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,16 +21,15 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.layout.ContentScale
-import com.moly.edi.data.model.Project
+import androidx.compose.ui.tooling.preview.Preview
+import com.moly.edi.domain.model.Project
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
@@ -43,8 +45,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.moly.edi.R
+import com.moly.edi.core.componentes.SectionHeader
 import com.moly.edi.core.ui.theme.EDITheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -58,7 +62,7 @@ class PerfilActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = Color.Black
                 ) {
-                    val userEmail = "gaguilarf@unsa.edu.pe" // You can get this from intent or ViewModel
+                    val userEmail = "gaguilarf@unsa.edu.pe"
                     ProfileScreen(userEmail = userEmail)
                 }
             }
@@ -70,8 +74,10 @@ class PerfilActivity : ComponentActivity() {
 @Composable
 fun ProfileScreen(
     userEmail: String,
-    viewModel: PerfilViewModel = hiltViewModel()
+    viewModel: PerfilViewModel = hiltViewModel(),
+    onSettingsClick: (() -> Unit)? = null
 ) {
+    var mostrarDialogo by remember { mutableStateOf(false)}
     val user by viewModel.user.collectAsState()
     val technologies by viewModel.technologies.collectAsState()
     val projects by viewModel.projects.collectAsState()
@@ -111,42 +117,53 @@ fun ProfileScreen(
         return
     }
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(bottom = 16.dp)
+            .padding(bottom = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Profile Header
-        user?.let { user ->
-            ProfileHeader(
-                name = user.nombre,
-                email = user.correo,
-                phone = user.telefono ?: "",
-                linkedin = user.linkedin ?: "",
-                github = user.github ?: "",
-                instagram = user.instagram ?: ""
+        item {
+            SectionHeader(
+                title = "PERFIL",
+                modifier = Modifier.padding(top = 24.dp,
+                    bottom = 12.dp)
             )
+        }
 
-            // Technologies Section
-            if (technologies.isNotEmpty()) {
+        item {
+
+            user?.let { user ->
+                ProfileHeader(
+                    name = user.nombre,
+                    email = user.correo ?: "",
+                    phone = user.telefono ?: "",
+                    linkedin = user.linkedin ?: "",
+                    github = user.github ?: "",
+                    instagram = user.instagram ?: "",
+                    onSettingsClick = onSettingsClick
+                )
+            }
+        }
+        if (technologies.isNotEmpty()) {
+            item {
                 TechnologiesSection(technologies = technologies)
             }
-
-            // Projects Section
-            if (projects.isNotEmpty()) {
+        }
+        if (projects.isNotEmpty()) {
+            item {
                 ProjectsSection(projects = projects)
             }
-
-            // Action Buttons
+        }
+        item {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    .padding(horizontal = 8.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Button(
-                    onClick = { /* Handle add action */ },
+                    onClick = { mostrarDialogo = true },
                     modifier = Modifier
                         .weight(1f)
                         .height(48.dp)
@@ -154,15 +171,22 @@ fun ProfileScreen(
                     Text("Añadir")
                 }
 
+                if (mostrarDialogo) {
+                    ProyectoDialog(
+                        onDismiss = { mostrarDialogo = false },
+                        onConfirm = { nuevoProyecto ->
+                            viewModel.addProject(userEmail, nuevoProyecto) { exito ->
+                                mostrarDialogo = false
+                            }
+                        }
+                    )
+                }
+
                 Button(
                     onClick = { /* Handle edit action */ },
                     modifier = Modifier
                         .weight(1f)
-                        .height(48.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = Color.White
-                    )
+                        .height(48.dp)
                 ) {
                     Text("Editar")
                 }
@@ -171,118 +195,178 @@ fun ProfileScreen(
     }
 }
 
-    @Composable
-    fun ProfileHeader(
-        name: String,
-        email: String,
-        phone: String,
-        linkedin: String,
-        github: String,
-        instagram: String
+@Composable
+fun ProfileHeader(
+    name: String,
+    email: String,
+    phone: String,
+    linkedin: String,
+    github: String,
+    instagram: String,
+    onSettingsClick: (() -> Unit)? = null
+) {
+    val context = LocalContext.current
+    Surface(
+        color = Color(0xFF1E1E1E),
+        shape = RoundedCornerShape(
+            topStart = 16.dp,
+            topEnd = 16.dp,
+            bottomStart = 16.dp,
+            bottomEnd = 16.dp),
+        modifier = Modifier.padding(bottom = 16.dp)
     ) {
-        Surface(
-            color = Color(0xFF1E1E1E),
-            shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
-            modifier = Modifier.padding(bottom = 16.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
+            Row(
+                verticalAlignment = CenterVertically,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Row(
-                    verticalAlignment = CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    // Avatar
-                    Box(
-                        modifier = Modifier
-                            .size(80.dp)
-                            .clip(CircleShape)
-                            .background(
-                                brush = Brush.horizontalGradient(
-                                    colors = listOf(
-                                        Color(0xFF6200EE),
-                                        Color(0xFFBB86FC)
-                                    )
+                // Avatar
+                Box(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(CircleShape)
+                        .background(
+                            brush = Brush.horizontalGradient(
+                                colors = listOf(
+                                    Color(0xFF6200EE),
+                                    Color(0xFFBB86FC)
                                 )
                             )
+                        )
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                // Name and Email
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = name,
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
-
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    // Name and Email
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = name,
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            text = email,
-                            color = Color.Gray,
-                            fontSize = 14.sp,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-
-                    // Settings Icon
-                    Icon(
-                        imageVector = Icons.Default.Settings,
-                        contentDescription = "Settings",
-                        tint = Color.White,
-                        modifier = Modifier.size(24.dp)
+                    Text(
+                        text = email,
+                        color = Color.Gray,
+                        fontSize = 14.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
-                // Social Icons
-                Row(
+                // Settings Icon
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Settings",
+                    tint = Color.White,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    if (phone.isNotBlank()) {
-                        SocialIcon(iconRes = R.drawable.ic_phone, "Phone")
+                        .size(24.dp)
+                        .clickable {
+                            onSettingsClick?.invoke()
+                        }
+                )
+            }
+
+            // Social Icons
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                SocialIcon(
+                    iconRes = R.drawable.ic_phone,
+                    contentDescription = "Phone",
+                    enabled = phone.isNotBlank(),
+                    onClick = {
+                        if (phone.isNotBlank()) {
+                            val intent = Intent(Intent.ACTION_DIAL).apply {
+                                data = Uri.parse("tel:$phone")
+                            }
+                            context.startActivity(intent)
+                        }
                     }
-                    if (linkedin.isNotBlank()) {
-                        SocialIcon(iconRes = R.drawable.ic_linkedin, "LinkedIn")
+                )
+                SocialIcon(
+                    iconRes = R.drawable.ic_linkedin,
+                    contentDescription = "LinkedIn",
+                    enabled = linkedin.isNotBlank(),
+                    onClick = {
+                        if (linkedin.isNotBlank()) {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(linkedin))
+                            context.startActivity(intent)
+                        }
                     }
-                    if (github.isNotBlank()) {
-                        SocialIcon(iconRes = R.drawable.ic_github, "GitHub")
+                )
+                SocialIcon(
+                    iconRes = R.drawable.ic_github,
+                    contentDescription = "GitHub",
+                    enabled = github.isNotBlank(),
+                    onClick = {
+                        if (github.isNotBlank()) {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(github))
+                            context.startActivity(intent)
+                        }
                     }
-                    if (instagram.isNotBlank()) {
-                        SocialIcon(iconRes = R.drawable.ic_instagram, "Instagram")
+                )
+                SocialIcon(
+                    iconRes = R.drawable.ic_instagram,
+                    contentDescription = "Instagram",
+                    enabled = instagram.isNotBlank(),
+                    onClick = {
+                        if (instagram.isNotBlank()) {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(instagram))
+                            context.startActivity(intent)
+                        }
                     }
-                }
+                )
             }
         }
     }
+}
 
-    @Composable
-    fun SocialIcon(iconRes: Int, contentDescription: String) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(Color(0xFF03DAC5))
-        ) {
-            Icon(
-                painter = painterResource(id = iconRes),
-                contentDescription = contentDescription,
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
-        }
+@Composable
+fun SocialIcon(
+    iconRes: Int,
+    contentDescription: String,
+    enabled: Boolean = true,
+    onClick: () -> Unit = {}
+) {
+    val iconColor = if (enabled) Color(0xFF03DAC5) else Color.Gray
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(40.dp)
+            .clip(CircleShape)
+            .background(iconColor.copy(alpha = 0.2f))
+            .let {
+                if (enabled) it.clickable { onClick() } else it
+            }
+    ) {
+        Icon(
+            painter = painterResource(id = iconRes),
+            contentDescription = contentDescription,
+            tint = if (enabled) Color(0xFF03DAC5) else Color.Gray,
+            modifier = Modifier.size(24.dp)
+        )
     }
+}
 
-    @Composable
-    fun TechnologiesSection(technologies: List<String>) {
+@Composable
+fun TechnologiesSection(technologies: List<String>) {
+    Surface(
+        color = Color(0xFF1E1E1E),
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -320,9 +404,17 @@ fun ProfileScreen(
             }
         }
     }
+}
 
-    @Composable
-    fun ProjectsSection(projects: List<com.moly.edi.data.model.Project>) {
+@Composable
+fun ProjectsSection(projects: List<Project>) {
+    Surface(
+        color = Color(0xFF1E1E1E),
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -339,56 +431,55 @@ fun ProfileScreen(
             )
 
             if (projects.isNotEmpty()) {
-                Box(
+                LazyRow(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp)
+                        .padding(top = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    projects.forEachIndexed { index, project ->
+                    items(projects.size) { index ->
                         ProjectCard(
-                            project = project,
-                            modifier = Modifier.offset(
-                                x = (index * 8).dp,
-                                y = (index * 8).dp
-                            )
+                            project = projects[index],
+                            modifier = Modifier.width(280.dp)
                         )
                     }
                 }
             }
         }
     }
+}
 
-    @Composable
-    fun ProjectCard(project: Project, modifier: Modifier = Modifier) {
-        Surface(
-            shape = RoundedCornerShape(8.dp),
-            color = Color(0xFF2A2A2A),
-            border = BorderStroke(1.dp, Color.White.copy(alpha = 0.1f)),
-            modifier = modifier
+@Composable
+fun ProjectCard(project: Project, modifier: Modifier = Modifier) {
+    Surface(
+        shape = RoundedCornerShape(8.dp),
+        color = Color(0xFF2A2A2A),
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.1f)),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+    ) {
+        Column(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 8.dp)
+                .padding(16.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = project.titulo,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = project.descripcion,
-                    color = Color.Gray,
-                    fontSize = 14.sp,
-                    modifier = Modifier.padding(top = 4.dp),
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
+            Text(
+                text = project.titulo,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = project.descripcion,
+                color = Color.Gray,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(top = 4.dp),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
         }
     }
+}
