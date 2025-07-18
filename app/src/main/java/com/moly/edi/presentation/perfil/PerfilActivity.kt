@@ -116,79 +116,88 @@ fun ProfileScreen(
         }
         return
     }
-
-    LazyColumn(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(16.dp) // esto actúa como margen
     ) {
-        item {
-            SectionHeader(
-                title = "PERFIL",
-                modifier = Modifier.padding(top = 24.dp,
-                    bottom = 12.dp)
-            )
-        }
-
-        item {
-
-            user?.let { user ->
-                ProfileHeader(
-                    name = user.nombre,
-                    email = user.correo ?: "",
-                    phone = user.telefono ?: "",
-                    linkedin = user.linkedin ?: "",
-                    github = user.github ?: "",
-                    instagram = user.instagram ?: "",
-                    onSettingsClick = onSettingsClick
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            item {
+                SectionHeader(
+                    title = "PERFIL",
+                    modifier = Modifier.padding(
+                        top = 24.dp,
+                        bottom = 12.dp
+                    )
                 )
             }
-        }
-        if (technologies.isNotEmpty()) {
-            item {
-                TechnologiesSection(technologies = technologies)
-            }
-        }
-        if (projects.isNotEmpty()) {
-            item {
-                ProjectsSection(projects = projects)
-            }
-        }
-        item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Button(
-                    onClick = { mostrarDialogo = true },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp)
-                ) {
-                    Text("Añadir")
-                }
 
-                if (mostrarDialogo) {
-                    ProyectoDialog(
-                        onDismiss = { mostrarDialogo = false },
-                        onConfirm = { nuevoProyecto ->
-                            viewModel.addProject(userEmail, nuevoProyecto) { exito ->
-                                mostrarDialogo = false
-                            }
-                        }
+            item {
+
+                user?.let { user ->
+                    ProfileHeader(
+                        name = user.nombre,
+                        email = user.correo ?: "",
+                        phone = user.telefono ?: "",
+                        linkedin = user.linkedin ?: "",
+                        github = user.github ?: "",
+                        instagram = user.instagram ?: "",
+                        onSettingsClick = onSettingsClick
                     )
                 }
-
-                Button(
-                    onClick = { /* Handle edit action */ },
+            }
+            if (technologies.isNotEmpty()) {
+                item {
+                    TechnologiesSection(technologies = technologies)
+                }
+            }
+            if (projects.isNotEmpty()) {
+                item {
+                    ProjectsSection(projects = projects)
+                }
+            }
+            item {
+                Row(
                     modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("Editar")
+                    Button(
+                        onClick = { mostrarDialogo = true },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(48.dp),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text("Añadir")
+                    }
+
+                    Button(
+                        onClick = { /* Handle edit action */ },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(48.dp),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text("Editar")
+                    }
+
+                    if (mostrarDialogo) {
+                        ProyectoDialog(
+                            onDismiss = { mostrarDialogo = false },
+                            onConfirm = { nuevoProyecto ->
+                                viewModel.addProject(userEmail, nuevoProyecto) { exito ->
+                                    mostrarDialogo = false
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -212,8 +221,7 @@ fun ProfileHeader(
             topStart = 16.dp,
             topEnd = 16.dp,
             bottomStart = 16.dp,
-            bottomEnd = 16.dp),
-        modifier = Modifier.padding(bottom = 16.dp)
+            bottomEnd = 16.dp)
     ) {
         Column(
             modifier = Modifier
@@ -365,7 +373,6 @@ fun TechnologiesSection(technologies: List<String>) {
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
     ) {
         Column(
             modifier = Modifier
@@ -413,7 +420,6 @@ fun ProjectsSection(projects: List<Project>) {
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
     ) {
         Column(
             modifier = Modifier

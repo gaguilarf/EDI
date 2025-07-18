@@ -7,8 +7,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -19,6 +26,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moly.edi.R
@@ -26,8 +35,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.moly.edi.presentation.login.LoginViewModel
 
 @Composable
-fun LoginScreen(
-    onLoginSuccess: () -> Unit = {}
+fun LoginScreenWithAuth(
+    onLoginSuccess: (email: String, name: String) -> Unit
 ) {
     val viewModel: LoginViewModel = hiltViewModel()
     val loginSuccess by viewModel.loginSuccess.collectAsState()
@@ -35,9 +44,14 @@ fun LoginScreen(
     val isLoading by viewModel.isLoading.collectAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordVisibility by remember { mutableStateOf(false) }
 
     LaunchedEffect(loginSuccess) {
-        if (loginSuccess) onLoginSuccess()
+        if (loginSuccess) {
+            // Extraer el nombre del email para la persistencia
+            val userName = email.substringBefore("@").replaceFirstChar { it.uppercase() }
+            onLoginSuccess(email, userName)
+        }
     }
 
     Column(
@@ -71,7 +85,10 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color(0xFFF0F0F0), shape = RoundedCornerShape(8.dp)),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            leadingIcon = {
+                Icon(Icons.Filled.Email, contentDescription = "Email Icon", tint = Color(0xFF0F8B8D))
+            }
         )
         Spacer(Modifier.height(10.dp))
         Text("Contraseña")
@@ -82,7 +99,20 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color(0xFFF0F0F0), shape = RoundedCornerShape(8.dp)),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+            leadingIcon = {
+                Icon(Icons.Filled.Lock, contentDescription = "Lock Icon", tint = Color(0xFF0F8B8D))
+            },
+            trailingIcon = {
+                IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+                    Icon(
+                        imageVector = if (passwordVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                        contentDescription = "Toggle password visibility",
+                        tint = Color(0xFF0F8B8D)
+                    )
+                }
+            }
         )
         Spacer(Modifier.height(10.dp))
         Text("¿Olvidaste tu contraseña?", color = Color(0xFF0F8B8D))

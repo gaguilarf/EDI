@@ -7,6 +7,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.moly.edi.core.auth.AuthPreferences
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -15,8 +16,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.moly.edi.presentation.noticias.NoticiasScreen
 import com.moly.edi.presentation.perfil.ProfileScreen
-import com.moly.edi.presentation.splash.SplashActivity
-import com.moly.edi.presentation.login.LoginScreen
+import com.moly.edi.presentation.splash.SplashScreenWithAuth
+import com.moly.edi.presentation.login.LoginScreenWithAuth
 import com.moly.edi.presentation.conecta.UserConnectScreen
 import com.moly.edi.core.componentes.BottomNavigationBar
 import com.moly.edi.presentation.configuracion.ConfiguracionScreen
@@ -24,6 +25,7 @@ import com.moly.edi.data.repository.ConfiguracionApiService
 import com.moly.edi.data.repository.ConfiguracionRepository
 import com.moly.edi.domain.useCase.GetConfiguracionUseCase
 import com.moly.edi.presentation.configuracion.ConfiguracionViewModelFactory
+import com.moly.edi.presentation.auth.AuthViewModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -32,6 +34,9 @@ fun SetupNavGraph(navController: NavHostController, context: Context) {
     val authPrefs = AuthPreferences(context)
     val userEmailFlow = authPrefs.userEmail
     val userEmail by userEmailFlow.collectAsState(initial = null)
+
+    // AuthViewModel para la persistencia de login
+    val authViewModel: AuthViewModel = hiltViewModel()
 
     val bottomBarScreens = listOf(
         Screen.Noticias,
@@ -61,18 +66,26 @@ fun SetupNavGraph(navController: NavHostController, context: Context) {
                 .padding(innerPadding)
         ) {
             composable(Screen.Splash.route) {
-                SplashActivity(
+                SplashScreenWithAuth(
                     onNavigateToLogin = {
                         navController.navigate(Screen.Login.route) {
                             popUpTo(Screen.Splash.route) { inclusive = true }
                         }
-                    }
+                    },
+                    onNavigateToHome = {
+                        navController.navigate(Screen.Noticias.route) {
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
+                    },
+                    authViewModel = authViewModel
                 )
             }
 
             composable(Screen.Login.route) {
-                LoginScreen(
-                    onLoginSuccess = {
+                LoginScreenWithAuth(
+                    onLoginSuccess = { email, name ->
+                        // Guardar la sesión usando AuthViewModel
+                        authViewModel.login(email, name)
                         navController.navigate(Screen.Noticias.route) {
                             popUpTo(Screen.Login.route) { inclusive = true }
                         }
@@ -97,7 +110,12 @@ fun SetupNavGraph(navController: NavHostController, context: Context) {
 
                 ConfiguracionScreen(
                     viewModelFactory = factory,
-                    correoElectronico = userEmail.orEmpty()
+                    correoElectronico = userEmail.orEmpty(),
+                    onLogout = {
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }
                 )
             }
 

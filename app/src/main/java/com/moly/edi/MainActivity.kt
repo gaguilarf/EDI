@@ -24,8 +24,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
 
-                    // Toda la app ahora maneja navegación
-                    SetupNavGraph(navController = navController, context = this)
+                    // Nueva navegación con persistencia de login
+                    SetupNavGraph(navController = navController, context = this@MainActivity)
                 }
             }
         }

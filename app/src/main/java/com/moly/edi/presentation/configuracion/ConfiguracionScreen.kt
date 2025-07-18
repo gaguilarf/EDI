@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,18 +21,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-
-
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.moly.edi.presentation.auth.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
-
 @Composable
 fun ConfiguracionScreen(
     viewModelFactory: ConfiguracionViewModelFactory,
-    correoElectronico: String
+    correoElectronico: String,
+    onLogout: (() -> Unit)? = null
 ) {
     val viewModel: ConfiguracionViewModel = viewModel(factory = viewModelFactory)
     val uiState by viewModel.uiState.collectAsState()
+    val authViewModel: AuthViewModel = hiltViewModel()
 
     // Cargar configuración cuando se crea el composable
     LaunchedEffect(correoElectronico) {
@@ -50,7 +53,10 @@ fun ConfiguracionScreen(
             color = Color.White,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 32.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 32.dp),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
 
         // Mostrar loading
@@ -187,9 +193,69 @@ fun ConfiguracionScreen(
             onClick = { /* Navegar a cambiar contraseña */ }
         )
 
-        ArrowOption(
-            label = "Cerrar sesión",
-            onClick = { /* Cerrar sesión */ }
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Información del usuario
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = "Usuario actual:",
+                    color = Color.White.copy(alpha = 0.7f),
+                    fontSize = 14.sp
+                )
+                Text(
+                    text = correoElectronico,
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Botón de logout
+        Button(
+            onClick = {
+                authViewModel.logout()
+                onLogout?.invoke()
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.ExitToApp,
+                contentDescription = "Cerrar sesión",
+                tint = Color.White,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Cerrar Sesión",
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Versión de la app
+        Text(
+            text = "Versión 1.0.0",
+            color = Color.White.copy(alpha = 0.5f),
+            fontSize = 12.sp,
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
