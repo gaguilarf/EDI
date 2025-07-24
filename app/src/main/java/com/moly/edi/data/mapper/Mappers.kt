@@ -74,7 +74,8 @@ fun ConectaDTO.toDomain(): Conecta {
         competencias = this.competencias,
         nombres = this.nombres,
         semestre = this.semestre,
-        sobre_mi = this.sobre_mi
+        sobre_mi = this.sobre_mi,
+        celular = this.celular
     )
 }
 
@@ -84,6 +85,7 @@ fun Conecta.toDTO(): ConectaDTO {
         carrera = this.carrera,
         palabras_clave = this.competencias,
         semestre = this.semestre,
-        sobre_mi = this.sobre_mi
+        sobre_mi = this.sobre_mi,
+        celular = this.celular
     )
 }

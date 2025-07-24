@@ -14,9 +14,8 @@ class ConectaRepositoryImpl @Inject constructor(
 
     override suspend fun getConectaByEmail(email: String): Result<Conecta> {
         return try {
-            val encodedEmail = URLEncoder.encode(email, "UTF-8")
-            Log.d("ConectaRepository", "Intentando obtener datos para email: $email (encoded: $encodedEmail)")
-            val response = api.getConectaByEmail(encodedEmail)
+            //al encodedEmail = URLEncoder.encode(email, "UTF-8")
+            val response = api.getConectaByEmail(email)
             Log.d("ConectaRepository", "Respuesta del servidor: ${response.code()}")
 
             if (response.isSuccessful && response.body() != null) {

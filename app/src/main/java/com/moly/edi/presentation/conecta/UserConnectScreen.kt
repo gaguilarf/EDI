@@ -1,5 +1,7 @@
 package com.moly.edi.presentation.conecta
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,13 +16,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -48,13 +54,15 @@ fun UserConnectScreen(
     correoElectronico: String,
     viewModel: UserConnectViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+    
     LaunchedEffect(correoElectronico) {
         viewModel.loadEstudiante(correoElectronico)
     }
 
     Scaffold(
         topBar = { /* tu top bar */ },
-        containerColor = Color.Black // Igual que en Noticias
+        containerColor = Color.Black
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -71,7 +79,12 @@ fun UserConnectScreen(
             item {
                 when {
                     viewModel.isLoading -> {
-                        CircularProgressIndicator(color = Color.White)
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(color = Color.White)
+                        }
                     }
                     viewModel.errorMessage != null -> {
                         Column {
@@ -82,7 +95,7 @@ fun UserConnectScreen(
                             Spacer(modifier = Modifier.height(8.dp))
                             Button(
                                 onClick = { viewModel.testServer() },
-                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                colors = ButtonDefaults.buttonColors(
                                     containerColor = Color(0xFF484E4E)
                                 )
                             ) {
@@ -93,7 +106,17 @@ fun UserConnectScreen(
                     viewModel.estudiante != null -> {
                         UserConnectCard(
                             estudiante = viewModel.estudiante!!,
-                            onSettingsClick = { navController.navigate(Screen.Configuracion.route) }
+                            onConectarClick = {
+                                // Abrir WhatsApp con mensaje predeterminado
+                                val mensaje = "¡Hola! Vi tu perfil en EDI y me gustaría conectar contigo. ¿Te parece si conversamos sobre proyectos o colaboraciones?"
+                                val whatsappUrl = "https://wa.me/${viewModel.estudiante?.celular?.replace("+", "")?.replace(" ", "")}?text=${Uri.encode(mensaje)}"
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(whatsappUrl))
+                                context.startActivity(intent)
+                            },
+                            onConoceMasClick = {
+                                // Navegar a una vista de perfil simplificada
+                                navController.navigate("perfil_conecta/${correoElectronico}")
+                            }
                         )
                     }
                 }
@@ -102,87 +125,166 @@ fun UserConnectScreen(
     }
 }
 
-
 @Composable
-fun UserConnectCard(estudiante: ConectaDTO, onSettingsClick: () -> Unit) {
-    Column(
+fun UserConnectCard(
+    estudiante: ConectaDTO,
+    onConectarClick: () -> Unit,
+    onConoceMasClick: () -> Unit
+) {
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 12.dp)
-            .background(color = Color(0xFF484E4E), shape = RoundedCornerShape(12.dp))
-            .padding(12.dp)
+            .padding(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFF1A1A1A)
+        ),
+        shape = RoundedCornerShape(16.dp)
     ) {
-        Row(verticalAlignment = Alignment.Top) {
-            Image(
-                painter = painterResource(id = R.drawable.unsa),
-                contentDescription = "Logo",
-                modifier = Modifier
-                    .size(width = 80.dp, height = 60.dp)
-                    .clip(RoundedCornerShape(10.dp)),
-                contentScale = ContentScale.Fit
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = estudiante.carrera,
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Semestre: ${estudiante.semestre}",
-                    color = Color(0xFF888888),
-                    fontSize = 12.sp
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-            }
-            IconButton(onClick = onSettingsClick) {
-                Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = "Settings",
-                    tint = Color.White
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "Competencias: ${estudiante.competencias}",
-            color = Color.White,
-            fontSize = 14.sp
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-                .background(color = Color(0xFF3F3F3F), shape = RoundedCornerShape(20.dp))
-                .border(1.dp, Color.White, shape = RoundedCornerShape(20.dp))
-                .padding(top = 10.dp, start = 10.dp)
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                text = estudiante.sobre_mi,
-                color = Color.White,
-                fontSize = 14.sp
-            )
-        }
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            Button(
-                onClick = { println("Conectando con ${estudiante.carrera}") },
-                shape = RoundedCornerShape(10.dp),
-                elevation = null
+            // Avatar y información básica
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Conectemos", color = Color.White)
+                // Avatar
+                Box(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFFFF8C42)), // Naranja claro
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "Avatar",
+                        modifier = Modifier.size(40.dp),
+                        tint = Color.White
+                    )
+                }
+                
+                Spacer(modifier = Modifier.width(16.dp))
+                
+                // Información del usuario
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = estudiante.nombres,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = estudiante.carrera,
+                        fontSize = 14.sp,
+                        color = Color(0xFF888888)
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = "Semestre: ${estudiante.semestre}",
+                        fontSize = 14.sp,
+                        color = Color(0xFF888888)
+                    )
+                }
+            }
+            
+            // Tecnologías
+            Column {
+                Text(
+                    text = "Tecnologías",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                
+                // Chips de tecnologías
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    estudiante.palabras_clave?.split(",")?.take(3)?.forEach { tecnologia ->
+                        Card(
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color(0xFF20B2AA) // Teal
+                            ),
+                            shape = RoundedCornerShape(20.dp)
+                        ) {
+                            Text(
+                                text = tecnologia.trim(),
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                color = Color.White,
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
+                }
+            }
+            
+            // Sobre mí
+            Column {
+                Text(
+                    text = "Sobre mí",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFF2A2A2A)
+                    ),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(
+                        text = estudiante.sobre_mi,
+                        modifier = Modifier.padding(12.dp),
+                        color = Color.White,
+                        fontSize = 14.sp,
+                        lineHeight = 20.sp
+                    )
+                }
+            }
+            
+            // Botones de acción
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Button(
+                    onClick = onConoceMasClick,
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF20B2AA) // Teal
+                    ),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        text = "Conoce más",
+                        color = Color.White,
+                        fontSize = 14.sp
+                    )
+                }
+                
+                Button(
+                    onClick = onConectarClick,
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF20B2AA) // Teal
+                    ),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        text = "Conectar",
+                        color = Color.White,
+                        fontSize = 14.sp
+                    )
+                }
             }
         }
     }

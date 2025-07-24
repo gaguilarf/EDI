@@ -26,6 +26,7 @@ import com.moly.edi.core.componentes.BottomNavigationBar
 import com.moly.edi.data.dataSource.remote.api.ConfiguracionApiService
 import com.moly.edi.presentation.configuracion.ConfiguracionScreen
 import com.moly.edi.presentation.auth.AuthViewModel
+import com.moly.edi.presentation.conecta.PerfilConectaScreen
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.moly.edi.presentation.login.RegisterScreen
@@ -133,6 +134,13 @@ fun SetupNavGraph(navController: NavHostController, context: Context) {
             ) { backStackEntry ->
                 val email = backStackEntry.arguments?.getString(Screen.UserConnect.CONECTA_ARG) ?: userEmail.orEmpty()
                 UserConnectScreen(navController, email)
+            }
+
+            composable(
+                route = "perfil_conecta/{${Screen.PerfilConecta.CORREO_ARG}}"
+            ) { backStackEntry ->
+                val email = backStackEntry.arguments?.getString(Screen.PerfilConecta.CORREO_ARG) ?: userEmail.orEmpty()
+                PerfilConectaScreen(navController, email)
             }
 
             composable(
