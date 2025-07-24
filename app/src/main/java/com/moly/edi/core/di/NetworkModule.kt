@@ -3,6 +3,7 @@ package com.moly.edi.core.di
 
 import com.moly.edi.data.dataSource.remote.api.AuthApiService
 import com.moly.edi.data.dataSource.remote.api.ConfiguracionApiService
+import com.moly.edi.data.dataSource.remote.api.ConectaService
 import com.moly.edi.data.dataSource.remote.api.NoticiasService
 import com.moly.edi.data.dataSource.remote.api.ProjectApiService
 import com.moly.edi.data.dataSource.remote.api.UserApiService
@@ -21,6 +22,15 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://edi-backend-ww44.onrender.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideConectaRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://edi-backend-vgou.onrender.com/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -55,5 +65,11 @@ object NetworkModule {
     @Singleton
     fun provideProjectApiService(retrofit: Retrofit): ProjectApiService {
         return retrofit.create(ProjectApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideConectaService(conectaRetrofit: Retrofit): ConectaService {
+        return conectaRetrofit.create(ConectaService::class.java)
     }
 }

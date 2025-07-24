@@ -120,9 +120,9 @@ fun SetupNavGraph(navController: NavHostController, context: Context) {
                 )
             }
             composable(
-                route = "conecta/{${Screen.Perfil.PERFIL_ARG}}"
+                route = "conecta/{${Screen.UserConnect.CONECTA_ARG}}"
             ) { backStackEntry ->
-                val email = backStackEntry.arguments?.getString(Screen.Perfil.PERFIL_ARG) ?: userEmail.orEmpty()
+                val email = backStackEntry.arguments?.getString(Screen.UserConnect.CONECTA_ARG) ?: userEmail.orEmpty()
                 UserConnectScreen(navController, email)
             }
         }

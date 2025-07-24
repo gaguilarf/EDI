@@ -38,7 +38,7 @@ import androidx.navigation.NavController
 import com.moly.edi.R
 import com.moly.edi.data.model.ConectaDTO
 import com.moly.edi.presentation.navigation.Screen
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.foundation.lazy.LazyColumn
 import com.moly.edi.core.componentes.SectionHeader
 
@@ -46,7 +46,7 @@ import com.moly.edi.core.componentes.SectionHeader
 fun UserConnectScreen(
     navController: NavController,
     correoElectronico: String,
-    viewModel: UserConnectViewModel = viewModel()
+    viewModel: UserConnectViewModel = hiltViewModel()
 ) {
     LaunchedEffect(correoElectronico) {
         viewModel.loadEstudiante(correoElectronico)
@@ -74,10 +74,21 @@ fun UserConnectScreen(
                         CircularProgressIndicator(color = Color.White)
                     }
                     viewModel.errorMessage != null -> {
-                        Text(
-                            text = viewModel.errorMessage ?: "Error",
-                            color = Color.Red
-                        )
+                        Column {
+                            Text(
+                                text = viewModel.errorMessage ?: "Error",
+                                color = Color.Red
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(
+                                onClick = { viewModel.testServer() },
+                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF484E4E)
+                                )
+                            ) {
+                                Text("Probar Servidor", color = Color.White)
+                            }
+                        }
                     }
                     viewModel.estudiante != null -> {
                         UserConnectCard(
