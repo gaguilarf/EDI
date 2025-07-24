@@ -18,7 +18,7 @@ class ConectaRepositoryImpl @Inject constructor(
             Log.d("ConectaRepository", "Intentando obtener datos para email: $email (encoded: $encodedEmail)")
             val response = api.getConectaByEmail(encodedEmail)
             Log.d("ConectaRepository", "Respuesta del servidor: ${response.code()}")
-            
+
             if (response.isSuccessful && response.body() != null) {
                 Log.d("ConectaRepository", "Datos obtenidos exitosamente")
                 Result.success(response.body()!!.toDomain())
@@ -38,7 +38,7 @@ class ConectaRepositoryImpl @Inject constructor(
             Log.d("ConectaRepository", "Probando endpoint de prueba...")
             val response = api.testEndpoint()
             Log.d("ConectaRepository", "Respuesta del servidor (test): ${response.code()}")
-            
+
             if (response.isSuccessful && response.body() != null) {
                 Log.d("ConectaRepository", "Test exitoso")
                 Result.success(response.body()!!.toDomain())

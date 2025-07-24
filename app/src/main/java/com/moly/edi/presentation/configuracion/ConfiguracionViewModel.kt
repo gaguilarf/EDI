@@ -1,11 +1,12 @@
-
 package com.moly.edi.presentation.configuracion
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.moly.edi.domain.model.Configuracion
 import com.moly.edi.domain.repository.ConfiguracionRepository
+import com.moly.edi.presentation.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,6 +40,10 @@ class ConfiguracionViewModel @Inject constructor(
     // ===== ESTADO DE CONEXIÓN =====
     private val _isOffline = MutableStateFlow(false)
     val isOffline: StateFlow<Boolean> = _isOffline.asStateFlow()
+
+    // ====== ESTADO DE LOGOUT
+    private val _isLoggingOut = MutableStateFlow(false)
+    val isLoggingOut: StateFlow<Boolean> = _isLoggingOut.asStateFlow()
 
     // ===== ESTADO DE CAMBIOS PENDIENTES =====
     private val _hasPendingChanges = MutableStateFlow(false)
@@ -229,7 +234,7 @@ class ConfiguracionViewModel @Inject constructor(
                     Log.d("ConfigViewModel", "✅ Servidor despierto")
                 } else {
                     _isOffline.value = true
-                    Log.w("ConfigViewModel", "⚠️ No se pudo despertar servidor")
+                    Log.w("ConfigViewModel", "⚠ No se pudo despertar servidor")
                 }
 
             } catch (e: Exception) {
@@ -352,6 +357,46 @@ class ConfiguracionViewModel @Inject constructor(
         _errorMessage.value = mensaje
         Log.e("ConfigViewModel", "Error en $operacion: ${exception.message}")
     }
+
+
+
+    /**
+     * Realiza el logout del usuario
+     */
+    fun logout(
+        navController: NavHostController,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                _isLoggingOut.value = true
+                clearCache()
+                _isLoggingOut.value = false
+                // Navegar a la pantalla de login y limpiar el back stack
+                navController.navigate(Screen.Login.route) {
+                    popUpTo(0) { inclusive = true } // Limpia todo el back stack
+                }
+                onSuccess()
+
+            } catch (e: Exception) {
+                _isLoggingOut.value = false
+                onError(e.message ?: "Error al cerrar sesión")
+            }
+        }
+    }
+
+    /**
+     * Limpia el caché en memoria
+     */
+    private fun clearCache() {
+        _configuracion.value = null
+        _errorMessage.value = null
+        _hasPendingChanges.value = false
+        _isSyncing.value = false
+        _isOffline.value = false
+    }
+
 
 
 }
