@@ -12,6 +12,7 @@ data class User(
     val celular: String? = null,
     val linkedin: String? = null,
     val instagram: String? = null,
+    val github: String? = null,
     val competencias: String? = null,
     val proyectos: List<Project> = emptyList()
 )

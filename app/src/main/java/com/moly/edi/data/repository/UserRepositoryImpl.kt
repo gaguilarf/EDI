@@ -26,21 +26,48 @@ class UserRepositoryImpl @Inject constructor(
             Log.d("UserRepository", "Fetching user with email: $email")
             val response = apiService.getUserByEmail(email)
             Log.d("UserRepository", "Response code: ${response.code()}")
-            if (response.isSuccessful && response.body() != null) {
-                Log.d("UserRepository", "User DTO fetched successfully: ${response.body()}")
-                val user = response.body()!!.toDomain()
-                Log.d("UserRepository", "User domain model: $user")
-                // Guardar en base de datos local
+
+            if (response.isSuccessful) {
+                Log.d("UserRepository", "Response is successful, getting body...")
+
                 try {
-                    val localDataSource = PerfilLocalDataSource(appContext)
-                    localDataSource.insertOrUpdateUser(user)
-                    Log.d("UserRepository", "Perfil sincronizado")
-                    val userFromDb = localDataSource.getUserByEmail(user.correo)
-                    Log.d("UserRepository", "Tabla perfil: $userFromDb")
+                    val userDTO = response.body()
+                    Log.d("UserRepository", "Got response body: $userDTO")
+
+                    if (userDTO != null) {
+                        Log.d("UserRepository", "UserDTO is not null")
+                        Log.d("UserRepository", "User DTO fetched successfully: $userDTO")
+                        Log.d("UserRepository", "Redes object: ${userDTO.redes}")
+                        Log.d("UserRepository", "GitHub: ${userDTO.redes?.github}")
+                        Log.d("UserRepository", "Instagram: ${userDTO.redes?.instagram}")
+                        Log.d("UserRepository", "LinkedIn: ${userDTO.redes?.linkedin}")
+
+                        Log.d("UserRepository", "Converting to domain model...")
+                        val user = userDTO.toDomain()
+                        Log.d("UserRepository", "User domain model: $user")
+
+                        // Guardar en base de datos local
+                        try {
+                            Log.d("UserRepository", "Saving to local database...")
+                            val localDataSource = PerfilLocalDataSource(appContext)
+                            localDataSource.insertOrUpdateUser(user)
+                            Log.d("UserRepository", "Perfil sincronizado")
+                            val userFromDb = localDataSource.getUserByEmail(user.correo)
+                            Log.d("UserRepository", "Tabla perfil: $userFromDb")
+                        } catch (e: Exception) {
+                            Log.e("UserRepository", "Error guardando en SQLite: ${e.message}", e)
+                        }
+
+                        Log.d("UserRepository", "Returning success result")
+                        Result.success(user)
+                    } else {
+                        Log.e("UserRepository", "Response body is null")
+                        Result.failure(Exception("Response body is null"))
+                    }
                 } catch (e: Exception) {
-                    Log.e("UserRepository", "Error guardando en SQLite: ${e.message}", e)
+                    Log.e("UserRepository", "Error processing response body: ${e.message}", e)
+                    Result.failure(e)
                 }
-                Result.success(user)
             } else {
                 val errorMessage = "Failed to fetch user: ${response.errorBody()?.string()}"
                 Log.e("UserRepository", errorMessage)

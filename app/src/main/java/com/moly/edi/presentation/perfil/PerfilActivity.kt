@@ -145,7 +145,7 @@ fun ProfileScreen(
                         email = user.correo ?: "",
                         phone = user.celular ?: "",
                         linkedin = user.linkedin ?: "",
-                        github = "",
+                        github = user.github ?: "",
                         instagram = user.instagram ?: "",
                         onSettingsClick = onSettingsClick
                     )

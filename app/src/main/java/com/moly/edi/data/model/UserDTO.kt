@@ -13,7 +13,7 @@ data class RedesDTO(
 
 data class UserDTO(
     @SerializedName("id")
-    val id: String,
+    val id: String? = null,
     @SerializedName("nombres")
     val nombres: String,
     @SerializedName("correo")
@@ -24,7 +24,7 @@ data class UserDTO(
     val foto: String? = null,
     @SerializedName("contrasenia")
     val contrasena: String? = null,
-    @SerializedName("redes")
+    @SerializedName("roles")
     val redes: RedesDTO? = null,
     @SerializedName("competencias")
     val competencias: String? = null,

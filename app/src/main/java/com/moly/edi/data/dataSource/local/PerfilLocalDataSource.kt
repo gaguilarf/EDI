@@ -20,9 +20,9 @@ class PerfilLocalDataSource(context: Context) {
             put("correo", user.correo)
             put("telefono", user.celular)
             put("linkedin", user.linkedin)
-            //put("github", user.github)
+            put("github", user.github)
             put("instagram", user.instagram)
-            put("competencias", user.competencias)
+            put("tecnologias", user.competencias) // Usar tecnologias en lugar de competencias
             put("last_modified_at", now)
             put("is_deleted", 0)
         }
@@ -88,8 +88,9 @@ class PerfilLocalDataSource(context: Context) {
             val correo = cursor.getString(cursor.getColumnIndexOrThrow("correo"))
             val telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono"))
             val linkedin = cursor.getString(cursor.getColumnIndexOrThrow("linkedin"))
+            val github = cursor.getString(cursor.getColumnIndexOrThrow("github"))
             val instagram = cursor.getString(cursor.getColumnIndexOrThrow("instagram"))
-            val competencias = cursor.getString(cursor.getColumnIndexOrThrow("competencias"))
+            val tecnologias = cursor.getString(cursor.getColumnIndexOrThrow("tecnologias")) // Cambiar competencias por tecnologias
             val proyectos = getProjectsByUserUuid(correo)
             User(
                 id = correo, // Usar el correo como id para mantener la relación con los proyectos
@@ -98,7 +99,8 @@ class PerfilLocalDataSource(context: Context) {
                 celular = telefono,
                 linkedin = linkedin,
                 instagram = instagram,
-                competencias = competencias,
+                github = github,
+                competencias = tecnologias, // Mapear tecnologias a competencias
                 proyectos = proyectos
             )
         } else null

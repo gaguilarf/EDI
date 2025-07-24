@@ -62,6 +62,7 @@ fun UserDTO.toDomain(): User {
         celular = this.celular,
         linkedin = this.redes?.linkedin,
         instagram = this.redes?.instagram,
+        github = this.redes?.github,
         competencias = this.competencias,
         proyectos = this.proyectos?.map { it.toDomain() } ?: emptyList()
     )
