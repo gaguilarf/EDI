@@ -1,7 +1,11 @@
 package com.moly.edi.core.di
 
 
+import com.moly.edi.data.dataSource.remote.api.AuthApiService
 import com.moly.edi.data.dataSource.remote.api.ConfiguracionApiService
+import com.moly.edi.data.dataSource.remote.api.NoticiasService
+import com.moly.edi.data.dataSource.remote.api.ProjectApiService
+import com.moly.edi.data.dataSource.remote.api.UserApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,19 +27,22 @@ object NetworkModule {
             .build()
     }
 
-    // SOLO CONFIGURACIÓN
     @Provides
     @Singleton
     fun provideConfiguracionApiService(retrofit: Retrofit): ConfiguracionApiService {
         return retrofit.create(ConfiguracionApiService::class.java)
     }
 
-    // TODO LO DEMÁS COMENTADO:
-    /*
     @Provides
     @Singleton
     fun provideAuthApiService(retrofit: Retrofit): AuthApiService {
         return retrofit.create(AuthApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserApiService(retrofit: Retrofit): UserApiService {
+        return retrofit.create(UserApiService::class.java)
     }
 
     @Provides
@@ -49,5 +56,4 @@ object NetworkModule {
     fun provideProjectApiService(retrofit: Retrofit): ProjectApiService {
         return retrofit.create(ProjectApiService::class.java)
     }
-    */
 }

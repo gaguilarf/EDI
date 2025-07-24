@@ -1,9 +1,9 @@
 package com.moly.edi.domain.repository
 
-import com.moly.edi.data.model.NoticiaUnsa
+import com.moly.edi.domain.model.Noticia
 
 interface NoticiasRepository {
-    suspend fun obtenerNoticiasUnsa(): List<NoticiaUnsa>
-    suspend fun obtenerNoticiasPorCategoria(categoria: String): List<NoticiaUnsa>
+    suspend fun obtenerNoticiasUnsa(): List<Noticia>
+    suspend fun obtenerNoticiasPorCategoria(categoria: String): List<Noticia>
 }
 

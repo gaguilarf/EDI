@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.moly.edi.data.model.Configuracion
+import com.moly.edi.domain.model.Configuracion
 
 @Dao
 interface ConfiguracionDao {

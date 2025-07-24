@@ -1,5 +1,7 @@
 package com.moly.edi.core.componentes
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -17,12 +19,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moly.edi.core.ui.theme.gris
-import com.moly.edi.data.model.NoticiaUnsa
+import com.moly.edi.domain.model.Noticia
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NoticiaCard(
     modifier: Modifier = Modifier,
-    noticia: NoticiaUnsa,
+    noticia: Noticia,
     onClick: () -> Unit,
     isImportant: Boolean = false
 ) {
@@ -77,7 +83,7 @@ fun NoticiaCard(
 
                     Column {
                         Text(
-                            text = "Autor", // Placeholder para nombre del autor
+                            text = noticia.autor, // Placeholder para nombre del autor
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
                             color = Color.White
@@ -85,8 +91,10 @@ fun NoticiaCard(
                     }
                 }
 
+                Spacer(modifier = Modifier.width(6.dp))
+
                 Text(
-                    text = noticia.fecha,
+                    text = formatearFecha(noticia.fecha),
                     fontSize = 12.sp,
                     color = Color.White
                 )
@@ -108,7 +116,7 @@ fun NoticiaCard(
 
             // Contenido
             Text(
-                text = noticia.contenido,
+                text = noticia.descripcion_card,
                 fontSize = 14.sp,
                 color = Color.White,
                 maxLines = 4,
@@ -135,7 +143,7 @@ fun NoticiaCard(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "10", // Placeholder para número de likes
+                        text = noticia.reacciones.toString(), // Placeholder para número de likes
                         fontSize = 14.sp,
                         color = Color.White
                     )
@@ -145,7 +153,8 @@ fun NoticiaCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.padding(vertical = 4.dp)
                 ) {
-                    noticia.categoria.forEach { categoria ->
+                    val listaCategorias = noticia.categoria.trim().split("\\s+".toRegex())
+                    listaCategorias.forEach { categoria ->
                         Surface(
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
                             shape = RoundedCornerShape(12.dp)
@@ -163,4 +172,16 @@ fun NoticiaCard(
             }
         }
     }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun formatearFecha(fecha: String): String {
+    val zonaHoraria = ZoneId.of("America/Lima")
+
+    val fechaFormateada = ZonedDateTime
+        .parse(fecha)
+        .withZoneSameInstant(zonaHoraria)
+        .format(DateTimeFormatter.ofPattern("d'/'MM'/'yyyy, HH:mm"))
+
+    return fechaFormateada
 }

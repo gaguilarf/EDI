@@ -32,12 +32,15 @@ object LocalModule {
             database.execSQL("ALTER TABLE ConfiguracionEntity ADD COLUMN categorias_interes TEXT DEFAULT '[]'")
         }
     }
-/*
+
+
     @Provides
     @Singleton
     fun provideProjectDao(database: MyDatabase): ProjectDao {
         return database.projectDao()
-    }*/
+    }
+
+
     @Provides
     @Singleton
     fun provideConfiguracionDao(database: MyDatabase): ConfiguracionDao {

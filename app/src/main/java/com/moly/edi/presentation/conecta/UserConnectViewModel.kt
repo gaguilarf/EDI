@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.moly.edi.data.model.EstudianteDTO
+import com.moly.edi.data.model.ConectaDTO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -17,7 +17,7 @@ import java.net.URLEncoder
 
 class UserConnectViewModel : ViewModel() {
 
-    var estudiante by mutableStateOf<EstudianteDTO?>(null)
+    var estudiante by mutableStateOf<ConectaDTO?>(null)
         private set
 
     var isLoading by mutableStateOf(false)
@@ -60,7 +60,7 @@ class UserConnectViewModel : ViewModel() {
         }
     }
 
-    private fun parseEstudianteDTO(json: String): EstudianteDTO {
+    private fun parseEstudianteDTO(json: String): ConectaDTO {
         val jsonObject = JSONObject(json)
 
         // Mapeo actualizado para el formato de respuesta
@@ -68,13 +68,12 @@ class UserConnectViewModel : ViewModel() {
             List(array.length()) { i -> array.getString(i) }
         }
 
-        return EstudianteDTO(
-            aptitudes = aptitudes,
+        return ConectaDTO(
+            nombres = jsonObject.getString("nombres"),
             carrera = jsonObject.getString("carrera"),
-            categoriasInteres = jsonObject.getString("categorias_interes"),  // actualizando el nombre del campo
-            palabrasClave = jsonObject.getString("palabras_clave"),           // actualizando el nombre del campo
+            competencias = jsonObject.getString("palabras_clave"),           // actualizando el nombre del campo
             semestre = jsonObject.getInt("semestre"),
-            sobreMi = jsonObject.getString("sobre_mi")  // actualizando el nombre del campo
+            sobre_mi = jsonObject.getString("sobre_mi")  // actualizando el nombre del campo
         )
     }
 }

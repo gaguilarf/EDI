@@ -43,8 +43,11 @@ class PerfilViewModel @Inject constructor(
                 val result = userRepository.getUserByEmail(email)
                 result.onSuccess { user ->
                     Log.d("PerfilViewModel", "User loaded successfully: $user")
+                    val listaCompetencias =  user.competencias!!.split(",")
+                        .map { it.trim() }
+                        .filter { it.isNotEmpty() }
                     _user.value = user
-                    _technologies.value = user.tecnologias
+                    _technologies.value = listaCompetencias
                     _projects.value = user.proyectos
                 }.onFailure { exception ->
                     Log.e("PerfilViewModel", "Failed to load user: ${exception.message}", exception)

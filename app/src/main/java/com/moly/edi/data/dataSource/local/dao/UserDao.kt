@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.moly.edi.domain.model.User
-
+/*
 @Dao
 interface UserDao {
 
@@ -24,3 +24,4 @@ interface UserDao {
     @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
     fun insertOrUpdateUser(user: User)
 }
+*/

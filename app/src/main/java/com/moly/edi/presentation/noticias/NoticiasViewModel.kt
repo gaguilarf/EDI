@@ -4,19 +4,19 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.moly.edi.data.model.NoticiaUnsa
+import com.moly.edi.domain.model.Noticia
 import com.moly.edi.domain.repository.NoticiasRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-/*
+
 @HiltViewModel
 class NoticiasViewModel @Inject constructor(
     private val noticiasRepository: NoticiasRepository
 ) : ViewModel() {
 
-    private val _noticias = mutableStateOf<List<NoticiaUnsa>>(emptyList())
-    val noticias: State<List<NoticiaUnsa>> = _noticias
+    private val _noticias = mutableStateOf<List<Noticia>>(emptyList())
+    val noticias: State<List<Noticia>> = _noticias
 
     private val _isLoading = mutableStateOf(true)
     val isLoading: Boolean get() = _isLoading.value
@@ -61,4 +61,4 @@ class NoticiasViewModel @Inject constructor(
         }
     }
 
-}*/
+}

@@ -6,6 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.moly.edi.data.model.ProjectDTO
 
+/*
 @Entity(
     tableName = "ProjectEntity",
     foreignKeys = [
@@ -18,6 +19,8 @@ import com.moly.edi.data.model.ProjectDTO
     ],
     indices = [Index(value = ["userId"])]
 )
+*/
+@Entity(tableName = "ProjectEntity")
 data class Project(
     @PrimaryKey()
     val id: String = "0",

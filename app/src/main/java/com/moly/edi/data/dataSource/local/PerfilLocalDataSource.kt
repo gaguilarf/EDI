@@ -18,11 +18,11 @@ class PerfilLocalDataSource(context: Context) {
             put("uuid", uuid)
             put("nombre", user.nombre)
             put("correo", user.correo)
-            put("telefono", user.telefono)
+            put("telefono", user.celular)
             put("linkedin", user.linkedin)
-            put("github", user.github)
+            //put("github", user.github)
             put("instagram", user.instagram)
-            put("tecnologias", user.tecnologias.joinToString(","))
+            put("competencias", user.competencias)
             put("last_modified_at", now)
             put("is_deleted", 0)
         }
@@ -88,19 +88,17 @@ class PerfilLocalDataSource(context: Context) {
             val correo = cursor.getString(cursor.getColumnIndexOrThrow("correo"))
             val telefono = cursor.getString(cursor.getColumnIndexOrThrow("telefono"))
             val linkedin = cursor.getString(cursor.getColumnIndexOrThrow("linkedin"))
-            val github = cursor.getString(cursor.getColumnIndexOrThrow("github"))
             val instagram = cursor.getString(cursor.getColumnIndexOrThrow("instagram"))
-            val tecnologias = cursor.getString(cursor.getColumnIndexOrThrow("tecnologias")).split(",").filter { it.isNotBlank() }
+            val competencias = cursor.getString(cursor.getColumnIndexOrThrow("competencias"))
             val proyectos = getProjectsByUserUuid(correo)
             User(
                 id = correo, // Usar el correo como id para mantener la relación con los proyectos
                 nombre = nombre,
                 correo = correo,
-                telefono = telefono,
+                celular = telefono,
                 linkedin = linkedin,
-                github = github,
                 instagram = instagram,
-                tecnologias = tecnologias,
+                competencias = competencias,
                 proyectos = proyectos
             )
         } else null

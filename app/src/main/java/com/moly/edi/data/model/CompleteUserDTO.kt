@@ -2,16 +2,7 @@ package com.moly.edi.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class RedesDTO(
-    @SerializedName("github")
-    val github: String? = null,
-    @SerializedName("instagram")
-    val instagram: String? = null,
-    @SerializedName("linkedin")
-    val linkedin: String? = null
-)
-
-data class UserDTO(
+data class CompleteUserDTO(
     @SerializedName("id")
     val id: String,
     @SerializedName("nombres")
@@ -27,7 +18,13 @@ data class UserDTO(
     @SerializedName("redes")
     val redes: RedesDTO? = null,
     @SerializedName("competencias")
-    val competencias: String? = null,
+    val competencias: List<String>? = null,
     @SerializedName("proyectos")
-    val proyectos: List<ProjectDTO>? = null
+    val proyectos: List<ProjectDTO>? = null,
+    @SerializedName("carrera")
+    val carrera: String? = null,
+    @SerializedName("semestre")
+    val semestre: Int,
+    @SerializedName("sobre_mi")
+    val sobre_mi: String? = null,
 )

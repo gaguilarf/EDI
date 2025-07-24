@@ -1,6 +1,8 @@
 package com.moly.edi.presentation.navigation
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -20,15 +22,13 @@ import com.moly.edi.presentation.splash.SplashScreenWithAuth
 import com.moly.edi.presentation.login.LoginScreenWithAuth
 import com.moly.edi.presentation.conecta.UserConnectScreen
 import com.moly.edi.core.componentes.BottomNavigationBar
+import com.moly.edi.data.dataSource.remote.api.ConfiguracionApiService
 import com.moly.edi.presentation.configuracion.ConfiguracionScreen
-import com.moly.edi.data.repository.ConfiguracionApiService
-import com.moly.edi.data.repository.ConfiguracionRepository
-import com.moly.edi.domain.useCase.GetConfiguracionUseCase
-import com.moly.edi.presentation.configuracion.ConfiguracionViewModelFactory
 import com.moly.edi.presentation.auth.AuthViewModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupNavGraph(navController: NavHostController, context: Context) {
     val authPrefs = AuthPreferences(context)
@@ -104,18 +104,9 @@ fun SetupNavGraph(navController: NavHostController, context: Context) {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 val apiService = retrofit.create(ConfiguracionApiService::class.java)
-                val repository = ConfiguracionRepository(apiService)
-                val useCase = GetConfiguracionUseCase(repository)
-                val factory = ConfiguracionViewModelFactory(useCase)
 
                 ConfiguracionScreen(
-                    viewModelFactory = factory,
-                    correoElectronico = userEmail.orEmpty(),
-                    onLogout = {
-                        navController.navigate(Screen.Login.route) {
-                            popUpTo(0) { inclusive = true }
-                        }
-                    }
+                    correoElectronico = userEmail.orEmpty()
                 )
             }
 

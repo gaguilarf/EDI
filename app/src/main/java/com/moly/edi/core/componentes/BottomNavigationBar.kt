@@ -1,5 +1,5 @@
 package com.moly.edi.core.componentes
-/*
+
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.WindowInsets
@@ -13,7 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -88,4 +87,3 @@ private fun getIconForScreen(screen: Screen): ImageVector {
         else -> Icons.Default.Home
     }
 }
-*/

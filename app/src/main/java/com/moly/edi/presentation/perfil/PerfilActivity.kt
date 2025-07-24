@@ -1,5 +1,5 @@
 package com.moly.edi.presentation.perfil
-/*
+
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -143,9 +143,9 @@ fun ProfileScreen(
                     ProfileHeader(
                         name = user.nombre,
                         email = user.correo ?: "",
-                        phone = user.telefono ?: "",
+                        phone = user.celular ?: "",
                         linkedin = user.linkedin ?: "",
-                        github = user.github ?: "",
+                        github = "",
                         instagram = user.instagram ?: "",
                         onSettingsClick = onSettingsClick
                     )
@@ -488,4 +488,4 @@ fun ProjectCard(project: Project, modifier: Modifier = Modifier) {
             )
         }
     }
-}*/
+}

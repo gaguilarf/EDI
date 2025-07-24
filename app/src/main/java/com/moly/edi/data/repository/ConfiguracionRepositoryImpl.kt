@@ -4,7 +4,7 @@ package com.moly.edi.data.repository
 import android.util.Log
 import com.moly.edi.data.dataSource.local.dao.ConfiguracionDao
 import com.moly.edi.data.dataSource.remote.api.ConfiguracionApiService
-import com.moly.edi.data.model.Configuracion
+import com.moly.edi.domain.model.Configuracion
 import com.moly.edi.data.model.ConfiguracionDTO
 import com.google.gson.JsonSyntaxException
 import com.moly.edi.domain.repository.ConfiguracionRepository

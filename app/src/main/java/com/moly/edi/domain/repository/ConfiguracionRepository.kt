@@ -1,6 +1,6 @@
 package com.moly.edi.domain.repository
 
-import com.moly.edi.data.model.Configuracion
+import com.moly.edi.domain.model.Configuracion
 import com.moly.edi.data.model.ConfiguracionDTO
 
 interface ConfiguracionRepository {

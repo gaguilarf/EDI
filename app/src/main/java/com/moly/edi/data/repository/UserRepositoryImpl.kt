@@ -1,9 +1,10 @@
 package com.moly.edi.data.repository
 
+import android.content.Context
 import android.util.Log
 import com.moly.edi.data.dataSource.remote.api.UserApiService
 import com.moly.edi.data.dataSource.local.PerfilLocalDataSource
-import com.moly.edi.data.model.toDomain
+import com.moly.edi.data.mapper.toDomain
 import com.moly.edi.domain.model.User
 import com.moly.edi.domain.model.Project
 import com.moly.edi.domain.model.toDTO
@@ -11,11 +12,13 @@ import com.moly.edi.domain.repository.UserRepository
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 @Singleton
 class UserRepositoryImpl @Inject constructor(
     private val apiService: UserApiService,
-    @Named("appContext") private val appContext: android.content.Context
+    //@Named("appContext") private val appContext: android.content.Context
+    @ApplicationContext private val appContext: Context
 ) : UserRepository {
 
     override suspend fun getUserByEmail(email: String): Result<User> {

@@ -4,7 +4,7 @@ package com.moly.edi.presentation.configuracion
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.moly.edi.data.model.Configuracion
+import com.moly.edi.domain.model.Configuracion
 import com.moly.edi.domain.repository.ConfiguracionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

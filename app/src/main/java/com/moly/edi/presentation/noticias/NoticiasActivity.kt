@@ -1,6 +1,8 @@
 package com.moly.edi.presentation.noticias
-/*
+
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,6 +31,7 @@ import com.moly.edi.core.componentes.NoticiaCard
 import com.moly.edi.core.componentes.SearchBarWithFilter
 import com.moly.edi.core.componentes.SectionHeader
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NoticiasScreen(
     viewModel: NoticiasViewModel = hiltViewModel()
@@ -122,10 +125,3 @@ fun NoticiasScreen(
             }
     }}
 }
-
-@Preview(showBackground = true)
-@Composable
-fun NoticiasScreenPreview() {
-    NoticiasScreen()
-}
-*/

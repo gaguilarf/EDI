@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.moly.edi.R
-import com.moly.edi.data.model.EstudianteDTO
+import com.moly.edi.data.model.ConectaDTO
 import com.moly.edi.presentation.navigation.Screen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.lazy.LazyColumn
@@ -93,7 +93,7 @@ fun UserConnectScreen(
 
 
 @Composable
-fun UserConnectCard(estudiante: EstudianteDTO, onSettingsClick: () -> Unit) {
+fun UserConnectCard(estudiante: ConectaDTO, onSettingsClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,11 +125,6 @@ fun UserConnectCard(estudiante: EstudianteDTO, onSettingsClick: () -> Unit) {
                     fontSize = 12.sp
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = estudiante.categoriasInteres,
-                    color = Color(0xFF888888),
-                    fontSize = 12.sp
-                )
             }
             IconButton(onClick = onSettingsClick) {
                 Icon(
@@ -143,7 +138,7 @@ fun UserConnectCard(estudiante: EstudianteDTO, onSettingsClick: () -> Unit) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Palabras clave: ${estudiante.palabrasClave}",
+            text = "Competencias: ${estudiante.competencias}",
             color = Color.White,
             fontSize = 14.sp
         )
@@ -159,7 +154,7 @@ fun UserConnectCard(estudiante: EstudianteDTO, onSettingsClick: () -> Unit) {
                 .padding(top = 10.dp, start = 10.dp)
         ) {
             Text(
-                text = estudiante.sobreMi,
+                text = estudiante.sobre_mi,
                 color = Color.White,
                 fontSize = 14.sp
             )

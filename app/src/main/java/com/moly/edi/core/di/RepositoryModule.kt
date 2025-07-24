@@ -1,13 +1,13 @@
 package com.moly.edi.core.di
-/*
-import android.content.Context
-//import com.moly.edi.data.repository.ProjectRepositoryImpl
-import com.moly.edi.domain.repository.UserRepository
-//import com.moly.edi.data.repository.UserRepositoryImpl
-import com.moly.edi.domain.repository.ProjectRepository*/
 
 import com.moly.edi.data.repository.ConfiguracionRepositoryImpl
+import com.moly.edi.data.repository.NoticiasRepositoryImpl
+import com.moly.edi.data.repository.ProjectRepositoryImpl
+import com.moly.edi.data.repository.UserRepositoryImpl
 import com.moly.edi.domain.repository.ConfiguracionRepository
+import com.moly.edi.domain.repository.NoticiasRepository
+import com.moly.edi.domain.repository.ProjectRepository
+import com.moly.edi.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -24,20 +24,17 @@ abstract class RepositoryModule {
         configuracionRepositoryImpl: ConfiguracionRepositoryImpl
     ): ConfiguracionRepository
 
-/*@Binds
-@Singleton
-abstract fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
-
-@Binds
-@Singleton
-abstract fun bindProjectRepository(impl: ProjectRepositoryImpl): ProjectRepository
-
-companion object {
-    @Provides
+    @Binds
     @Singleton
-    @Named("appContext")
-    fun provideAppContext(
-        @ApplicationContext context: Context
-    ): Context = context
-}*/
+    abstract fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindNoticiasRepository(impl: NoticiasRepositoryImpl): NoticiasRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindProjectRepository(impl: ProjectRepositoryImpl): ProjectRepository
+
+
 }

@@ -11,12 +11,3 @@ data class ProjectDTO(
     @SerializedName("descripcion")
     val descripcion: String?
 )
-
-fun ProjectDTO.toDomain(): Project {
-    return Project(
-        id = this.id ?: "0",
-        userId = "", // No se usa en Firestore
-        titulo = this.titulo ?: "",
-        descripcion = this.descripcion ?: ""
-    )
-}

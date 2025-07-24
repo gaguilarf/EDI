@@ -3,16 +3,15 @@ package com.moly.edi.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "UserEntity")
+//@Entity(tableName = "UserEntity")
 data class User(
-    @PrimaryKey()
-    val id: String,
+
+    val id: String? = "1",
     val nombre: String,
     val correo: String,
-    val telefono: String? = null,
+    val celular: String? = null,
     val linkedin: String? = null,
-    val github: String? = null,
     val instagram: String? = null,
-    val tecnologias: List<String> = emptyList(),
+    val competencias: String? = null,
     val proyectos: List<Project> = emptyList()
 )
