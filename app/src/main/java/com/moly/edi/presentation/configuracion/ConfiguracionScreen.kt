@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.clickable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.moly.edi.presentation.configuracion.ConfiguracionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,6 +39,8 @@ fun ConfiguracionScreen(
     correoElectronico: String,
     onNavigateToSoporte: () -> Unit = {},
     onNavigateToAcercaDe: () -> Unit = {},
+    navController: NavHostController, // Agregar este parámetro
+    onLogout: () -> Unit = {},
     viewModel: ConfiguracionViewModel = hiltViewModel()
 ) {
     // Estados del ViewModel
@@ -47,7 +50,10 @@ fun ConfiguracionScreen(
     val isSyncing by viewModel.isSyncing.collectAsState()
     val isOffline by viewModel.isOffline.collectAsState()
     val hasPendingChanges by viewModel.hasPendingChanges.collectAsState()
+    val isLoggingOut by viewModel.isLoggingOut.collectAsState()
+
     var categoriasSeleccionadas by remember { mutableStateOf(setOf<String>()) }
+    var showLogoutDialog by remember { mutableStateOf(false) }
 
     val categoriasDisponibles = listOf(
         "Trabajo", "Proyectos", "Apoyos", "Avisos", "Emprende"
@@ -478,12 +484,109 @@ fun ConfiguracionScreen(
 
         ArrowOption(
             label = "Cerrar sesión",
-            onClick = { /* TODO: Implementar más tarde */ }
+            onClick = { showLogoutDialog = true }
         )
 
-
+        // Dialog de confirmación de logout
+        if (showLogoutDialog) {
+            LogoutConfirmationDialog(
+                onConfirm = {
+                    showLogoutDialog = false
+                    viewModel.logout(
+                        navController = navController,
+                        onSuccess = onLogout,
+                        onError = { error ->
+                            // Manejar error de logout si es necesario
+                            // Podrías mostrar un snackbar o mensaje de error
+                        }
+                    )
+                },
+                onDismiss = { showLogoutDialog = false },
+                isLoading = isLoggingOut,
+                hasPendingChanges = hasPendingChanges
+            )
+        }
     }
 }
+
+@Composable
+fun LogoutConfirmationDialog(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+    isLoading: Boolean = false,
+    hasPendingChanges: Boolean = false
+) {
+    AlertDialog(
+        onDismissRequest = { if (!isLoading) onDismiss() },
+        title = {
+            Text(
+                text = "Cerrar sesión",
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Column {
+                Text(
+                    text = "¿Estás seguro de que deseas cerrar sesión?",
+                    color = Color.White.copy(alpha = 0.8f)
+                )
+                if (hasPendingChanges) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "⚠️ Tienes cambios sin guardar que se perderán.",
+                        color = Color.Yellow,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm,
+                enabled = !isLoading
+            ) {
+                if (isLoading) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CircularProgressIndicator(
+                            color = Color.Red,
+                            modifier = Modifier.size(16.dp),
+                            strokeWidth = 2.dp
+                        )
+                        Text(
+                            text = "Cerrando...",
+                            color = Color.Red
+                        )
+                    }
+                } else {
+                    Text(
+                        text = "Cerrar sesión",
+                        color = Color.Red,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = onDismiss,
+                enabled = !isLoading
+            ) {
+                Text(
+                    text = "Cancelar",
+                    color = Color.Cyan
+                )
+            }
+        },
+        containerColor = Color.Black,
+        tonalElevation = 8.dp
+    )
+}
+
 @Composable
 fun ArrowOption(
     label: String,
@@ -575,5 +678,4 @@ fun SwitchRow(
             )
         )
     }
-
 }
