@@ -90,7 +90,8 @@ class UserConnectViewModel @Inject constructor(
             carrera = this.carrera,
             palabras_clave = this.competencias,
             semestre = this.semestre,
-            sobre_mi = this.sobre_mi
+            sobre_mi = this.sobre_mi,
+            celular = this.celular ?: "+51 999 999 999" // Número por defecto para pruebas
         )
     }
 }

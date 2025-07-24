@@ -17,4 +17,7 @@ sealed class Screen(val route: String) {
     object UserConnect : Screen("conecta") {
         const val CONECTA_ARG = "correo"
     }
+    object PerfilConecta : Screen("perfil_conecta/{correo}") {
+        const val CORREO_ARG = "correo"
+    }
 }

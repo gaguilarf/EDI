@@ -9,6 +9,6 @@ interface ConectaService {
     @GET("usuario/{correo}/acerca")
     suspend fun getConectaByEmail(@Path("correo") correo: String): Response<ConectaDTO>
     
-    @GET("usuario/test@test.com/acerca")
+    @GET("usuario/bhanccoco@unsa.edu.pe/acerca")
     suspend fun testEndpoint(): Response<ConectaDTO>
 }

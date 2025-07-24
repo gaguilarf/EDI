@@ -6,5 +6,6 @@ data class Conecta(
     val competencias: String? = null,
     val nombres: String? = null,
     val semestre: Int,
-    val sobre_mi: String
+    val sobre_mi: String,
+    val celular: String? = null
 )

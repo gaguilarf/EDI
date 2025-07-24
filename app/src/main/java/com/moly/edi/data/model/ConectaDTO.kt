@@ -14,7 +14,9 @@ data class ConectaDTO(
     @SerializedName("sobre_mi")
     val sobre_mi: String,
     @SerializedName("aptitudes")
-    val aptitudes: List<String>? = null
+    val aptitudes: List<String>? = null,
+    @SerializedName("celular")
+    val celular: String? = null
 ) {
     // Propiedad computada para mantener compatibilidad
     val competencias: String? get() = palabras_clave
