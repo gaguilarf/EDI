@@ -64,6 +64,11 @@ fun ConfiguracionScreen(
         }
     }
 
+    // Inicializar solo una vez al cargar la pantalla
+    LaunchedEffect(correoElectronico) {
+        viewModel.inicializar(correoElectronico)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -90,7 +95,7 @@ fun ConfiguracionScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // Indicador de sincronización
+                // Indicador de sincronización - se inicializa en LaunchedEffect
                 if (isSyncing) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
