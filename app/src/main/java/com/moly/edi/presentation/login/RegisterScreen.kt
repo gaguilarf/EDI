@@ -2,6 +2,7 @@
 
 package com.moly.edi.presentation.login
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -34,7 +35,8 @@ import kotlinx.coroutines.delay
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel = viewModel(),
-    onNavigateBack: () -> Unit = {}
+    onNavigateBack: () -> Unit = {},
+    onRegisterSuccess: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var passwordVisible by remember { mutableStateOf(false) }
@@ -48,6 +50,25 @@ fun RegisterScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(40.dp))
+
+        // SOLO UN BOTÓN PARA VOLVER AL LOGIN
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            TextButton(
+                onClick = {
+                    Log.d("RegisterScreen", "Volviendo al login")
+                    onNavigateBack()
+                }
+            ) {
+                Text(
+                    "← Volver al Login",
+                    color = Color.White,
+                    fontSize = 14.sp
+                )
+            }
+        }
 
         // Título
         Text(
@@ -243,7 +264,10 @@ fun RegisterScreen(
 
         // Botón Crear cuenta
         Button(
-            onClick = { viewModel.crearCuenta() },
+            onClick = {
+                Log.d("RegisterScreen", "Intentando crear cuenta")
+                viewModel.crearCuenta()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -294,16 +318,16 @@ fun RegisterScreen(
     // Mostrar mensajes de éxito o error
     uiState.successMessage?.let { message ->
         LaunchedEffect(message) {
-            // Aquí podrías mostrar un Snackbar o Toast
-            // Por ahora solo limpiamos el mensaje después de un tiempo
-            delay(3000)
+            Log.d("RegisterScreen", "Registro exitoso: $message")
+            delay(2000)
+            onRegisterSuccess()
             viewModel.clearMessages()
         }
     }
 
     uiState.errorMessage?.let { message ->
         LaunchedEffect(message) {
-            // Aquí podrías mostrar un Snackbar o Toast
+            Log.e("RegisterScreen", "Error en registro: $message")
             delay(3000)
             viewModel.clearMessages()
         }

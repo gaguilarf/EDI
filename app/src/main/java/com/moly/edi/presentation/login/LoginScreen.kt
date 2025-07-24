@@ -36,7 +36,8 @@ import com.moly.edi.presentation.login.LoginViewModel
 
 @Composable
 fun LoginScreenWithAuth(
-    onLoginSuccess: (email: String, name: String) -> Unit
+    onLoginSuccess: (email: String, name: String) -> Unit,
+    onNavigateToRegister: () -> Unit = {}
 ) {
     val viewModel: LoginViewModel = hiltViewModel()
     val loginSuccess by viewModel.loginSuccess.collectAsState()
@@ -74,7 +75,17 @@ fun LoginScreenWithAuth(
         )
         Spacer(Modifier.height(30.dp))
         Text("Iniciar Sesión", fontSize = 40.sp, fontWeight = FontWeight.SemiBold)
-        Text("¿Eres nuevo aquí? Regístrate", color = Color(0xFF0F8B8D))
+
+        // SOLO UNA LÍNEA PARA NAVEGAR AL REGISTRO
+        Text(
+            "¿Eres nuevo aquí? Regístrate",
+            color = Color(0xFF0F8B8D),
+            modifier = Modifier.clickable {
+                Log.d("LoginScreen", "Navegando a registro")
+                onNavigateToRegister()
+            }
+        )
+
         Spacer(Modifier.height(30.dp))
 
         Text("Email")
@@ -140,3 +151,5 @@ fun LoginScreenWithAuth(
         }
     }
 }
+
+

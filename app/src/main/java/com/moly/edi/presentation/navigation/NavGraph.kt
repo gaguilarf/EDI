@@ -28,6 +28,7 @@ import com.moly.edi.presentation.configuracion.ConfiguracionScreen
 import com.moly.edi.presentation.auth.AuthViewModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.moly.edi.presentation.login.RegisterScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -90,10 +91,22 @@ fun SetupNavGraph(navController: NavHostController, context: Context) {
                         navController.navigate(Screen.Noticias.route) {
                             popUpTo(Screen.Login.route) { inclusive = true }
                         }
+                    },
+                    onNavigateToRegister = {
+                        navController.navigate(Screen.Register.route)
                     }
                 )
             }
-
+            composable(Screen.Register.route) {
+                RegisterScreen(
+                    onNavigateBack = {
+                        navController.popBackStack()
+                    },
+                    onRegisterSuccess = {
+                        navController.popBackStack()
+                    }
+                )
+            }
             composable(Screen.Noticias.route) {
                 NoticiasScreen(navController)
             }
