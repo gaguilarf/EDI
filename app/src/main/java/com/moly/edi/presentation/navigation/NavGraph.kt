@@ -48,13 +48,13 @@ fun SetupNavGraph(navController: NavHostController, context: Context) {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    
+
     Scaffold(
         bottomBar = {
             val showBottomBar =
                 currentRoute == Screen.Noticias.route ||
-                (currentRoute?.startsWith("perfil/") == true) ||
-                (currentRoute?.startsWith("conecta/") == true)
+                        (currentRoute?.startsWith("perfil/") == true) ||
+                        (currentRoute?.startsWith("conecta/") == true)
             if (showBottomBar) {
                 BottomNavigationBar(navController, bottomBarScreens, userEmail)
             }
@@ -110,12 +110,13 @@ fun SetupNavGraph(navController: NavHostController, context: Context) {
             composable(Screen.Noticias.route) {
                 NoticiasScreen(navController)
             }
-            
+
             composable(Screen.Configuracion.route) {
                 ConfiguracionScreen(
                     correoElectronico = userEmail.orEmpty(),
+                    navController = navController
 
-                )
+                    )
             }
 
             composable(
@@ -133,7 +134,7 @@ fun SetupNavGraph(navController: NavHostController, context: Context) {
                 val email = backStackEntry.arguments?.getString(Screen.UserConnect.CONECTA_ARG) ?: userEmail.orEmpty()
                 UserConnectScreen(navController, email)
             }
-            
+
             composable(
                 route = "noticia_detalle/{${Screen.NoticiaDetalle.NOTICIA_ID_ARG}}"
             ) { backStackEntry ->
