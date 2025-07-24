@@ -1,5 +1,5 @@
 package com.moly.edi.core.componentes
-
+/*
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.WindowInsets
@@ -88,3 +88,4 @@ private fun getIconForScreen(screen: Screen): ImageVector {
         else -> Icons.Default.Home
     }
 }
+*/

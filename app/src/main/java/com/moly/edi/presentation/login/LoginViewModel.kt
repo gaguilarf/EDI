@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
+/*
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     application: Application,
@@ -51,4 +51,4 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
-}
+}*/
