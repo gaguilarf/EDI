@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.moly.edi.presentation.noticias.NoticiasScreen
+import com.moly.edi.presentation.noticias.NoticiaDetalleScreen
 import com.moly.edi.presentation.perfil.ProfileScreen
 import com.moly.edi.presentation.splash.SplashScreenWithAuth
 import com.moly.edi.presentation.login.LoginScreenWithAuth
@@ -94,19 +95,13 @@ fun SetupNavGraph(navController: NavHostController, context: Context) {
             }
 
             composable(Screen.Noticias.route) {
-                NoticiasScreen()
+                NoticiasScreen(navController)
             }
             
             composable(Screen.Configuracion.route) {
-                // Instancias manuales para la pantalla de configuración
-                val retrofit = Retrofit.Builder()
-                    .baseUrl("https://edi-backend-ww44.onrender.com/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                val apiService = retrofit.create(ConfiguracionApiService::class.java)
-
                 ConfiguracionScreen(
-                    correoElectronico = userEmail.orEmpty()
+                    correoElectronico = userEmail.orEmpty(),
+
                 )
             }
 
@@ -124,6 +119,13 @@ fun SetupNavGraph(navController: NavHostController, context: Context) {
             ) { backStackEntry ->
                 val email = backStackEntry.arguments?.getString(Screen.UserConnect.CONECTA_ARG) ?: userEmail.orEmpty()
                 UserConnectScreen(navController, email)
+            }
+            
+            composable(
+                route = "noticia_detalle/{${Screen.NoticiaDetalle.NOTICIA_ID_ARG}}"
+            ) { backStackEntry ->
+                val noticiaId = backStackEntry.arguments?.getString(Screen.NoticiaDetalle.NOTICIA_ID_ARG) ?: ""
+                NoticiaDetalleScreen(navController, noticiaId)
             }
         }
     }

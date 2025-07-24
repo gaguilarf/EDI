@@ -5,5 +5,6 @@ import com.moly.edi.domain.model.Noticia
 interface NoticiasRepository {
     suspend fun obtenerNoticiasUnsa(): List<Noticia>
     suspend fun obtenerNoticiasPorCategoria(categoria: String): List<Noticia>
+    suspend fun modificarReaccion(noticiaId: String, accion: String): Result<Int>
 }
 

@@ -24,9 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.moly.edi.core.componentes.NoticiaCard
 import com.moly.edi.core.componentes.SearchBarWithFilter
 import com.moly.edi.core.componentes.SectionHeader
@@ -34,6 +34,7 @@ import com.moly.edi.core.componentes.SectionHeader
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NoticiasScreen(
+    navController: NavController,
     viewModel: NoticiasViewModel = hiltViewModel()
 ) {
     println("NoticiasScreen: Composable llamado")
@@ -45,7 +46,7 @@ fun NoticiasScreen(
 
     val context = LocalContext.current
     var searchText by remember { mutableStateOf("") }
-    var selectedFilter by remember { mutableStateOf("Evento") }
+    var selectedFilter by remember { mutableStateOf("Todos") }
 
     Scaffold { paddingValues ->
         Box(
@@ -86,11 +87,10 @@ fun NoticiasScreen(
                             noticia = noticia,
                             isImportant = false,
                             onClick = {
-                                Toast.makeText(
-                                    context,
-                                    "Abriendo: ${noticia.titulo}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                // Navegar a la pantalla detallada
+                                navController.navigate("noticia_detalle/${noticia.id}") {
+                                    launchSingleTop = true
+                                }
                             }
                         )
                     }

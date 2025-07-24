@@ -28,7 +28,7 @@ fun SearchBarWithFilter(
     modifier: Modifier = Modifier
 ) {
     var showFilterDropdown by remember { mutableStateOf(false) }
-    val filterOptions = listOf("Todos", "Eventos", "Académico", "Comunicados", "Becas")
+    val filterOptions = listOf("Todos", "Trabajo", "Emprende", "Apoyos", "Avisos", "Emprende")
 
     Column(
         modifier = modifier

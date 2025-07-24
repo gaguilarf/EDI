@@ -24,6 +24,9 @@ class NoticiasViewModel @Inject constructor(
     private var _error = mutableStateOf<String?>(null)
     val error: String? get() = _error.value
 
+    private val _selectedNoticia = mutableStateOf<Noticia?>(null)
+    val selectedNoticia: State<Noticia?> = _selectedNoticia
+
     init {
         fetchNoticias()
     }
@@ -61,4 +64,11 @@ class NoticiasViewModel @Inject constructor(
         }
     }
 
+    fun seleccionarNoticia(noticia: Noticia) {
+        _selectedNoticia.value = noticia
+    }
+
+    fun limpiarNoticiaSeleccionada() {
+        _selectedNoticia.value = null
+    }
 }

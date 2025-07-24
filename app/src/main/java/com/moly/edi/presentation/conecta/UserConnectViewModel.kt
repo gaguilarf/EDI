@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moly.edi.data.model.ConectaDTO
+import com.moly.edi.data.repository.ConectaRepositoryImpl
 import com.moly.edi.domain.model.Conecta
 import com.moly.edi.domain.repository.ConectaRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

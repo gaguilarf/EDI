@@ -30,15 +30,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideConectaRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://edi-backend-vgou.onrender.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    @Provides
-    @Singleton
     fun provideConfiguracionApiService(retrofit: Retrofit): ConfiguracionApiService {
         return retrofit.create(ConfiguracionApiService::class.java)
     }
