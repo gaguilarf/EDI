@@ -16,9 +16,6 @@ EDI es una aplicación móvil nativa para Android, construida con tecnologías m
 3.  [🛠️ Stack Tecnológico](#️-stack-tecnológico)
 4.  [📱 Vistazo a la App](#-vistazo-a-la-app)
 5.  [🚀 Puesta en Marcha (Instalación)](#-puesta-en-marcha-instalación)
-6.  [🤝 Contribución](#-contribución)
-7.  [📄 Licencia](#-licencia)
-8.  [📧 Contacto](#-contacto)
 
 ## 🎯 Visión del Proyecto
 
